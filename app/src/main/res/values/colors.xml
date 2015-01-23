@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- others -->
+    <color name="font_color1">#bb000000</color>
+    <color name="font_color2">#77000000</color>
+    <color name="selected_color">#E64440</color>
+    <color name="transparent">#00000000</color>
+</resources>

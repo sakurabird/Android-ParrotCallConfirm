@@ -1,0 +1,21 @@
+package com.sakurafish.parrot.callconfirm;
+
+public class Config {
+
+    // preference
+    public static final String PREF_SHOW_FIRST_TUTORIAL = "PREF_SHOW_FIRST_TUTORIAL";
+    public static final String PREF_LAUNCH_COUNT = "PREF_LAUNCH_COUNT";
+    public static final String PREF_ASK_REVIEW = "PREF_ASK_REVIEW";
+    public static final String PREF_SOUND_ON = "PREF_SOUND_ON";
+    public static final String PREF_CREDIT = "PREF_CREDIT";
+    public static final String PREF_MAIL_TO_DEV = "PREF_MAIL_TO_DEV";
+
+    // Intent
+    public static final String INTENT_DB_UPDTE_ACTION = "INTENT_DB_UPDTE_ACTION";
+
+    //    Tag string
+    public static final String TAG_ERROR = "TAG_ERROR";
+
+    private Config() {
+    }
+}
