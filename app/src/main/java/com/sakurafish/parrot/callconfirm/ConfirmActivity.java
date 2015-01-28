@@ -1,30 +1,19 @@
 package com.sakurafish.parrot.callconfirm;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.sakurafish.common.lib.ui.GeneralDialogFragment;
 
 /**
  * Created by sakura on 2015/01/23.
  */
-public class ConfirmActivity extends ActionBarActivity {
-
-    private static final int REQUEST_DIALOG_ERROR = 123;
+public class ConfirmActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GeneralDialogFragment.Builder builder = new GeneralDialogFragment.Builder();
-        builder.setIcon(R.drawable.ic_launcher);
-        builder.setTitle("title");
-        builder.setMessage("message");
-        builder.setPositiveText("OK");
-        builder.setTargetFragment(this, REQUEST_DIALOG_ERROR);
-        builder.create().show(getFragmentManager(), ConfirmActivity.class.getSimpleName());
     }
 
 
