@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- アプリ設定 -->
+    <PreferenceCategory android:title="@string/action_settings">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/PREF_CONFIRM"
+            android:title="@string/setting_confirm" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/PREF_VIBRATE"
+            android:title="@string/setting_vibrate" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/PREF_SOUND_ON"
+            android:title="@string/setting_sound_on_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

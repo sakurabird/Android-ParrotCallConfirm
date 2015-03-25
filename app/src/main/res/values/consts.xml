@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- AD suru pass -->
+    <string name="surupass_mediaId">7b02b59b-b34e-4058-ae43-5eaf56bb8f8d</string>
+    <integer name="surupass_bannerId">1398</integer>
+    <!--Preference Keys-->
+    <string name="PREF_CONFIRM">PREF_CONFIRM</string>
+    <string name="PREF_VIBRATE">PREF_VIBRATE</string>
+    <string name="PREF_SOUND_ON">PREF_SOUND_ON</string>
+</resources>

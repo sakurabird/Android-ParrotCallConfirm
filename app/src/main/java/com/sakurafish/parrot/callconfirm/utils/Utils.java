@@ -1,6 +1,7 @@
 package com.sakurafish.parrot.callconfirm.utils;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sakurafish.parrot.callconfirm.BuildConfig;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
 
@@ -15,6 +17,27 @@ public class Utils {
 
     @Deprecated
     private Utils() {
+    }
+    /**
+     * デバッグ用ログ出力：出所が分かるようにメソッドの出力位置を表示する
+     *
+     * @param message 出力するメッセージ文字列
+     */
+    public static void logDebug(String message) {
+        if (BuildConfig.DEBUG) {
+            String prefLabel = new Throwable().getStackTrace()[1].toString();
+            Log.d("logDebug", prefLabel + ": " + message);
+        }
+    }
+
+    /**
+     * ログ出力：出所が分かるようにメソッドの出力位置を表示する
+     *
+     * @param message 出力するメッセージ文字列
+     */
+    public static void logError(String message) {
+        String prefLabel = new Throwable().getStackTrace()[1].toString();
+        Log.e("logError", prefLabel + ": " + message);
     }
 
     /**

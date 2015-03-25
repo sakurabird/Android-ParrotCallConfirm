@@ -9,9 +9,11 @@ public class Config {
     public static final String PREF_SOUND_ON = "PREF_SOUND_ON";
     public static final String PREF_CREDIT = "PREF_CREDIT";
     public static final String PREF_MAIL_TO_DEV = "PREF_MAIL_TO_DEV";
+    public static final String PREF_AFTER_CONFIRM = "PREF_AFTER_CONFIRM";
 
     // Intent
     public static final String INTENT_DB_UPDTE_ACTION = "INTENT_DB_UPDTE_ACTION";
+    public static final String INTENT_EXTRAS_PHONENUMBER = "INTENT_EXTRAS_PHONENUMBER";
 
     //    Tag string
     public static final String TAG_ERROR = "TAG_ERROR";

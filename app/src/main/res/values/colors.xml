@@ -4,5 +4,6 @@
     <color name="font_color1">#bb000000</color>
     <color name="font_color2">#77000000</color>
     <color name="selected_color">#E64440</color>
-    <color name="transparent">#00000000</color>
+    <color name="list_boader_color">#afafaf</color>
+    <color name="dark_pink">#A66868</color>
 </resources>

@@ -6,5 +6,17 @@
     <string name="no">No</string>
     <string name="action_settings">Settings</string>
     <string name="message_confirm1">Are you sure want to call?</string>
+    <string name="welcome">welcome!</string>
+    <string name="about"> ParrotCallConfirm shows confirm dialog before outgoing phone Call.</string>
+    <string name="share">Share</string>
+    <string name="share_text">http://play.google.com/store/apps/details?id=com.sakurafish.parrot.callconfirm</string>
+    <string name="text_google_play">Go to Google Play</string>
+    <string name="text_credit">Credit</string>
+    <string name="text_mail_to_dev">Mail to Developer</string>
+    <string name="setting_mail_to_dev2">[ParrotCallConfirm] Suggestions and Opinions</string>
+    <string name="setting_mail_to_dev3">We do not sell or share your information with anyone else.</string>
+    <string name="setting_confirm">Enable Call Confirm</string>
+    <string name="setting_vibrate">Enable Vibrate</string>
+    <string name="setting_sound_on_title">Sound On</string>
 
 </resources>
