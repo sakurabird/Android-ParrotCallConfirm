@@ -5,7 +5,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="action_settings">Settings</string>
-    <string name="message_confirm1">Are you sure want to call?</string>
     <string name="welcome">welcome!</string>
     <string name="about"> ParrotCallConfirm shows confirm dialog before outgoing phone Call.</string>
     <string name="share">Share</string>
@@ -18,5 +17,7 @@
     <string name="setting_confirm">Enable Call Confirm</string>
     <string name="setting_vibrate">Enable Vibrate</string>
     <string name="setting_sound_on_title">Sound On</string>
+    <string name="message_info1">You are making a phone call...</string>
+    <string name="message_confirm1">Are you sure want to call?</string>
 
 </resources>

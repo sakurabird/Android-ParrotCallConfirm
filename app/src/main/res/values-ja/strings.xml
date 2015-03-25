@@ -5,7 +5,6 @@
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
     <string name="action_settings">設定</string>
-    <string name="message_confirm1">本当に電話をかけますか？</string>
     <string name="about">インコ発信確認は電話をかける前に確認ダイアログを表示します。</string>
     <string name="share">共有</string>
     <string name="text_google_play">Google Playに行く</string>
@@ -16,5 +15,7 @@
     <string name="setting_confirm">発信確認を有効にする</string>
     <string name="setting_vibrate">バイブレーションさせる</string>
     <string name="setting_sound_on_title">インコ音を鳴らす</string>
+    <string name="message_info1">あなたは電話をかけようとしています...</string>
+    <string name="message_confirm1">本当に電話をかけますか？</string>
 
 </resources>

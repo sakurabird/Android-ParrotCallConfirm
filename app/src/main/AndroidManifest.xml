@@ -8,6 +8,13 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
+    <supports-screens
+        android:anyDensity="true"
+        android:smallScreens="false"
+        android:normalScreens="false"
+        android:largeScreens="true"
+        android:xlargeScreens="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
@@ -32,7 +39,8 @@
         </activity>
         <activity
             android:name=".activity.ConfirmActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.CreditActivity" />
 

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.Window;
 
 import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.Config;
@@ -32,7 +33,9 @@ public class ConfirmActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_confirm);
+
         mContext = this;
         mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
         if (mPhoneNumber==null){
@@ -54,6 +57,7 @@ public class ConfirmActivity extends Activity {
         findViewById(R.id.button_no).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
                 ConfirmActivity.this.finish();
             }
         });
@@ -61,7 +65,9 @@ public class ConfirmActivity extends Activity {
         findViewById(R.id.imageView_setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(SettingActivity.createIntent(mContext, SettingActivity.class));
+                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+                startActivity(MainActivity.createIntent(mContext, MainActivity.class));
+                ConfirmActivity.this.finish();
             }
         });
     }
@@ -73,11 +79,9 @@ public class ConfirmActivity extends Activity {
         ConfirmActivity.this.finish();
     }
 
-    private void finalizeLayout() {
-    }
-
     @Override
     public void onBackPressed() {
+        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
         ConfirmActivity.this.finish();
     }
 
@@ -85,7 +89,6 @@ public class ConfirmActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
 
-        finalizeLayout();
         mContext = null;
         mPhoneNumber = null;
     }
