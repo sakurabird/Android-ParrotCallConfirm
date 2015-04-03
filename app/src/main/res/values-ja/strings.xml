@@ -16,6 +16,8 @@
     <string name="setting_vibrate">バイブレーションさせる</string>
     <string name="setting_sound_on_title">インコ音を鳴らす</string>
     <string name="message_info1">あなたは電話をかけようとしています...</string>
+    <string name="message_info2">確認</string>
     <string name="message_confirm1">本当に電話をかけますか？</string>
+    <string name="message_number">番号:</string>
 
 </resources>

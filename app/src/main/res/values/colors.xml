@@ -4,8 +4,11 @@
     <color name="font_color1">#bb000000</color>
     <color name="font_color2">#77000000</color>
     <color name="selected_color">#E64440</color>
-    <color name="confirm_bg_color">#eeffffff</color>
+    <color name="confirm_bg_color">#FAF7EF</color>
     <color name="list_boader_color">#afafaf</color>
     <color name="dark_green">#6B8A4E</color>
+    <color name="title_bar_color">#ee000000</color>
     <color name="dark_pink">#A66868</color>
+    <color name="blue1">#436A92</color>
+    <color name="orange1">#FF8502</color>
 </resources>

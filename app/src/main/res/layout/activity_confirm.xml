@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="30dp"
-    android:padding="@dimen/margin_large"
     android:background="@drawable/confirm_dialog_bg"
-    android:orientation="vertical">
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_large">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="@string/app_name"
+            android:text="@string/message_info2"
+            android:textColor="@color/dark_green"
             android:textSize="@dimen/font_xlarge" />
 
         <ImageView
@@ -44,69 +46,67 @@
             android:src="@drawable/inco_blue" />
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="@dimen/margin_large"
-            android:src="@drawable/inco_blue" />
+            android:src="@drawable/ic_trending_neutral_grey600_36dp" />
 
         <ImageView
             android:id="@+id/imageView_callto"
             android:layout_width="@dimen/confirm_icon_size"
             android:layout_height="@dimen/confirm_icon_size"
-            android:src="@drawable/inco_blue" />
+            android:src="@drawable/no_image" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView_info1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/message_info1"
-        android:textSize="@dimen/font_medium" />
-
-    <TextView
-        android:id="@+id/textView_info2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/message_confirm1"
-        android:textSize="@dimen/font_xlarge" />
-
-    <TextView
-        android:id="@+id/textView_message1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/message_confirm1"
-        android:textSize="@dimen/font_xlarge" />
 
     <TextView
         android:id="@+id/textView_telno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/app_name"
-        android:textSize="@dimen/font_xlarge" />
+        android:layout_marginTop="@dimen/margin_medium"
+        android:text="@string/message_number"
+        android:textColor="@color/font_color2"
+        android:textSize="@dimen/font_large" />
+
+    <TextView
+        android:id="@+id/textView_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/font_color2"
+        android:textSize="@dimen/font_large" />
+
+    <TextView
+        android:id="@+id/textView_message1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_xxlarge"
+        android:text="@string/message_confirm1"
+        android:textColor="@color/selected_color"
+        android:textSize="@dimen/font_large" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_large"
-        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_ok"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_large"
+            android:layout_margin="@dimen/margin_large"
+            android:layout_weight="1"
             android:drawableLeft="@android:drawable/ic_menu_call"
             android:text="@string/yes" />
 
         <Button
             android:id="@+id/button_no"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_large"
+            android:layout_weight="1"
             android:drawableLeft="@android:drawable/ic_delete"
             android:text="@string/no" />
 

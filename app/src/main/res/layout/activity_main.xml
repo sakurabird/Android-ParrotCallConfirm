@@ -9,19 +9,21 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:layout_height="50dp"
+        android:background="@color/title_bar_color"
         android:minHeight="?attr/actionBarSize">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_launcher"
-            android:padding="5dp"/>
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/font_large"/>
     </android.support.v7.widget.Toolbar>
 </LinearLayout>

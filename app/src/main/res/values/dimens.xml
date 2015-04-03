@@ -12,7 +12,7 @@
     <dimen name="font_medium">16sp</dimen>
     <dimen name="font_small">12sp</dimen>
     <dimen name="font_very_small">8sp</dimen>
-    <dimen name="main_list_icon_margin_left">45dp</dimen>
+    <dimen name="main_list_icon_margin_left">20dp</dimen>
     <dimen name="main_list_icon_size">38dp</dimen>
     <dimen name="confirm_icon_size">100dp</dimen>
 </resources>
