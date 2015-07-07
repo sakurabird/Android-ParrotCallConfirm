@@ -14,7 +14,6 @@ import android.os.Vibrator;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +24,9 @@ import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
 
 import java.io.ByteArrayInputStream;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 確認ダイアログ表示
@@ -48,6 +50,7 @@ public class ConfirmActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_confirm);
+        ButterKnife.bind(this);
 
         mContext = this;
         mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
@@ -74,37 +77,26 @@ public class ConfirmActivity extends Activity {
             if (info.photoBitmap != null)
                 ((ImageView) findViewById(R.id.imageView_callto)).setImageBitmap(info.photoBitmap);
         }
-
-        findViewById(R.id.button_ok).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //call実行
-                call();
-            }
-        });
-
-        findViewById(R.id.button_no).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-                ConfirmActivity.this.finish();
-            }
-        });
-
-        findViewById(R.id.imageView_setting).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-                startActivity(MainActivity.createIntent(mContext, MainActivity.class));
-                ConfirmActivity.this.finish();
-            }
-        });
     }
 
-    private void call() {
+    @OnClick(R.id.button_ok)
+    void call() {
         Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
         String number = "tel:" + mPhoneNumber.trim();
         startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
+        ConfirmActivity.this.finish();
+    }
+
+    @OnClick(R.id.button_no)
+    void cancel() {
+        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+        ConfirmActivity.this.finish();
+    }
+
+    @OnClick(R.id.imageView_setting)
+    void setting() {
+        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+        startActivity(MainActivity.createIntent(mContext, MainActivity.class));
         ConfirmActivity.this.finish();
     }
 
