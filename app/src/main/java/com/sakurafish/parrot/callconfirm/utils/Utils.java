@@ -13,7 +13,7 @@ import com.sakurafish.parrot.callconfirm.BuildConfig;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
 
-public class Utils {
+public final class Utils {
 
     @Deprecated
     private Utils() {

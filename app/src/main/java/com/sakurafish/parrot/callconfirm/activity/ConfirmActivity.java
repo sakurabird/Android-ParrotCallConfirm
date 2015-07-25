@@ -1,20 +1,15 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.provider.BaseColumns;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +17,7 @@ import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
-
-import java.io.ByteArrayInputStream;
+import com.sakurafish.parrot.callconfirm.utils.ContactUtils;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -71,12 +65,16 @@ public class ConfirmActivity extends Activity {
         }
 
         ((TextView) findViewById(R.id.textView_telno)).setText(mPhoneNumber);
-        ContactInfo info = getContactInfoByNumber(mPhoneNumber);
+        ContactUtils.ContactInfo info = ContactUtils.getContactInfoByNumber(mPhoneNumber);
         if (info != null) {
-            ((TextView) findViewById(R.id.textView_name)).setText(info.name);
-            if (info.photoBitmap != null)
-                ((ImageView) findViewById(R.id.imageView_callto)).setImageBitmap(info.photoBitmap);
+            ((TextView) findViewById(R.id.textView_name)).setText(info.getName());
+            if (info.getPhotoBitmap() != null)
+                ((ImageView) findViewById(R.id.imageView_callto)).setImageBitmap(info.getPhotoBitmap());
         }
+
+        ImageView inco =(ImageView)findViewById(R.id.imageView_inco);
+        Animation animation= AnimationUtils.loadAnimation(mContext, R.anim.inco_jump);
+        inco.startAnimation(animation);
     }
 
     @OnClick(R.id.button_ok)
@@ -114,58 +112,4 @@ public class ConfirmActivity extends Activity {
         mPhoneNumber = null;
     }
 
-    public ContactInfo getContactInfoByNumber(String number) {
-        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
-
-        String projection[] = new String[]{BaseColumns._ID,
-                ContactsContract.PhoneLookup.DISPLAY_NAME,
-                ContactsContract.PhoneLookup.PHOTO_THUMBNAIL_URI
-        };
-
-        ContentResolver contentResolver = getContentResolver();
-        Cursor contactLookup = contentResolver.query(uri, projection, null, null, null);
-        if (contactLookup == null || contactLookup.getCount() <= 0) {
-            return null;
-        }
-
-        ContactInfo info = new ContactInfo();
-        try {
-            contactLookup.moveToNext();
-            info.number = mPhoneNumber;
-            info.id = contactLookup.getString(contactLookup.getColumnIndex(BaseColumns._ID));
-            info.name = contactLookup.getString(contactLookup.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
-            info.photoBitmap = openPhoto(Long.parseLong(info.id));
-        } finally {
-            contactLookup.close();
-        }
-        return info;
-    }
-
-    public Bitmap openPhoto(long contactId) {
-        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
-        Cursor cursor = getContentResolver().query(photoUri,
-                new String[]{ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        try {
-            if (cursor.moveToFirst()) {
-                byte[] data = cursor.getBlob(0);
-                if (data != null) {
-                    return BitmapFactory.decodeStream(new ByteArrayInputStream(data));
-                }
-            }
-        } finally {
-            cursor.close();
-        }
-        return null;
-    }
-
-    public static class ContactInfo {
-        String id;
-        String number;
-        String name;
-        Bitmap photoBitmap;
-    }
 }

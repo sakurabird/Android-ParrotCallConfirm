@@ -45,6 +45,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(SettingActivity.createIntent(mContext, SettingActivity.class));
+//                startActivity(ConfirmActivity.createIntent(mContext, ConfirmActivity.class,"08056549370"));
             }
         });
 
