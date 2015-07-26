@@ -18,6 +18,14 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize">
 
+            <ImageView
+                android:id="@+id/imageView_menu"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="left"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_menu_white_48dp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
