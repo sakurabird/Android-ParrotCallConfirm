@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="16dp"
-                    android:text="電話しますか？"
+                    android:text="@string/message_confirm1"
                     android:textColor="@android:color/white"
                     android:textSize="32sp" />
 
@@ -73,7 +73,7 @@
                 android:layout_below="@+id/layout_top"
                 android:layout_marginTop="6dp"
                 android:layout_toRightOf="@+id/imageView_inco"
-                android:text="ほけごほ"
+                android:text="xxxxxxxxxx"
                 android:textStyle="bold" />
 
             <TextView
@@ -83,7 +83,7 @@
                 android:layout_alignLeft="@+id/textView_telno"
                 android:layout_below="@+id/textView_telno"
                 android:layout_marginTop="4dp"
-                android:text="あああ"
+                android:text="xxxxxxxxxxx"
                 android:textStyle="bold" />
 
             <LinearLayout
