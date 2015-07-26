@@ -5,7 +5,9 @@ import android.content.Context;
 
 import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.utils.SoundManager;
+
 import tokyo.suru_pass.AdContext;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class MyApplication extends Application {
 
@@ -46,6 +48,11 @@ public class MyApplication extends Application {
         int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
 
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/GenShinGothic-Regular.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
         setupSounds();
         setupADs();
     }

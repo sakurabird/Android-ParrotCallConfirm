@@ -21,6 +21,7 @@ import com.sakurafish.parrot.callconfirm.utils.ContactUtils;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * 確認ダイアログ表示
@@ -37,6 +38,11 @@ public class ConfirmActivity extends Activity {
         bundle.putString(Config.INTENT_EXTRAS_PHONENUMBER, phoneNumber);
         intent.putExtras(bundle);
         return intent;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -72,8 +78,8 @@ public class ConfirmActivity extends Activity {
                 ((ImageView) findViewById(R.id.imageView_callto)).setImageBitmap(info.getPhotoBitmap());
         }
 
-        ImageView inco =(ImageView)findViewById(R.id.imageView_inco);
-        Animation animation= AnimationUtils.loadAnimation(mContext, R.anim.inco_jump);
+        ImageView inco = (ImageView) findViewById(R.id.imageView_inco);
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.inco_jump);
         inco.startAnimation(animation);
     }
 
