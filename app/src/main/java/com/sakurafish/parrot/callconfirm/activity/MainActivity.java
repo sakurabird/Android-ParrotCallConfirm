@@ -6,10 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
@@ -17,7 +13,6 @@ import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
 
 public class MainActivity extends Activity {
 
-    private ListView mDrawerList;
     private Fragment mContent;
 
     public static Intent createIntent(Context context, Class clazz) {
@@ -53,17 +48,6 @@ public class MainActivity extends Activity {
     }
 
     private void initLayout() {
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
-        // TODO
-//        mDrawerList.setAdapter(new NavExpandableAdapter(mContext));
     }
 
     @Override
@@ -73,7 +57,6 @@ public class MainActivity extends Activity {
     }
 
     private void finalizeLayout() {
-        mDrawerList = null;
     }
 
     @Override

@@ -10,10 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.andexert.library.RippleView;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.activity.CreditActivity;
 import com.sakurafish.parrot.callconfirm.activity.SettingActivity;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by sakura on 2015/01/23.
@@ -21,6 +25,16 @@ import com.sakurafish.parrot.callconfirm.activity.SettingActivity;
 public class MainFragment extends Fragment {
 
     private Context mContext;
+    @Bind(R.id.menu_setting)
+    RippleView mButtonSetting;
+    @Bind(R.id.menu_share)
+    RippleView mButtonShare;
+    @Bind(R.id.menu_googleplay)
+    RippleView mButtonGooglePlay;
+    @Bind(R.id.menu_credit)
+    RippleView mButtonCredit;
+    @Bind(R.id.menu_mail_to_dev)
+    RippleView mButtonMainToDev;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -29,29 +43,29 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
-
         initLayout();
     }
 
     private void initLayout() {
-        getView().findViewById(R.id.menu_setting).setOnClickListener(new View.OnClickListener() {
+        mButtonSetting.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
-            public void onClick(View v) {
+            public void onComplete(RippleView rippleView) {
                 startActivity(SettingActivity.createIntent(mContext, SettingActivity.class));
-//                startActivity(ConfirmActivity.createIntent(mContext, ConfirmActivity.class,"08056549370"));
             }
         });
 
-        getView().findViewById(R.id.menu_share).setOnClickListener(new View.OnClickListener() {
+        mButtonShare.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
-            public void onClick(View v) {
+            public void onComplete(RippleView rippleView) {
                 final Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
@@ -60,26 +74,26 @@ public class MainFragment extends Fragment {
             }
         });
 
-        getView().findViewById(R.id.menu_googleplay).setOnClickListener(new View.OnClickListener() {
+        mButtonGooglePlay.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
-            public void onClick(View v) {
+            public void onComplete(RippleView rippleView) {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.share_text))));
             }
         });
 
-        getView().findViewById(R.id.menu_credit).setOnClickListener(new View.OnClickListener() {
+        mButtonCredit.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
-            public void onClick(View v) {
+            public void onComplete(RippleView rippleView) {
                 startActivity(CreditActivity.createIntent(mContext, CreditActivity.class));
             }
         });
 
-        getView().findViewById(R.id.menu_mail_to_dev).setOnClickListener(new View.OnClickListener() {
+        mButtonMainToDev.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
-            public void onClick(View v) {
+            public void onComplete(RippleView rippleView) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("plain/text");
-                intent.putExtra(Intent.EXTRA_EMAIL,  new String[] { "sakurafish1@gmail.com" });
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"sakurafish1@gmail.com"});
                 intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.setting_mail_to_dev2));
                 intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.setting_mail_to_dev3));
                 startActivity(intent);
@@ -93,6 +107,17 @@ public class MainFragment extends Fragment {
     }
 
     private void finalizeLayout() {
+        mButtonSetting = null;
+        mButtonGooglePlay = null;
+        mButtonCredit = null;
+        mButtonShare = null;
+        mButtonMainToDev = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     @Override
