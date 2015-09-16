@@ -3,9 +3,11 @@ package com.sakurafish.parrot.callconfirm;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.utils.SoundManager;
 
+import io.fabric.sdk.android.Fabric;
 import tokyo.suru_pass.AdContext;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -44,6 +46,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);

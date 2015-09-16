@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">インコ発信確認</string>
+    <string name="app_name_staging">開発版インコ発信確認</string>
+
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
     <string name="action_settings">設定</string>

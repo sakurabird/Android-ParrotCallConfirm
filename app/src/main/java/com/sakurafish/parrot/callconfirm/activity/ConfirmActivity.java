@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -13,11 +14,20 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.dto.AppMessage;
+import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 import com.sakurafish.parrot.callconfirm.utils.ContactUtils;
+import com.sakurafish.parrot.callconfirm.utils.Utils;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -50,6 +60,11 @@ public class ConfirmActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_confirm);
+        init();
+        initLayout();
+    }
+
+    private void init() {
         ButterKnife.bind(this);
 
         mContext = this;
@@ -58,7 +73,7 @@ public class ConfirmActivity extends Activity {
             throw new IllegalStateException();
         }
 
-        initLayout();
+        retrieveAppMessage();
     }
 
     private void initLayout() {
@@ -102,6 +117,59 @@ public class ConfirmActivity extends Activity {
         Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
         startActivity(MainActivity.createIntent(mContext, MainActivity.class));
         ConfirmActivity.this.finish();
+    }
+
+
+    private void retrieveAppMessage() {
+        final String url = getString(R.string.URL_APP_MESSAGE);
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String result = null;
+                Request request = new Request.Builder().url(url).get().build();
+                OkHttpClient client = new OkHttpClient();
+                try {
+                    Response response = client.newCall(request).execute();
+                    result = response.body().string();
+                } catch (IOException e) {
+                    Utils.logError("retrieveAppMessage failed IOException");
+                    e.printStackTrace();
+                }
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                if (result == null) {
+                    Utils.logError("retrieveAppMessage failed response==null");
+                    return;
+                }
+                Utils.logDebug(result);
+                try {
+                    Gson gson = new Gson();
+                    AppMessage message = gson.fromJson(result, AppMessage.class);
+                    setNotification(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Utils.logError("Json parse error");
+                }
+            }
+        }.execute();
+    }
+
+    private void setNotification(AppMessage message) {
+        final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
+        Utils.logDebug("last message no:" + lastNo);
+
+        for (AppMessage.Data data : message.getData()) {
+            int messageNo = data.getMessage_no();
+            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo) {
+                Utils.logDebug("no:" + data.getMessage_no() + " message:" + data.getMessage());
+                CallConfirmUtils.setNotification(MainActivity.class, data.getMessage());
+                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
+                break;
+            }
+        }
     }
 
     @Override

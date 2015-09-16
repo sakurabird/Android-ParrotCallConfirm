@@ -5,10 +5,21 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+import com.sakurafish.common.lib.pref.Pref;
+import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
+import com.sakurafish.parrot.callconfirm.utils.Utils;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -16,6 +27,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MainActivity extends Activity {
 
     private Fragment mContent;
+    private Context mContext;
 
     public static Intent createIntent(Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
@@ -51,10 +63,65 @@ public class MainActivity extends Activity {
     }
 
     private void init() {
+        mContext = this;
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        retrieveAppMessage();
     }
 
     private void initLayout() {
+    }
+
+    private void retrieveAppMessage() {
+        final String url = getString(R.string.URL_APP_MESSAGE);
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String result = null;
+                Request request = new Request.Builder().url(url).get().build();
+                OkHttpClient client = new OkHttpClient();
+                try {
+                    Response response = client.newCall(request).execute();
+                    result = response.body().string();
+                } catch (IOException e) {
+                    Utils.logError("retrieveAppMessage failed IOException");
+                    e.printStackTrace();
+                }
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                if (result == null) {
+                    Utils.logError("retrieveAppMessage failed response==null");
+                    return;
+                }
+                Utils.logDebug(result);
+                try {
+                    Gson gson = new Gson();
+                    AppMessage message = gson.fromJson(result, AppMessage.class);
+                    showAppMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Utils.logError("Json parse error");
+                }
+            }
+        }.execute();
+    }
+
+    private void showAppMessage(AppMessage message) {
+        final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
+        Utils.logDebug("last message no:" + lastNo);
+
+        for (AppMessage.Data data : message.getData()) {
+            int messageNo = data.getMessage_no();
+            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo) {
+                Utils.logDebug("no:" + data.getMessage_no() + " message:" + data.getMessage());
+                Utils.showDialog(getFragmentManager(), mContent, data.getMessage(), "APP_MESSAGE");
+                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
+                break;
+            }
+        }
     }
 
     @Override

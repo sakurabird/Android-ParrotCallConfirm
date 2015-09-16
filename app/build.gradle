@@ -1,21 +1,71 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+def VERSION_CODE = 3
+def VERSION_NAME = "1.1"
+def PACKAGE_NAME = "com.sakurafish.parrot.callconfirm"
 
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.sakurafish.parrot.callconfirm"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 3
-        versionName "1.1"
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
+        applicationId PACKAGE_NAME
+        manifestPlaceholders = [appName : "@string/app_name"]
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     buildTypes {
+        debug {
+            debuggable true
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-DEBUG"
+            manifestPlaceholders = [appName : "@string/app_name_staging"]
+        }
         release {
+            debuggable false
+            zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    dexOptions {
+        preDexLibraries = false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
@@ -24,11 +74,16 @@ dependencies {
     compile project(':SakurafishLib')
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:cardview-v7:22.0.0'
-    compile 'com.google.android.gms:play-services:7.5.0'
+    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.google.android.gms:play-services:7.8.0'
     compile files('libs/suru-pass.jar')
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'com.github.traex.rippleeffect:library:1.3'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+        transitive = true;
+    }
 }

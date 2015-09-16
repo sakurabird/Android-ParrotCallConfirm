@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">ParrotCallConfirm</string>
+    <string name="app_name_staging">staging-ParrotCallConfirm</string>
+
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="action_settings">Settings</string>
