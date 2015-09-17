@@ -15,7 +15,7 @@ public class MyApplication extends Application {
 
     private static MyApplication application;
     private static SoundManager sSoundManager;
-    private static int[] sSoundIds = new int[1];
+    private static int[] sSoundIds = new int[5];
     private static AdContext sAdContext;//suru pass
 
     public MyApplication() {
@@ -63,7 +63,12 @@ public class MyApplication extends Application {
     private void setupSounds() {
         sSoundManager = SoundManager.getInstance(getContext());
         sSoundIds[0] = sSoundManager.load(R.raw.inco1);
+        sSoundIds[1] = sSoundManager.load(R.raw.inco2);
+        sSoundIds[2] = sSoundManager.load(R.raw.inco3);
+        sSoundIds[3] = sSoundManager.load(R.raw.inco4);
+        sSoundIds[4] = sSoundManager.load(R.raw.inco5);
     }
+
     /**
      * 広告SDKのインスタンスを取得
      */
