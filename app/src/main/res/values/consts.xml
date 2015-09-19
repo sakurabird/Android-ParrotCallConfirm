@@ -7,6 +7,7 @@
     <string name="PREF_CONFIRM">PREF_CONFIRM</string>
     <string name="PREF_VIBRATE">PREF_VIBRATE</string>
     <string name="PREF_SOUND_ON">PREF_SOUND_ON</string>
+    <string name="PREF_SOUND">PREF_SOUND</string>
     <!--URL-->
     <string name="URL_APP_MESSAGE">https://dl.dropboxusercontent.com/u/18688128/sakurafish_message.json</string>
 </resources>

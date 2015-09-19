@@ -7,6 +7,7 @@ public class Config {
     public static final String PREF_LAUNCH_COUNT = "PREF_LAUNCH_COUNT";
     public static final String PREF_ASK_REVIEW = "PREF_ASK_REVIEW";
     public static final String PREF_SOUND_ON = "PREF_SOUND_ON";
+    public static final String PREF_SOUND = "PREF_SOUND";
     public static final String PREF_CREDIT = "PREF_CREDIT";
     public static final String PREF_MAIL_TO_DEV = "PREF_MAIL_TO_DEV";
     public static final String PREF_AFTER_CONFIRM = "PREF_AFTER_CONFIRM";

@@ -15,7 +15,7 @@
         android:src="@drawable/inco9" />
 
     <TextView
-        android:id="@+id/message"
+        android:id="@+id/message_jp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"

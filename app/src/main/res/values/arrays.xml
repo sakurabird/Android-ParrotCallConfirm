@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- setting -->
+    <string-array name="setting_sound">
+        <item>bird voice1</item>
+        <item>bird voice2</item>
+        <item>bird voice3</item>
+        <item>bird voice4</item>
+        <item>bird voice5</item>
+    </string-array>
+    <string-array name="setting_sound_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+</resources>

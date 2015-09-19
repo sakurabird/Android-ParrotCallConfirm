@@ -21,7 +21,8 @@ public class AppMessage {
         private String app;
         private int version;
         private int message_no;
-        private String message;
+        private String message_jp;
+        private String message_en;
 
         public String getApp() {
             return app;
@@ -47,12 +48,20 @@ public class AppMessage {
             this.message_no = message_no;
         }
 
-        public String getMessage() {
-            return message;
+        public String getMessage_jp() {
+            return message_jp;
         }
 
-        public void setMessage(String message) {
-            this.message = message;
+        public void setMessage_jp(String message_jp) {
+            this.message_jp = message_jp;
+        }
+
+        public String getMessage_en() {
+            return message_en;
+        }
+
+        public void setMessage_en(String message_en) {
+            this.message_en = message_en;
         }
     }
 }

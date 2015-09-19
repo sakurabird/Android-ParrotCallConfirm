@@ -51,8 +51,7 @@ public final class Utils {
      * @param text
      */
     public static void showToast(String text) {
-        Toast.makeText(MyApplication.getContext(), text,
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(MyApplication.getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -108,6 +107,15 @@ public final class Utils {
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setView(view);
         toast.show();
+    }
+
+    /**
+     * 環境が日本語ならtrue
+     */
+    public static boolean isJapan() {
+        String locale = MyApplication.getContext().getResources().getConfiguration().locale.getLanguage();
+        Utils.logDebug("locale:" + locale);
+        return locale.equals("ja");
     }
 
     public static void showDialog(final FragmentManager manager, final Fragment target, final String message, final String tag) {

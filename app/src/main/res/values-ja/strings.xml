@@ -8,6 +8,7 @@
     <string name="no">いいえ</string>
     <string name="action_settings">設定</string>
     <string name="welcome">welcome!</string>
+    <string name="please_choose">選択してください</string>
     <string name="about">インコ発信確認は電話をかける前に確認ダイアログを表示します。</string>
     <string name="share">共有</string>
     <string name="share_text">http://play.google.com/store/apps/details?id=com.sakurafish.parrot.callconfirm</string>
@@ -19,6 +20,7 @@
     <string name="setting_confirm">発信確認を有効にする</string>
     <string name="setting_vibrate">バイブレーションさせる</string>
     <string name="setting_sound_on_title">インコ音を鳴らす</string>
+    <string name="setting_sound1">インコ音を選択</string>
     <string name="message_info1">あなたは電話をかけようとしています...</string>
     <string name="message_info2">確認</string>
     <string name="message_confirm1">電話をかけますか？</string>

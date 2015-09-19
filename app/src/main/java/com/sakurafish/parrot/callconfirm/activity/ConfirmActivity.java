@@ -82,7 +82,14 @@ public class ConfirmActivity extends Activity {
             vibrator.vibrate(1000);
         }
         if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
-            MyApplication.getSoundManager().play(MyApplication.getSoundIds()[0]);
+            String s = Pref.getPrefString(mContext, getString(R.string.PREF_SOUND));
+            if (s == null) s = "0";
+            int idx = 0;
+            try {
+                idx = Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+            }
+            MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
         }
 
         ((TextView) findViewById(R.id.textView_telno)).setText(mPhoneNumber);
@@ -164,8 +171,9 @@ public class ConfirmActivity extends Activity {
         for (AppMessage.Data data : message.getData()) {
             int messageNo = data.getMessage_no();
             if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo) {
-                Utils.logDebug("no:" + data.getMessage_no() + " message:" + data.getMessage());
-                CallConfirmUtils.setNotification(MainActivity.class, data.getMessage());
+                String msg = Utils.isJapan() ? data.getMessage_jp() : data.getMessage_en();
+                Utils.logDebug("no:" + data.getMessage_no() + " message:" + msg);
+                CallConfirmUtils.setNotification(MainActivity.class, msg);
                 Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
                 break;
             }

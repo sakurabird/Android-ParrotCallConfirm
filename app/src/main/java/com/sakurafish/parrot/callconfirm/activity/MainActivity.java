@@ -111,13 +111,13 @@ public class MainActivity extends Activity {
 
     private void showAppMessage(AppMessage message) {
         final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
-        Utils.logDebug("last message no:" + lastNo);
 
         for (AppMessage.Data data : message.getData()) {
             int messageNo = data.getMessage_no();
             if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo) {
-                Utils.logDebug("no:" + data.getMessage_no() + " message:" + data.getMessage());
-                Utils.showDialog(getFragmentManager(), mContent, data.getMessage(), "APP_MESSAGE");
+                String msg = Utils.isJapan() ? data.getMessage_jp() : data.getMessage_en();
+                Utils.logDebug("no:" + data.getMessage_no() + " message:" + msg);
+                Utils.showDialog(getFragmentManager(), mContent, msg, "APP_MESSAGE");
                 Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
                 break;
             }
