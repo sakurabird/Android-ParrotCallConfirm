@@ -2,6 +2,7 @@ package com.sakurafish.parrot.callconfirm.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
+import com.sakurafish.parrot.callconfirm.Pref.SeekBarPreference;
 import com.sakurafish.parrot.callconfirm.R;
 
 /**
@@ -65,6 +67,23 @@ public class SettingActivity extends ActionBarActivity {
                         list.setSummary(array[index]);
                     }
                     return true;
+                }
+            });
+
+            final SeekBarPreference volume = (SeekBarPreference) findPreference(getString(R.string.PREF_SOUND_VOLUME));
+            volume.setOnVolumeChangedListerner(new SeekBarPreference.OnVolumeChangedListerner() {
+                @Override
+                public void onChanged() {
+                    int index = Integer.parseInt(Pref.getPrefString(mContext, mContext.getString(R.string.PREF_SOUND)));
+                    int voiceIdx = MyApplication.getSoundIds()[index];
+
+                    MyApplication.getSoundManager().stop(voiceIdx);
+
+                    AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+                    int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
+                    am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+
+                    MyApplication.getSoundManager().play(voiceIdx);
                 }
             });
         }

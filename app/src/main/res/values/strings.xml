@@ -22,6 +22,7 @@
     <string name="setting_sound">Sound</string>
     <string name="setting_sound_on_title">Sound On</string>
     <string name="setting_sound1">Select Sound</string>
+    <string name="setting_sound2">Sound volume</string>
     <string name="message_info1">You are making a phone call...</string>
     <string name="message_info2">Confirm</string>
     <string name="message_confirm1">Are you sure want to call?</string>

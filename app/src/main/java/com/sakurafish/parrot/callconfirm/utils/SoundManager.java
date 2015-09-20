@@ -5,6 +5,8 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.support.annotation.NonNull;
 
+import com.sakurafish.parrot.callconfirm.MyApplication;
+
 public class SoundManager {
 
     private static SoundManager sSoundManager = null;
@@ -37,6 +39,10 @@ public class SoundManager {
         sSoundPool.play(sound_id, leftVolume, rightVolume, 1, 0, rate);
     }
 
+    public void stop(final int sound_id) {
+        sSoundPool.stop(sound_id);
+    }
+
     public void setVolume(final float vol) {
         masterVolume = vol;
 
@@ -61,10 +67,13 @@ public class SoundManager {
 
     public void setBalance(final float balVal) {
         balance = balVal;
-
         setVolume(masterVolume);
     }
 
+    public static int getOriginalVolume() {
+        AudioManager am = (AudioManager) MyApplication.getContext().getSystemService(Context.AUDIO_SERVICE);
+        return am.getStreamVolume(AudioManager.STREAM_MUSIC);
+    }
 
     public void unloadAll() {
         sSoundPool.release();

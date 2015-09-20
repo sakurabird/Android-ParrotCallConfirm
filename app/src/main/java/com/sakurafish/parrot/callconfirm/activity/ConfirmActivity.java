@@ -3,6 +3,7 @@ package com.sakurafish.parrot.callconfirm.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 import com.sakurafish.parrot.callconfirm.utils.ContactUtils;
+import com.sakurafish.parrot.callconfirm.utils.SoundManager;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -40,6 +42,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class ConfirmActivity extends Activity {
     private Context mContext;
     private String mPhoneNumber;
+    private boolean hasVolumeChanged;
+    private int mOriginalVolume;
 
     public static Intent createIntent(@NonNull final Context context, @NonNull final Class clazz, @NonNull final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
@@ -88,6 +92,15 @@ public class ConfirmActivity extends Activity {
             try {
                 idx = Integer.parseInt(s);
             } catch (NumberFormatException e) {
+            }
+            if (Pref.isExistKey(mContext, getString(R.string.PREF_SOUND_VOLUME))) {
+                hasVolumeChanged = true;
+                mOriginalVolume = SoundManager.getOriginalVolume();
+                AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+                int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
+                am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+            } else {
+                hasVolumeChanged = false;
             }
             MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
         }
@@ -190,6 +203,10 @@ public class ConfirmActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
 
+        if (hasVolumeChanged) {
+            AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+            am.setStreamVolume(AudioManager.STREAM_MUSIC, mOriginalVolume, 0);
+        }
         mContext = null;
         mPhoneNumber = null;
     }

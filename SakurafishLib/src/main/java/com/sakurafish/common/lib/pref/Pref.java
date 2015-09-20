@@ -64,6 +64,11 @@ public class Pref {
         editor.commit();
     }
 
+    public static boolean isExistKey(final Context con, final String key) {
+        final SharedPreferences pref = getSharedPreferences(con);
+        return pref.contains(key);
+    }
+
     public static SharedPreferences.Editor getEditor(final Context con) {
         final SharedPreferences pref = getSharedPreferences(con);
         return pref.edit();
