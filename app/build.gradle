@@ -14,8 +14,8 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
-def VERSION_CODE = 3
-def VERSION_NAME = "1.1"
+def VERSION_CODE = 4
+def VERSION_NAME = "1.2"
 def PACKAGE_NAME = "com.sakurafish.parrot.callconfirm"
 
 android {

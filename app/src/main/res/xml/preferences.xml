@@ -1,5 +1,4 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:sample="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- app settings -->
     <PreferenceCategory android:title="@string/action_settings">
@@ -28,7 +27,7 @@
             android:key="@string/PREF_SOUND"
             android:summary="%s"
             android:title="@string/setting_sound1" />
-        <com.sakurafish.parrot.callconfirm.Pref.SeekBarPreference
+        <com.sakurafish.parrot.callconfirm.Pref.SoundSeekBarPreference
             android:dependency="@string/PREF_SOUND_ON"
             android:key="@string/PREF_SOUND_VOLUME"
             android:title="@string/setting_sound_on_title" />

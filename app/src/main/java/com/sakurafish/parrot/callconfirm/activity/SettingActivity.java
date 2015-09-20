@@ -14,7 +14,7 @@ import android.text.TextUtils;
 import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
-import com.sakurafish.parrot.callconfirm.Pref.SeekBarPreference;
+import com.sakurafish.parrot.callconfirm.Pref.SoundSeekBarPreference;
 import com.sakurafish.parrot.callconfirm.R;
 
 /**
@@ -70,8 +70,8 @@ public class SettingActivity extends ActionBarActivity {
                 }
             });
 
-            final SeekBarPreference volume = (SeekBarPreference) findPreference(getString(R.string.PREF_SOUND_VOLUME));
-            volume.setOnVolumeChangedListerner(new SeekBarPreference.OnVolumeChangedListerner() {
+            final SoundSeekBarPreference volume = (SoundSeekBarPreference) findPreference(getString(R.string.PREF_SOUND_VOLUME));
+            volume.setOnVolumeChangedListerner(new SoundSeekBarPreference.OnVolumeChangedListerner() {
                 @Override
                 public void onChanged() {
                     int index = Integer.parseInt(Pref.getPrefString(mContext, mContext.getString(R.string.PREF_SOUND)));
