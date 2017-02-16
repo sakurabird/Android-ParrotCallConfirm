@@ -38,3 +38,13 @@ proguard/
 # Log Files
 *.log
 manifest-merger-*.txt
+
+# ParrotCallConfirm
+google-services.json
+consts.xml
+global_tracker.xml
+
+fabric.properties
+keystore.properties
+sakurafish.keystore
+
