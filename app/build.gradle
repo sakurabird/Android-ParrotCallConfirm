@@ -90,7 +90,6 @@ dependencies {
     compile "com.android.support:support-annotations:${support_lib_version}"
     compile "com.android.support:cardview-v7:${support_lib_version}"
     compile "com.google.firebase:firebase-ads:${googleplay_services_version}"
-    compile files('libs/suru-pass.jar')
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'com.patrickpissurno:ripple-effect:1.3.1'

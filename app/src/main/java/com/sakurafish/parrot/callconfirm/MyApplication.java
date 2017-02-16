@@ -8,7 +8,6 @@ import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.utils.SoundManager;
 
 import io.fabric.sdk.android.Fabric;
-import tokyo.suru_pass.AdContext;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class MyApplication extends Application {
@@ -16,7 +15,6 @@ public class MyApplication extends Application {
     private static MyApplication application;
     private static SoundManager sSoundManager;
     private static int[] sSoundIds = new int[5];
-    private static AdContext sAdContext;//suru pass
 
     public MyApplication() {
         super();
@@ -39,10 +37,6 @@ public class MyApplication extends Application {
         return sSoundIds;
     }
 
-    public static AdContext getAdContext() {
-        return sAdContext;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -57,7 +51,6 @@ public class MyApplication extends Application {
                         .build()
         );
         setupSounds();
-        setupADs();
     }
 
     private void setupSounds() {
@@ -67,13 +60,5 @@ public class MyApplication extends Application {
         sSoundIds[2] = sSoundManager.load(R.raw.inco3);
         sSoundIds[3] = sSoundManager.load(R.raw.inco4);
         sSoundIds[4] = sSoundManager.load(R.raw.inco5);
-    }
-
-    /**
-     * 広告SDKのインスタンスを取得
-     */
-    private void setupADs() {
-        //Suru Pass
-        sAdContext = new AdContext(getContext(), getString(R.string.surupass_mediaId), BuildConfig.DEBUG);
     }
 }

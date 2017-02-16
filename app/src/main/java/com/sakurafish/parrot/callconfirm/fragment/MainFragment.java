@@ -8,10 +8,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.andexert.library.RippleView;
-import com.sakurafish.parrot.callconfirm.MyApplication;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.activity.CreditActivity;
 import com.sakurafish.parrot.callconfirm.activity.SettingActivity;
@@ -35,6 +35,8 @@ public class MainFragment extends Fragment {
     RippleView mButtonCredit;
     @Bind(R.id.menu_mail_to_dev)
     RippleView mButtonMainToDev;
+    @Bind(R.id.adView)
+    AdView mAdView;
 
     public static MainFragment getInstance() {
         return new MainFragment();
@@ -100,10 +102,28 @@ public class MainFragment extends Fragment {
             }
         });
 
-        // 広告枠の設定
-        RelativeLayout adarea = (RelativeLayout) getView().findViewById(R.id.ad_area);
-        adarea.addView(MyApplication.getAdContext()
-                .createBanner(mContext, getResources().getInteger(R.integer.surupass_bannerId)));
+
+        // show AD banner
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mAdView != null) {
+            mAdView.pause();
+        }
     }
 
     private void finalizeLayout() {
@@ -112,6 +132,9 @@ public class MainFragment extends Fragment {
         mButtonCredit = null;
         mButtonShare = null;
         mButtonMainToDev = null;
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
     }
 
     @Override
