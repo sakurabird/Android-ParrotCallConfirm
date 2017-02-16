@@ -93,12 +93,14 @@ public class MainFragment extends Fragment {
         mButtonMainToDev.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
             public void onComplete(RippleView rippleView) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("plain/text");
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"sakurafish1@gmail.com"});
                 intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.setting_mail_to_dev2));
                 intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.setting_mail_to_dev3));
-                startActivity(intent);
+                if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+                    startActivity(intent);
+                }
             }
         });
 
