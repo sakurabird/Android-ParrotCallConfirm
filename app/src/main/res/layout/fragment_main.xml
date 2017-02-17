@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_material_light">
+    android:background="@color/primary_material_light"
+    android:orientation="vertical">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/primary_material_light">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,9 +36,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginLeft="@dimen/margin_xlarge"
                     android:layout_marginRight="@dimen/margin_xlarge"
-                    android:layout_marginBottom="5dp"
                     android:text="@string/about"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/font_small" />
@@ -179,6 +180,32 @@
                     android:textSize="@dimen/font_large" />
             </com.andexert.library.RippleView>
 
+            <com.andexert.library.RippleView
+                android:id="@+id/menu_privacy_policy"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_height">
+
+                <ImageView
+                    android:id="@+id/image_privacy_policy"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/main_list_icon_margin_left"
+                    android:src="@drawable/inco7" />
+
+                <TextView
+                    android:id="@+id/text_privacy_policy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/image_privacy_policy"
+                    android:text="@string/text_privacy_policy"
+                    android:textSize="@dimen/font_large" />
+            </com.andexert.library.RippleView>
+
         </LinearLayout>
     </ScrollView>
 
@@ -188,6 +215,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom|center_horizontal"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id" />
-</RelativeLayout>
+</LinearLayout>

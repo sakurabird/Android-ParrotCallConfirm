@@ -15,6 +15,7 @@
     <string name="text_google_play">Go to Google Play</string>
     <string name="text_credit">Credit</string>
     <string name="text_mail_to_dev">Mail to Developer</string>
+    <string name="text_privacy_policy">Plivacy Policy</string>
     <string name="setting_mail_to_dev2">[ParrotCallConfirm] Suggestions and Opinions</string>
     <string name="setting_mail_to_dev3">We do not sell or share your information with anyone else.</string>
     <string name="setting_confirm">Enable Call Confirm</string>

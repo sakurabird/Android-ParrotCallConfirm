@@ -13,8 +13,9 @@ import com.andexert.library.RippleView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.sakurafish.parrot.callconfirm.R;
-import com.sakurafish.parrot.callconfirm.activity.CreditActivity;
 import com.sakurafish.parrot.callconfirm.activity.SettingActivity;
+import com.sakurafish.parrot.callconfirm.activity.WebViewActivity;
+import com.sakurafish.parrot.callconfirm.web.WebConsts;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,6 +36,8 @@ public class MainFragment extends Fragment {
     RippleView mButtonCredit;
     @Bind(R.id.menu_mail_to_dev)
     RippleView mButtonMainToDev;
+    @Bind(R.id.menu_privacy_policy)
+    RippleView mButtonPlivacyPolicy;
     @Bind(R.id.adView)
     AdView mAdView;
 
@@ -104,6 +107,16 @@ public class MainFragment extends Fragment {
                 if (intent.resolveActivity(mContext.getPackageManager()) != null) {
                     startActivity(intent);
                 }
+            }
+        });
+
+        mButtonPlivacyPolicy.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+            @Override
+            public void onComplete(RippleView rippleView) {
+                startActivity(WebViewActivity.createIntent(mContext,
+                        WebViewActivity.class,
+                        WebConsts.LOCAL_PRIVACY_POLICY,
+                        getString(R.string.text_privacy_policy)));
             }
         });
 
