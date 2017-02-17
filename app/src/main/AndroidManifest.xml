@@ -18,6 +18,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,9 +29,14 @@
         <activity
             android:name=".activity.ConfirmActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ActivityTheme" />
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.CreditActivity" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".CallReceiver">
             <intent-filter>

@@ -86,7 +86,10 @@ public class MainFragment extends Fragment {
         mButtonCredit.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
             public void onComplete(RippleView rippleView) {
-                startActivity(CreditActivity.createIntent(mContext, CreditActivity.class));
+                startActivity(WebViewActivity.createIntent(mContext,
+                        WebViewActivity.class,
+                        WebConsts.LOCAL_CREDIT,
+                        getString(R.string.text_credit)));
             }
         });
 

@@ -35,6 +35,7 @@ import java.net.URISyntaxException;
 public class BaseWebFragment extends Fragment {
 
     public static final String EXTRA_URL = "url";
+    public static final String EXTRA_TITLE = "title";
 
     protected WebView mWebView;
     protected IncoProgressDialog mLoading;
