@@ -104,7 +104,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-
         // show AD banner
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
