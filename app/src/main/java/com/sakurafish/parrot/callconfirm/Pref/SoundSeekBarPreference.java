@@ -32,7 +32,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.SeekBar;
 
-import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
 

@@ -1,6 +1,5 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -17,9 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
+import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;

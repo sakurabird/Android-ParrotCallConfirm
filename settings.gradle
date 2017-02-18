@@ -1,1 +1,1 @@
-include ':app', ':SakurafishLib'
+include ':app'

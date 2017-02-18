@@ -84,7 +84,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':SakurafishLib')
     compile "com.android.support:support-v4:${support_lib_version}"
     compile "com.android.support:appcompat-v7:${support_lib_version}"
     compile "com.android.support:support-annotations:${support_lib_version}"

@@ -1,4 +1,4 @@
-package com.sakurafish.common.lib.pref;
+package com.sakurafish.parrot.callconfirm.Pref;
 
 import android.content.Context;
 import android.content.SharedPreferences;

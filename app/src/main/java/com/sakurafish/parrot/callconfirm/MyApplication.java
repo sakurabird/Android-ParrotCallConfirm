@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
-import com.sakurafish.common.lib.pref.Pref;
+import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.utils.SoundManager;
 
 import io.fabric.sdk.android.Fabric;
