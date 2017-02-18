@@ -99,6 +99,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }
+    compile 'com.afollestad.material-dialogs:core:0.9.3.0'
 }
 
 def toApkFile(originalFile) {

@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
 import com.sakurafish.common.lib.pref.Pref;
 import com.sakurafish.parrot.callconfirm.Config;
@@ -117,7 +119,13 @@ public class MainActivity extends AppCompatActivity {
             if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo) {
                 String msg = Utils.isJapan() ? data.getMessage_jp() : data.getMessage_en();
                 Utils.logDebug("no:" + data.getMessage_no() + " message:" + msg);
-                Utils.showDialog(getFragmentManager(), mContent, msg, "APP_MESSAGE");
+                new MaterialDialog.Builder(this)
+                        .theme(Theme.LIGHT)
+                        .title("APP_MESSAGE")
+                        .content(msg)
+                        .positiveText(getString(android.R.string.ok))
+                        .show();
+
                 Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
                 break;
             }

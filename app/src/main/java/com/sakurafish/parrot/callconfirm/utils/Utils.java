@@ -1,9 +1,6 @@
 package com.sakurafish.parrot.callconfirm.utils;
 
 import android.app.Activity;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,7 +12,6 @@ import android.widget.Toast;
 import com.sakurafish.parrot.callconfirm.BuildConfig;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
-import com.sakurafish.parrot.callconfirm.ui.GeneralDialogFragment;
 
 public final class Utils {
 
@@ -116,24 +112,5 @@ public final class Utils {
         String locale = MyApplication.getContext().getResources().getConfiguration().locale.getLanguage();
         Utils.logDebug("locale:" + locale);
         return locale.equals("ja");
-    }
-
-    public static void showDialog(final FragmentManager manager, final Fragment target, final String message, final String tag) {
-        dismissDialog(manager, tag);
-        GeneralDialogFragment.Builder builder = new GeneralDialogFragment.Builder();
-        builder.setMessage(message);
-        builder.setPositiveText("OK");
-        builder.setTargetFragment(target, 12345);
-        builder.create().show(manager, tag);
-    }
-
-    public static void dismissDialog(final FragmentManager manager, final String tag) {
-        if (manager != null) {
-            Fragment fragment = manager.findFragmentByTag(tag);
-            if (fragment instanceof DialogFragment) {
-                DialogFragment dialog = (DialogFragment) fragment;
-                dialog.onDismiss(null);
-            }
-        }
     }
 }
