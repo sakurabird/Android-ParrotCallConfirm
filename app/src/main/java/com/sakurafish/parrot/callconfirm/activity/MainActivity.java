@@ -1,12 +1,12 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.sakurafish.common.lib.pref.Pref;
@@ -24,7 +24,7 @@ import java.io.IOException;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private Fragment mContent;
     private Context mContext;

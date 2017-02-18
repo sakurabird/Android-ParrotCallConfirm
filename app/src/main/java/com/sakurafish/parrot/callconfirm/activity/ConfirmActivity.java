@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -39,7 +40,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * 確認ダイアログ表示
  * Created by sakura on 2015/01/23.
  */
-public class ConfirmActivity extends Activity {
+public class ConfirmActivity extends AppCompatActivity {
     private Context mContext;
     private String mPhoneNumber;
     private boolean hasVolumeChanged;

@@ -8,7 +8,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.sakurafish.common.lib.pref.Pref;
@@ -21,7 +21,7 @@ import com.sakurafish.parrot.callconfirm.R;
  * 設定画面
  * Created by sakura on 2015/03/24.
  */
-public class SettingActivity extends ActionBarActivity {
+public class SettingActivity extends AppCompatActivity {
 
     public static Intent createIntent(@NonNull final Context context, @NonNull final Class clazz) {
         Intent intent = new Intent(context, clazz);
