@@ -27,5 +27,8 @@
     <string name="message_info2">確認</string>
     <string name="message_confirm1">電話をかけますか？</string>
     <string name="message_number">番号:</string>
+    <string name="message_request_permissions1">パーミッション</string>
+    <string name="message_request_permissions2">このアプリは電話発信をキャッチし連絡先を表示し発信を行うためにパーミッションの許可が必須となります。許可していただくようお願いいたします。</string>
+    <string name="message_request_permissions3">このアプリはパーミッションが許可されていないと正しく動作いたしません。アプリ設定画面の「権限」から許可していただくようお願いいたします。</string>
 
 </resources>

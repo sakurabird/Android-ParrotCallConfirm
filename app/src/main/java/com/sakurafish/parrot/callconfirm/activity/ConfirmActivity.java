@@ -1,13 +1,17 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -15,6 +19,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
 import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
@@ -35,6 +42,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS_REQUESTS;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.onNeverAskAgainSelected;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.shouldShowRational;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.showRationaleDialog;
+
 /**
  * 確認ダイアログ表示
  * Created by sakura on 2015/01/23.
@@ -44,6 +58,9 @@ public class ConfirmActivity extends AppCompatActivity {
     private String mPhoneNumber;
     private boolean hasVolumeChanged;
     private int mOriginalVolume;
+
+    private boolean shouldShowPermissionsDialog = true;
+    private boolean shouldShowRationalDialog = true;
 
     public static Intent createIntent(@NonNull final Context context, @NonNull final Class clazz, @NonNull final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
@@ -78,6 +95,7 @@ public class ConfirmActivity extends AppCompatActivity {
         }
 
         retrieveAppMessage();
+        checkPermissions();
     }
 
     private void initLayout() {
@@ -118,8 +136,61 @@ public class ConfirmActivity extends AppCompatActivity {
         inco.startAnimation(animation);
     }
 
+    private void checkPermissions() {
+        // 基本的にMainActivityから許可してもらわないと発信をキャッチしないので、このActivityは許可済みの状態である。
+        if (Build.VERSION.SDK_INT < 23) {
+            return;
+        }
+
+        if (!hasPermissions(mContext, PERMISSIONS)) {
+            if (shouldShowPermissionsDialog) {
+                new MaterialDialog.Builder(this)
+                        .cancelable(false)
+                        .theme(Theme.LIGHT)
+                        .title(getString(R.string.message_request_permissions1))
+                        .content(getString(R.string.message_request_permissions2))
+                        .positiveText(getString(android.R.string.ok))
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                shouldShowPermissionsDialog = false;
+                                shouldShowRationalDialog = false;
+                                requestPermissionDialog();
+                            }
+                        })
+                        .show();
+            } else {
+                requestPermissionDialog();
+            }
+        }
+    }
+
+    private void requestPermissionDialog() {
+        if (shouldShowRationalDialog && shouldShowRational(ConfirmActivity.this)) {
+            shouldShowRationalDialog = false;
+            showRationaleDialog(ConfirmActivity.this, mContext);
+        } else {
+            ActivityCompat.requestPermissions(ConfirmActivity.this, PERMISSIONS, PERMISSIONS_REQUESTS);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        for (int i = 0; i < permissions.length; i++) {
+            if (grantResults.length <= i || grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                if (!shouldShowRational(ConfirmActivity.this, permissions[i])) {
+                    // Never ask again
+                    onNeverAskAgainSelected(mContext);
+                }
+            }
+        }
+    }
+
     @OnClick(R.id.button_ok)
     void call() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
         String number = "tel:" + mPhoneNumber.trim();
         startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));

@@ -13,12 +13,13 @@ import com.sakurafish.parrot.callconfirm.activity.ConfirmActivity;
  */
 public class CallReceiver extends BroadcastReceiver {
 
+    // パーミッションが許可されていないとこちらの処理まで来ない
+
     @Override
     public void onReceive(final Context context, final Intent intent) {
         if (!Pref.getPrefBool(context, context.getString(R.string.PREF_CONFIRM), true)) {
             return;
         }
-
         if (intent.getAction().equalsIgnoreCase(Intent.ACTION_NEW_OUTGOING_CALL)) {
             if (Pref.getPrefBool(context, Config.PREF_AFTER_CONFIRM, false)) {
                 Pref.setPref(context, Config.PREF_AFTER_CONFIRM, false);
