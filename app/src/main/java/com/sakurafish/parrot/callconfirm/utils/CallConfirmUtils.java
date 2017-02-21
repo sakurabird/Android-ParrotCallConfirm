@@ -4,11 +4,19 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
+
+import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_NOT_REPEAT;
+import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN0;
+import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN1;
+import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN2;
+import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN3;
+import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN4;
 
 /**
  * Created by sakura on 9/16/15.
@@ -17,6 +25,7 @@ public final class CallConfirmUtils {
 
     /**
      * 通知エリアに即時通知
+     *
      * @param cls
      * @param message
      */
@@ -37,6 +46,29 @@ public final class CallConfirmUtils {
 
         notificationManager.cancel(R.string.app_name);
         notificationManager.notify(R.string.app_name, builder.build());
+    }
+
+    public static void vibrate(@NonNull final Context context, final int patternNo) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        switch (patternNo) {
+            case 0:
+                vibrator.vibrate(VIBRATOR_PATTERN0, VIBRATOR_NOT_REPEAT);
+                break;
+            case 1:
+                vibrator.vibrate(VIBRATOR_PATTERN1, VIBRATOR_NOT_REPEAT);
+                break;
+            case 2:
+                vibrator.vibrate(VIBRATOR_PATTERN2, VIBRATOR_NOT_REPEAT);
+                break;
+            case 3:
+                vibrator.vibrate(VIBRATOR_PATTERN3, VIBRATOR_NOT_REPEAT);
+                break;
+            case 4:
+                vibrator.vibrate(VIBRATOR_PATTERN4, VIBRATOR_NOT_REPEAT);
+                break;
+            default:
+                vibrator.vibrate(VIBRATOR_PATTERN0, VIBRATOR_NOT_REPEAT);
+        }
     }
 
     @Deprecated

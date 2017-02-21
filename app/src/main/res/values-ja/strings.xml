@@ -19,7 +19,9 @@
     <string name="setting_mail_to_dev2">【インコ発信確認】ご意見・ご要望</string>
     <string name="setting_mail_to_dev3">ユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。</string>
     <string name="setting_confirm">発信確認を有効にする</string>
+    <string name="setting_vibrate_title">バイブレーション</string>
     <string name="setting_vibrate">バイブレーションさせる</string>
+    <string name="setting_vibrate_select">バイブレーションパターンを選択</string>
     <string name="setting_sound_on_title">インコ音を鳴らす</string>
     <string name="setting_sound1">インコ音を選択</string>
     <string name="setting_sound2">音量</string>

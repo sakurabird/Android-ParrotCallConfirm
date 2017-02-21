@@ -19,7 +19,9 @@
     <string name="setting_mail_to_dev2">[ParrotCallConfirm] Suggestions and Opinions</string>
     <string name="setting_mail_to_dev3">We do not sell or share your information with anyone else.</string>
     <string name="setting_confirm">Enable Call Confirm</string>
+    <string name="setting_vibrate_title">Vibration</string>
     <string name="setting_vibrate">Enable Vibrate</string>
+    <string name="setting_vibrate_select">Select Vibration Pattern</string>
     <string name="setting_sound">Sound</string>
     <string name="setting_sound_on_title">Sound On</string>
     <string name="setting_sound1">Select Sound</string>

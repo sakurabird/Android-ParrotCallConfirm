@@ -6,11 +6,29 @@
             android:defaultValue="true"
             android:key="@string/PREF_CONFIRM"
             android:title="@string/setting_confirm" />
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:key="@string/PREF_VIBRATE"-->
+            <!--android:title="@string/setting_vibrate" />-->
+    </PreferenceCategory>
+    <!-- Vibrate -->
+    <PreferenceCategory android:title="@string/setting_vibrate_title">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="@string/PREF_VIBRATE"
             android:title="@string/setting_vibrate" />
+        <ListPreference
+            android:defaultValue="0"
+            android:dependency="@string/PREF_VIBRATE"
+            android:dialogIcon="@mipmap/ic_launcher"
+            android:dialogTitle="@string/please_choose"
+            android:entries="@array/setting_vibrate"
+            android:entryValues="@array/setting_vibrate_value"
+            android:key="@string/PREF_VIBRATE_PATTERN"
+            android:summary="%s"
+            android:title="@string/setting_vibrate_select" />
     </PreferenceCategory>
+
     <!-- sound -->
     <PreferenceCategory android:title="@string/setting_sound">
         <CheckBoxPreference

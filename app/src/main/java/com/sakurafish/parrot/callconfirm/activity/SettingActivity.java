@@ -16,6 +16,7 @@ import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.Pref.SoundSeekBarPreference;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 
 /**
  * 設定画面
@@ -48,6 +49,9 @@ public class SettingActivity extends AppCompatActivity {
 
         private void init() {
             mContext = getActivity();
+            if (TextUtils.isEmpty(Pref.getPrefString(mContext, getString(R.string.PREF_VIBRATE_PATTERN)))) {
+                Pref.setPref(mContext, getString(R.string.PREF_VIBRATE_PATTERN), "0");
+            }
             if (TextUtils.isEmpty(Pref.getPrefString(mContext, getString(R.string.PREF_SOUND)))) {
                 Pref.setPref(mContext, getString(R.string.PREF_SOUND), "0");
             }
@@ -55,6 +59,21 @@ public class SettingActivity extends AppCompatActivity {
         }
 
         private void initLayout() {
+            final ListPreference vibrationlist = (ListPreference) findPreference(Config.PREF_VIBRATE_PATTERN);
+            vibrationlist.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    int index = vibrationlist.findIndexOfValue(newValue.toString());
+                    if (index != -1) {
+                        //バイブレート
+                        CallConfirmUtils.vibrate(mContext, index);
+                        String[] array = getResources().getStringArray(R.array.setting_vibrate);
+                        vibrationlist.setSummary(array[index]);
+                    }
+                    return true;
+                }
+            });
+
             final ListPreference list = (ListPreference) findPreference(Config.PREF_SOUND);
             list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {

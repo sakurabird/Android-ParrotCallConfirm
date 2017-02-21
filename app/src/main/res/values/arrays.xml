@@ -2,6 +2,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- setting -->
+    <string-array name="setting_vibrate">
+        <item>Pattern1 default</item>
+        <item>Pattern2</item>
+        <item>Pattern3</item>
+        <item>Pattern4</item>
+        <item>Pattern5</item>
+    </string-array>
+    <string-array name="setting_vibrate_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
     <string-array name="setting_sound">
         <item>bird voice1</item>
         <item>bird voice2</item>
