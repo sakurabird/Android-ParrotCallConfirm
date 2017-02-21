@@ -1,6 +1,9 @@
 package com.sakurafish.parrot.callconfirm.utils;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -112,5 +115,25 @@ public final class Utils {
         String locale = MyApplication.getContext().getResources().getConfiguration().locale.getLanguage();
         Utils.logDebug("locale:" + locale);
         return locale.equals("ja");
+    }
+
+    /**
+     * version codeを取得する
+     *
+     * @return
+     */
+    public static int getVersionCode() {
+        Context context = MyApplication.getContext();
+        PackageManager manager = context.getPackageManager();
+        PackageInfo info;
+        int versionCode;
+        try {
+            info = manager.getPackageInfo(context.getPackageName(), 0);
+            versionCode = info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return versionCode;
     }
 }

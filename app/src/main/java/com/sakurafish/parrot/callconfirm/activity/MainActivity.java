@@ -21,6 +21,7 @@ import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
+import com.sakurafish.parrot.callconfirm.utils.Utils;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -182,7 +183,8 @@ public class MainActivity extends AppCompatActivity {
 
         for (AppMessage.Data data : message.getData()) {
             int messageNo = data.getMessage_no();
-            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo) {
+            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo &&
+                    data.getVersion() == Utils.getVersionCode()) {
                 String msg = isJapan() ? data.getMessage_jp() : data.getMessage_en();
                 logDebug("no:" + data.getMessage_no() + " message:" + msg);
                 new MaterialDialog.Builder(this)

@@ -254,7 +254,8 @@ public class ConfirmActivity extends AppCompatActivity {
 
         for (AppMessage.Data data : message.getData()) {
             int messageNo = data.getMessage_no();
-            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo) {
+            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo &&
+                    data.getVersion() == Utils.getVersionCode()) {
                 String msg = Utils.isJapan() ? data.getMessage_jp() : data.getMessage_en();
                 Utils.logDebug("no:" + data.getMessage_no() + " message:" + msg);
                 CallConfirmUtils.setNotification(MainActivity.class, msg);
