@@ -10,8 +10,8 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
-def VERSION_CODE = 4
-def VERSION_NAME = "1.2"
+def VERSION_CODE = 5
+def VERSION_NAME = "2.0"
 def PACKAGE_NAME = "com.sakurafish.parrot.callconfirm"
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
