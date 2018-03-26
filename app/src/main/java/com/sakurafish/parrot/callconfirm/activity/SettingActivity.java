@@ -2,6 +2,7 @@ package com.sakurafish.parrot.callconfirm.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -33,6 +34,8 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         getFragmentManager().beginTransaction().replace(R.id.content, new MyPreferenceFragment()).commit();
     }
