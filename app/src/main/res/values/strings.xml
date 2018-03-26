@@ -4,6 +4,8 @@
     <string name="app_name">ParrotCallConfirm</string>
     <string name="app_name_staging">staging-ParrotCallConfirm</string>
 
+    <string name="call">CALL</string>
+    <string name="cancel">CANCEL</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="action_settings">Settings</string>
@@ -30,6 +32,7 @@
     <string name="message_info2">Confirm</string>
     <string name="message_confirm1">Are you sure want to call?</string>
     <string name="message_number">Number:</string>
+    <string name="message_name_placeholder">Unknown</string>
     <string name="message_request_permissions1">Permissions</string>
     <string name="message_request_permissions2">
 This application needs permissions to catch phone calls, display contacts and make outgoing calls. Please allow all permissions.</string>

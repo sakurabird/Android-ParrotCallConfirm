@@ -34,8 +34,9 @@
                         android:id="@+id/imageView_setting"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_gravity="right"
+                        android:layout_gravity="end"
                         android:layout_margin="10dp"
+                        android:contentDescription="@null"
                         android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha" />
 
                     <com.sakurafish.parrot.callconfirm.ui.CircleRippleImageView
@@ -51,7 +52,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:text="@string/message_confirm1"
                         android:textColor="@android:color/white"
                         android:textSize="32sp" />
@@ -63,8 +64,9 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_below="@+id/layout_top"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
+                    android:contentDescription="@null"
                     android:src="@drawable/inco_blue" />
 
                 <TextView
@@ -73,24 +75,24 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_top"
                     android:layout_marginTop="6dp"
-                    android:layout_toRightOf="@+id/imageView_inco"
-                    android:text="xxxxxxxxxx"
+                    android:layout_toEndOf="@+id/imageView_inco"
+                    android:text="@string/message_name_placeholder"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textView_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/textView_telno"
+                    android:layout_alignStart="@+id/textView_telno"
                     android:layout_below="@+id/textView_telno"
                     android:layout_marginTop="4dp"
-                    android:text="xxxxxxxxxxx"
+                    android:text="@string/message_name_placeholder"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_below="@+id/textView_name"
                     android:orientation="horizontal">
 
@@ -100,16 +102,16 @@
                         android:layout_height="50dp"
                         android:layout_marginBottom="4dp"
                         android:background="@color/primary_dark"
-                        android:text="CANCEL" />
+                        android:text="@string/cancel" />
 
                     <com.gc.materialdesign.views.ButtonRectangle
                         android:id="@+id/button_ok"
                         android:layout_width="90dp"
                         android:layout_height="50dp"
                         android:layout_marginBottom="4dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@color/primary_dark"
-                        android:text="CALL" />
+                        android:text="@string/call" />
                 </LinearLayout>
 
             </RelativeLayout>

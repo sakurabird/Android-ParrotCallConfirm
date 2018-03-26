@@ -15,12 +15,10 @@ import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
@@ -63,7 +61,9 @@ public class ConfirmActivity extends AppCompatActivity {
     private boolean shouldShowPermissionsDialog = true;
     private boolean shouldShowRationalDialog = true;
 
-    public static Intent createIntent(@NonNull final Context context, @NonNull final Class clazz, @NonNull final String phoneNumber) {
+    public static Intent createIntent(@NonNull final Context context,
+                                      @NonNull final Class clazz,
+                                      @NonNull final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
@@ -103,7 +103,9 @@ public class ConfirmActivity extends AppCompatActivity {
     private void initLayout() {
         if (Pref.getPrefBool(mContext, getString(R.string.PREF_VIBRATE), true)) {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(1000);
+            if (vibrator != null) {
+                vibrator.vibrate(1000);
+            }
         }
         if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
             String s = Pref.getPrefString(mContext, getString(R.string.PREF_SOUND));
@@ -112,13 +114,16 @@ public class ConfirmActivity extends AppCompatActivity {
             try {
                 idx = Integer.parseInt(s);
             } catch (NumberFormatException e) {
+                Utils.logError(e.getLocalizedMessage());
             }
             if (Pref.isExistKey(mContext, getString(R.string.PREF_SOUND_VOLUME))) {
                 hasVolumeChanged = true;
                 mOriginalVolume = SoundManager.getOriginalVolume();
                 AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
                 int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
-                am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+                if (am != null) {
+                    am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+                }
             } else {
                 hasVolumeChanged = false;
             }
@@ -137,34 +142,25 @@ public class ConfirmActivity extends AppCompatActivity {
         binding.imageViewInco.startAnimation(animation);
 
 
-        binding.buttonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
-                String number = "tel:" + mPhoneNumber.trim();
-                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
-                ConfirmActivity.this.finish();
+        binding.buttonOk.setOnClickListener(v -> {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
             }
+            Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
+            String number = "tel:" + mPhoneNumber.trim();
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
+            ConfirmActivity.this.finish();
         });
 
-        binding.buttonNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-                ConfirmActivity.this.finish();
-            }
+        binding.buttonNo.setOnClickListener(v -> {
+            Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+            ConfirmActivity.this.finish();
         });
 
-        binding.imageViewSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-                startActivity(MainActivity.createIntent(mContext, MainActivity.class));
-                ConfirmActivity.this.finish();
-            }
+        binding.imageViewSetting.setOnClickListener(v -> {
+            Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+            startActivity(MainActivity.createIntent(mContext, MainActivity.class));
+            ConfirmActivity.this.finish();
         });
     }
 
@@ -182,13 +178,10 @@ public class ConfirmActivity extends AppCompatActivity {
                         .title(getString(R.string.message_request_permissions1))
                         .content(getString(R.string.message_request_permissions2))
                         .positiveText(getString(android.R.string.ok))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                shouldShowPermissionsDialog = false;
-                                shouldShowRationalDialog = false;
-                                requestPermissionDialog();
-                            }
+                        .onPositive((dialog, which) -> {
+                            shouldShowPermissionsDialog = false;
+                            shouldShowRationalDialog = false;
+                            requestPermissionDialog();
                         })
                         .show();
             } else {
@@ -207,7 +200,7 @@ public class ConfirmActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         for (int i = 0; i < permissions.length; i++) {
             if (grantResults.length <= i || grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 if (!shouldShowRational(ConfirmActivity.this, permissions[i])) {
@@ -266,7 +259,8 @@ public class ConfirmActivity extends AppCompatActivity {
                 String msg = Utils.isJapan() ? data.getMessage_jp() : data.getMessage_en();
                 Utils.logDebug("no:" + data.getMessage_no() + " message:" + msg);
                 CallConfirmUtils.setNotification(MainActivity.class, msg);
-                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
+                messageNo++;
+                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
                 break;
             }
         }
@@ -284,7 +278,9 @@ public class ConfirmActivity extends AppCompatActivity {
 
         if (hasVolumeChanged) {
             AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-            am.setStreamVolume(AudioManager.STREAM_MUSIC, mOriginalVolume, 0);
+            if (am != null) {
+                am.setStreamVolume(AudioManager.STREAM_MUSIC, mOriginalVolume, 0);
+            }
         }
         mContext = null;
         mPhoneNumber = null;
