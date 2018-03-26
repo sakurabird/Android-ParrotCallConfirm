@@ -9,6 +9,7 @@
     <color name="secondary_text">#727272</color>
     <color name="icons">#212121</color>
     <color name="divider">#B6B6B6</color>
+    <color name="grey_100">#fff5f5f5</color>
     <!-- others -->
     <color name="font_color1">#bb000000</color>
     <color name="font_color2">#77000000</color>

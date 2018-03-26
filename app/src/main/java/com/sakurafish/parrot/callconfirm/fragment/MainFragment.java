@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.andexert.library.RippleView;
 import com.google.android.gms.ads.AdRequest;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.activity.SettingActivity;
@@ -36,9 +35,8 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_main);
-        return view;
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -49,64 +47,43 @@ public class MainFragment extends Fragment {
     }
 
     private void initLayout() {
-        binding.menuSetting.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(SettingActivity.createIntent(mContext, SettingActivity.class));
-            }
+        binding.menuSetting.setOnRippleCompleteListener
+                (rippleView -> startActivity(SettingActivity.createIntent(mContext, SettingActivity.class)));
+
+        binding.menuShare.setOnRippleCompleteListener(rippleView -> {
+            final Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
+            intent.setType("text/plain");
+            startActivity(intent);
         });
 
-        binding.menuShare.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                final Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
-                intent.setType("text/plain");
+        binding.menuGoogleplay.setOnRippleCompleteListener
+                (rippleView -> startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(getString(R.string.share_text)))));
+
+        binding.menuCredit.setOnRippleCompleteListener(
+                rippleView -> startActivity(WebViewActivity.createIntent(mContext,
+                WebViewActivity.class,
+                WebConsts.LOCAL_CREDIT,
+                getString(R.string.text_credit))));
+
+        binding.menuMailToDev.setOnRippleCompleteListener(rippleView -> {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"sakurafish1@gmail.com"});
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.setting_mail_to_dev2));
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.setting_mail_to_dev3));
+            if (intent.resolveActivity(mContext.getPackageManager()) != null) {
                 startActivity(intent);
             }
         });
 
-        binding.menuGoogleplay.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.share_text))));
-            }
-        });
-
-        binding.menuCredit.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(WebViewActivity.createIntent(mContext,
-                        WebViewActivity.class,
-                        WebConsts.LOCAL_CREDIT,
-                        getString(R.string.text_credit)));
-            }
-        });
-
-        binding.menuMailToDev.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"sakurafish1@gmail.com"});
-                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.setting_mail_to_dev2));
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.setting_mail_to_dev3));
-                if (intent.resolveActivity(mContext.getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-            }
-        });
-
-        binding.menuPrivacyPolicy.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
-            @Override
-            public void onComplete(RippleView rippleView) {
-                startActivity(WebViewActivity.createIntent(mContext,
-                        WebViewActivity.class,
-                        WebConsts.LOCAL_PRIVACY_POLICY,
-                        getString(R.string.text_privacy_policy)));
-            }
-        });
+        binding.menuPrivacyPolicy.setOnRippleCompleteListener
+                (rippleView -> startActivity(WebViewActivity.createIntent(mContext,
+                WebViewActivity.class,
+                WebConsts.LOCAL_PRIVACY_POLICY,
+                getString(R.string.text_privacy_policy))));
 
         // show AD banner
         AdRequest adRequest = new AdsHelper(mContext).getAdRequest();

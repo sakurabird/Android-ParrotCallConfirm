@@ -4,12 +4,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/primary_material_light"
+        android:background="@color/grey_100"
         android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1">
 
             <LinearLayout
@@ -28,7 +28,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="5dp"
                         android:text="@string/welcome"
                         android:textColor="@android:color/white"
@@ -50,6 +50,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
+                    android:contentDescription="@null"
                     android:src="@drawable/bg_shadow" />
 
                 <com.andexert.library.RippleView
@@ -64,7 +65,8 @@
                         android:layout_width="@dimen/main_list_icon_size"
                         android:layout_height="@dimen/main_list_icon_size"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/main_list_icon_margin_left"
+                        android:layout_marginStart="@dimen/main_list_icon_margin_left"
+                        android:contentDescription="@null"
                         android:src="@drawable/inco2" />
 
                     <TextView
@@ -72,8 +74,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/image_setting"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/image_setting"
                         android:text="@string/action_settings"
                         android:textSize="@dimen/font_large" />
                 </com.andexert.library.RippleView>
@@ -90,7 +92,8 @@
                         android:layout_width="@dimen/main_list_icon_size"
                         android:layout_height="@dimen/main_list_icon_size"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/main_list_icon_margin_left"
+                        android:layout_marginStart="@dimen/main_list_icon_margin_left"
+                        android:contentDescription="@null"
                         android:src="@drawable/inco3" />
 
                     <TextView
@@ -98,8 +101,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/image_share"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/image_share"
                         android:text="@string/share"
                         android:textSize="@dimen/font_large" />
                 </com.andexert.library.RippleView>
@@ -116,7 +119,8 @@
                         android:layout_width="@dimen/main_list_icon_size"
                         android:layout_height="@dimen/main_list_icon_size"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/main_list_icon_margin_left"
+                        android:layout_marginStart="@dimen/main_list_icon_margin_left"
+                        android:contentDescription="@null"
                         android:src="@drawable/inco4" />
 
                     <TextView
@@ -124,8 +128,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/image_googleplay"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/image_googleplay"
                         android:text="@string/text_google_play"
                         android:textSize="@dimen/font_large" />
                 </com.andexert.library.RippleView>
@@ -142,7 +146,8 @@
                         android:layout_width="@dimen/main_list_icon_size"
                         android:layout_height="@dimen/main_list_icon_size"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/main_list_icon_margin_left"
+                        android:layout_marginStart="@dimen/main_list_icon_margin_left"
+                        android:contentDescription="@null"
                         android:src="@drawable/inco5" />
 
                     <TextView
@@ -150,8 +155,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/image_credit"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/image_credit"
                         android:text="@string/text_credit"
                         android:textSize="@dimen/font_large" />
                 </com.andexert.library.RippleView>
@@ -168,7 +173,8 @@
                         android:layout_width="@dimen/main_list_icon_size"
                         android:layout_height="@dimen/main_list_icon_size"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/main_list_icon_margin_left"
+                        android:layout_marginStart="@dimen/main_list_icon_margin_left"
+                        android:contentDescription="@null"
                         android:src="@drawable/inco6" />
 
                     <TextView
@@ -176,8 +182,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/image_mail_to_dev"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/image_mail_to_dev"
                         android:text="@string/text_mail_to_dev"
                         android:textSize="@dimen/font_large" />
                 </com.andexert.library.RippleView>
@@ -194,7 +200,8 @@
                         android:layout_width="@dimen/main_list_icon_size"
                         android:layout_height="@dimen/main_list_icon_size"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/main_list_icon_margin_left"
+                        android:layout_marginStart="@dimen/main_list_icon_margin_left"
+                        android:contentDescription="@null"
                         android:src="@drawable/inco7" />
 
                     <TextView
@@ -202,12 +209,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/image_privacy_policy"
+                        android:layout_marginStart="20dp"
+                        android:layout_toEndOf="@+id/image_privacy_policy"
                         android:text="@string/text_privacy_policy"
                         android:textSize="@dimen/font_large" />
                 </com.andexert.library.RippleView>
-
             </LinearLayout>
         </ScrollView>
 
@@ -215,8 +221,6 @@
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="bottom|center_horizontal"
             ads:adSize="BANNER"
             ads:adUnitId="@string/banner_ad_unit_id" />

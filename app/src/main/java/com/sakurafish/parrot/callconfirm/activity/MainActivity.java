@@ -5,21 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
 import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
@@ -44,6 +44,7 @@ import static com.sakurafish.parrot.callconfirm.utils.Utils.logError;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityMainBinding binding;
     private Fragment mContent;
     private Context mContext;
     private boolean shouldShowPermissionsDialog = true;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         init();
 
@@ -108,13 +109,10 @@ public class MainActivity extends AppCompatActivity {
                         .title(getString(R.string.message_request_permissions1))
                         .content(getString(R.string.message_request_permissions2))
                         .positiveText(getString(android.R.string.ok))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                shouldShowPermissionsDialog = false;
-                                shouldShowRationalDialog = false;
-                                requestPermissionDialog();
-                            }
+                        .onPositive((dialog, which) -> {
+                            shouldShowPermissionsDialog = false;
+                            shouldShowRationalDialog = false;
+                            requestPermissionDialog();
                         })
                         .show();
             } else {
@@ -197,7 +195,8 @@ public class MainActivity extends AppCompatActivity {
                         .positiveText(getString(android.R.string.ok))
                         .show();
 
-                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
+                ++messageNo;
+                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
                 break;
             }
         }
