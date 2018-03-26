@@ -15,6 +15,7 @@ import com.google.android.gms.ads.AdView;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.activity.SettingActivity;
 import com.sakurafish.parrot.callconfirm.activity.WebViewActivity;
+import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
 import com.sakurafish.parrot.callconfirm.web.WebConsts;
 
 import butterknife.Bind;
@@ -121,9 +122,7 @@ public class MainFragment extends Fragment {
         });
 
         // show AD banner
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
+        AdRequest adRequest = new AdsHelper(mContext).getAdRequest();
         mAdView.loadAd(adRequest);
     }
 
