@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -13,11 +14,10 @@ import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -27,6 +27,7 @@ import com.sakurafish.parrot.callconfirm.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.databinding.ActivityConfirmBinding;
 import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 import com.sakurafish.parrot.callconfirm.utils.ContactUtils;
@@ -38,8 +39,6 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
@@ -54,6 +53,7 @@ import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.sh
  * Created by sakura on 2015/01/23.
  */
 public class ConfirmActivity extends AppCompatActivity {
+    private ActivityConfirmBinding binding;
     private Context mContext;
     private String mPhoneNumber;
     private boolean hasVolumeChanged;
@@ -80,14 +80,14 @@ public class ConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_confirm);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_confirm);
+
         init();
         initLayout();
     }
 
     private void init() {
-        ButterKnife.bind(this);
-
         mContext = this;
         mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
         if (mPhoneNumber == null) {
@@ -123,17 +123,47 @@ public class ConfirmActivity extends AppCompatActivity {
             MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
         }
 
-        ((TextView) findViewById(R.id.textView_telno)).setText(mPhoneNumber);
+        binding.textViewTelno.setText(mPhoneNumber);
         ContactUtils.ContactInfo info = ContactUtils.getContactInfoByNumber(mPhoneNumber);
         if (info != null) {
-            ((TextView) findViewById(R.id.textView_name)).setText(info.getName());
+            binding.textViewName.setText(info.getName());
             if (info.getPhotoBitmap() != null)
-                ((ImageView) findViewById(R.id.imageView_callto)).setImageBitmap(info.getPhotoBitmap());
+                binding.imageViewCallto.setImageBitmap(info.getPhotoBitmap());
         }
 
-        ImageView inco = (ImageView) findViewById(R.id.imageView_inco);
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.inco_jump);
-        inco.startAnimation(animation);
+        binding.imageViewInco.startAnimation(animation);
+
+
+        binding.buttonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
+                String number = "tel:" + mPhoneNumber.trim();
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
+                ConfirmActivity.this.finish();
+            }
+        });
+
+        binding.buttonNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+                ConfirmActivity.this.finish();
+            }
+        });
+
+        binding.imageViewSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+                startActivity(MainActivity.createIntent(mContext, MainActivity.class));
+                ConfirmActivity.this.finish();
+            }
+        });
     }
 
     private void checkPermissions() {
@@ -185,31 +215,6 @@ public class ConfirmActivity extends AppCompatActivity {
             }
         }
     }
-
-    @OnClick(R.id.button_ok)
-    void call() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
-        String number = "tel:" + mPhoneNumber.trim();
-        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
-        ConfirmActivity.this.finish();
-    }
-
-    @OnClick(R.id.button_no)
-    void cancel() {
-        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-        ConfirmActivity.this.finish();
-    }
-
-    @OnClick(R.id.imageView_setting)
-    void setting() {
-        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-        startActivity(MainActivity.createIntent(mContext, MainActivity.class));
-        ConfirmActivity.this.finish();
-    }
-
 
     private void retrieveAppMessage() {
         final String url = getString(R.string.URL_APP_MESSAGE);
