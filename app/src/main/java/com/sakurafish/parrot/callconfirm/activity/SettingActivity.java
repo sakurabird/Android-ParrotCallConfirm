@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -63,50 +62,45 @@ public class SettingActivity extends AppCompatActivity {
 
         private void initLayout() {
             final ListPreference vibrationlist = (ListPreference) findPreference(Config.PREF_VIBRATE_PATTERN);
-            vibrationlist.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+            vibrationlist.setOnPreferenceChangeListener((preference, newValue) -> {
 
-                    int index = vibrationlist.findIndexOfValue(newValue.toString());
-                    if (index != -1) {
-                        //バイブレート
-                        CallConfirmUtils.vibrate(mContext, index);
-                        String[] array = getResources().getStringArray(R.array.setting_vibrate);
-                        vibrationlist.setSummary(array[index]);
-                    }
-                    return true;
+                int index = vibrationlist.findIndexOfValue(newValue.toString());
+                if (index != -1) {
+                    //バイブレート
+                    CallConfirmUtils.vibrate(mContext, index);
+                    String[] array = getResources().getStringArray(R.array.setting_vibrate);
+                    vibrationlist.setSummary(array[index]);
                 }
+                return true;
             });
 
             final ListPreference list = (ListPreference) findPreference(Config.PREF_SOUND);
-            list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+            list.setOnPreferenceChangeListener((preference, newValue) -> {
 
-                    int index = list.findIndexOfValue(newValue.toString());
-                    if (index != -1) {
-                        //音を鳴らす
-                        MyApplication.getSoundManager().play(MyApplication.getSoundIds()[index]);
-                        String[] array = getResources().getStringArray(R.array.setting_sound);
-                        list.setSummary(array[index]);
-                    }
-                    return true;
+                int index = list.findIndexOfValue(newValue.toString());
+                if (index != -1) {
+                    //音を鳴らす
+                    MyApplication.getSoundManager().play(MyApplication.getSoundIds()[index]);
+                    String[] array = getResources().getStringArray(R.array.setting_sound);
+                    list.setSummary(array[index]);
                 }
+                return true;
             });
 
             final SoundSeekBarPreference volume = (SoundSeekBarPreference) findPreference(getString(R.string.PREF_SOUND_VOLUME));
-            volume.setOnVolumeChangedListerner(new SoundSeekBarPreference.OnVolumeChangedListerner() {
-                @Override
-                public void onChanged() {
-                    int index = Integer.parseInt(Pref.getPrefString(mContext, mContext.getString(R.string.PREF_SOUND)));
-                    int voiceIdx = MyApplication.getSoundIds()[index];
+            volume.setOnVolumeChangedListerner(() -> {
+                int index = Integer.parseInt(Pref.getPrefString(mContext, mContext.getString(R.string.PREF_SOUND)));
+                int voiceIdx = MyApplication.getSoundIds()[index];
 
-                    MyApplication.getSoundManager().stop(voiceIdx);
+                MyApplication.getSoundManager().stop(voiceIdx);
 
-                    AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-                    int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
+                AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+                int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
+                if (am != null) {
                     am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-
-                    MyApplication.getSoundManager().play(voiceIdx);
                 }
+
+                MyApplication.getSoundManager().play(voiceIdx);
             });
         }
     }
