@@ -22,7 +22,7 @@ import android.view.animation.AnimationUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
-import com.sakurafish.parrot.callconfirm.Config;
+import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;

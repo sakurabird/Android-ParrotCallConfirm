@@ -1,5 +1,5 @@
 
-package com.sakurafish.parrot.callconfirm.web;
+package com.sakurafish.parrot.callconfirm.config;
 
 public class WebConsts {
 

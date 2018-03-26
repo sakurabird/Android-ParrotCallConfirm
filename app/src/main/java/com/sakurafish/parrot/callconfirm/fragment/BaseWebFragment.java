@@ -1,4 +1,4 @@
-package com.sakurafish.parrot.callconfirm.web;
+package com.sakurafish.parrot.callconfirm.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;

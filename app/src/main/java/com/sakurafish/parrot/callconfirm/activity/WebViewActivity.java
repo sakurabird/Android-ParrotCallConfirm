@@ -12,10 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.sakurafish.parrot.callconfirm.R;
-import com.sakurafish.parrot.callconfirm.web.WebFragment;
+import com.sakurafish.parrot.callconfirm.fragment.WebFragment;
 
-import static com.sakurafish.parrot.callconfirm.web.BaseWebFragment.EXTRA_TITLE;
-import static com.sakurafish.parrot.callconfirm.web.BaseWebFragment.EXTRA_URL;
+import static com.sakurafish.parrot.callconfirm.fragment.BaseWebFragment.EXTRA_TITLE;
+import static com.sakurafish.parrot.callconfirm.fragment.BaseWebFragment.EXTRA_URL;
 
 
 public class WebViewActivity extends AppCompatActivity {

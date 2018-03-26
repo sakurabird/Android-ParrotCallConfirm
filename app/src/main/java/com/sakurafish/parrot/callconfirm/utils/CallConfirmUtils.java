@@ -11,12 +11,12 @@ import android.support.v4.app.NotificationCompat;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.R;
 
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_NOT_REPEAT;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN0;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN1;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN2;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN3;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN4;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_NOT_REPEAT;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN0;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN1;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN2;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN3;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN4;
 
 /**
  * Created by sakura on 9/16/15.

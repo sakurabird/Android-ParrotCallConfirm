@@ -16,7 +16,7 @@ import com.sakurafish.parrot.callconfirm.activity.SettingActivity;
 import com.sakurafish.parrot.callconfirm.activity.WebViewActivity;
 import com.sakurafish.parrot.callconfirm.databinding.FragmentMainBinding;
 import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
-import com.sakurafish.parrot.callconfirm.web.WebConsts;
+import com.sakurafish.parrot.callconfirm.config.WebConsts;
 
 
 /**

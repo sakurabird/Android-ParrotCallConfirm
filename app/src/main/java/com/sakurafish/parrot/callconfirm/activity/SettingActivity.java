@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.sakurafish.parrot.callconfirm.Config;
+import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.Pref.SoundSeekBarPreference;

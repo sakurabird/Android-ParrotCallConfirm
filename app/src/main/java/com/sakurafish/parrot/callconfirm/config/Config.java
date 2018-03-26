@@ -1,4 +1,4 @@
-package com.sakurafish.parrot.callconfirm;
+package com.sakurafish.parrot.callconfirm.config;
 
 public class Config {
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.activity.ConfirmActivity;
+import com.sakurafish.parrot.callconfirm.config.Config;
 
 /**
  * 発信を捉える

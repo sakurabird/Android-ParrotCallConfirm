@@ -16,7 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
-import com.sakurafish.parrot.callconfirm.Config;
+import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
