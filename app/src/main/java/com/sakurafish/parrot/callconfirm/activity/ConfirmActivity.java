@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -64,7 +65,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
     public static Intent createIntent(@NonNull final Context context,
                                       @NonNull final Class clazz,
-                                      @NonNull final String phoneNumber) {
+                                      @Nullable final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
