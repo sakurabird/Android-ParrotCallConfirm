@@ -36,4 +36,7 @@
     <string name="message_request_permissions2">このアプリは電話発信をキャッチし連絡先を表示し発信を行うためにパーミッションの許可が必須となります。許可していただくようお願いいたします。</string>
     <string name="message_request_permissions3">このアプリはパーミッションが許可されていないと正しく動作いたしません。アプリ設定画面の「権限」から許可していただくようお願いいたします。</string>
 
+    <!-- error -->
+    <string name="error_cannot_get_phonenumber_title">エラー</string>
+    <string name="error_cannot_get_phonenumber">電話番号を取得できませんでした。インコ発信確認アプリはこの機種からは発信が出来ませんので、無効にいたします。ご迷惑おかけいたします。</string>
 </resources>
