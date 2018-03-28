@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.MobileAds;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.utils.SoundManager;
@@ -41,17 +42,21 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         Fabric.with(this, new Crashlytics());
 
         int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
 
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/GenShinGothic-Regular.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
+                .setDefaultFontPath("fonts/GenShinGothic-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
         );
         setupSounds();
+
+        // adMob
+        MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
     }
 
     private void setupSounds() {
