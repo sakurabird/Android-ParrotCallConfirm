@@ -19,12 +19,12 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 25
         versionCode VERSION_CODE
         versionName VERSION_NAME
         applicationId PACKAGE_NAME
@@ -87,8 +87,9 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '27.0.1'
+    supportLibraryVersion = '25.4.0'
     firebaseVersion = '12.0.0'
+//    firebaseVersion = '12.0.0'
 }
 
 dependencies {
@@ -115,5 +116,18 @@ android.applicationVariants.all { variant ->
         outputFileName = "ParrotCallConfirm_v${android.defaultConfig.versionName}_${variant.name}.apk"
     }
 }
+
+// https://stackoverflow.com/a/45025597
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '25.4.0'
+            }
+        }
+    }
+}
+
 
 apply plugin: 'com.google.gms.google-services'
