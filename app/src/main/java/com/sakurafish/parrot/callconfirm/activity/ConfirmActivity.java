@@ -16,7 +16,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,10 +23,10 @@ import android.view.animation.AnimationUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
+import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
-import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityConfirmBinding;
 import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
@@ -93,8 +92,11 @@ public class ConfirmActivity extends AppCompatActivity {
 
     private void init() {
         mContext = this;
+        mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
+        if (mPhoneNumber == null) {
+            throw new IllegalStateException();
+        }
 
-        checkPhoneNumber();
         retrieveAppMessage();
         checkPermissions();
     }
@@ -208,25 +210,6 @@ public class ConfirmActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    private void checkPhoneNumber() {
-        mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
-        if (!TextUtils.isEmpty(mPhoneNumber)) {
-            return;
-        }
-
-        // 発信確認が出来ない機種の可能性あり。機能を無効にする。
-        Pref.setPref(mContext, getString(R.string.PREF_CONFIRM), false);
-
-        new MaterialDialog.Builder(this)
-                .cancelable(false)
-                .theme(Theme.LIGHT)
-                .title(getString(R.string.error_cannot_get_phonenumber_title))
-                .content(getString(R.string.error_cannot_get_phonenumber))
-                .positiveText(getString(android.R.string.ok))
-                .onPositive((dialog, which) -> ConfirmActivity.this.finish())
-                .show();
     }
 
     private void retrieveAppMessage() {
