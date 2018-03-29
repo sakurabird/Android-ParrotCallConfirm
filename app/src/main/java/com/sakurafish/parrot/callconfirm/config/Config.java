@@ -13,6 +13,7 @@ public class Config {
     public static final String PREF_MAIL_TO_DEV = "PREF_MAIL_TO_DEV";
     public static final String PREF_AFTER_CONFIRM = "PREF_AFTER_CONFIRM";
     public static final String PREF_APP_MESSAGE_NO = "PREF_APP_MESSAGE_NO";
+    public static final String PREF_STATE_INVALID_TELNO = "PREF_STATE_INVALID_TELNO";
 
     // Intent
     public static final String INTENT_DB_UPDTE_ACTION = "INTENT_DB_UPDTE_ACTION";

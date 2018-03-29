@@ -4,11 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.activity.ConfirmActivity;
 import com.sakurafish.parrot.callconfirm.config.Config;
 
+import static com.sakurafish.parrot.callconfirm.config.Config.PREF_STATE_INVALID_TELNO;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
 
@@ -23,10 +25,11 @@ public class CallReceiver extends BroadcastReceiver {
 
         if (!canProceedConfirm(context, intent)) return;
 
-        String phoneNumber = intent.getExtras().getString(Intent.EXTRA_PHONE_NUMBER);
         // 発信を取り消す
         setResultData(null);
+
         //発信確認ダイアログを表示する
+        String phoneNumber = intent.getExtras().getString(Intent.EXTRA_PHONE_NUMBER);
         context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
     }
 
@@ -50,6 +53,18 @@ public class CallReceiver extends BroadcastReceiver {
             Pref.setPref(context, Config.PREF_AFTER_CONFIRM, false);
             return false;
         }
+
+        String phoneNumber = intent.getExtras().getString(Intent.EXTRA_PHONE_NUMBER);
+        if (TextUtils.isEmpty(phoneNumber)) {
+
+            // 発信確認が出来ない機種の可能性あり。機能を無効にする。
+            Pref.setPref(context, context.getString(R.string.PREF_CONFIRM), false);
+            Pref.setPref(context, PREF_STATE_INVALID_TELNO, true);
+
+            return false;
+        }
+        Pref.setPref(context, PREF_STATE_INVALID_TELNO, false);
+
         return true;
     }
 }
