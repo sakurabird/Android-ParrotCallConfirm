@@ -64,7 +64,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
     public static Intent createIntent(@NonNull final Context context,
                                       @NonNull final Class clazz,
-                                      @Nullable final String phoneNumber) {
+                                      @NonNull final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
