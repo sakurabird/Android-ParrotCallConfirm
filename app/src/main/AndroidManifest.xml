@@ -33,10 +33,12 @@
         <activity android:name=".activity.WebViewActivity" />
 
         <receiver android:name=".CallReceiver">
-            <intent-filter>
+            <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="5d6fabbcde793289c1e4057daced02012118e520" />
