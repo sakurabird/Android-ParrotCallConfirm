@@ -28,7 +28,7 @@
         <activity
             android:name=".activity.ConfirmActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ActivityTheme" />
+            android:theme="@style/ConfirmActivityTheme" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.WebViewActivity" />
 
