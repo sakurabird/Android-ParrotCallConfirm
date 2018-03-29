@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
@@ -23,10 +22,10 @@ import android.view.animation.AnimationUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
-import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityConfirmBinding;
 import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
@@ -90,6 +89,12 @@ public class ConfirmActivity extends AppCompatActivity {
         initLayout();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        playSound();
+    }
+
     private void init() {
         mContext = this;
         mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
@@ -107,28 +112,6 @@ public class ConfirmActivity extends AppCompatActivity {
             if (vibrator != null) {
                 vibrator.vibrate(1000);
             }
-        }
-        if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
-            String s = Pref.getPrefString(mContext, getString(R.string.PREF_SOUND));
-            if (s == null) s = "0";
-            int idx = 0;
-            try {
-                idx = Integer.parseInt(s);
-            } catch (NumberFormatException e) {
-                Utils.logError(e.getLocalizedMessage());
-            }
-            if (Pref.isExistKey(mContext, getString(R.string.PREF_SOUND_VOLUME))) {
-                hasVolumeChanged = true;
-                mOriginalVolume = SoundManager.getOriginalVolume();
-                AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-                int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
-                if (am != null) {
-                    am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-                }
-            } else {
-                hasVolumeChanged = false;
-            }
-            MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
         }
 
         binding.textViewTelno.setText(mPhoneNumber);
@@ -163,6 +146,33 @@ public class ConfirmActivity extends AppCompatActivity {
             startActivity(MainActivity.createIntent(mContext, MainActivity.class));
             ConfirmActivity.this.finish();
         });
+    }
+
+    private void playSound() {
+        // インコ音を再生する
+        if (!Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
+            return;
+        }
+        String s = Pref.getPrefString(mContext, getString(R.string.PREF_SOUND));
+        if (s == null) s = "0";
+        int idx = 0;
+        try {
+            idx = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            Utils.logError(e.getLocalizedMessage());
+        }
+        if (Pref.isExistKey(mContext, getString(R.string.PREF_SOUND_VOLUME))) {
+            hasVolumeChanged = true;
+            mOriginalVolume = SoundManager.getOriginalVolume();
+            AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+            int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
+            if (am != null) {
+                am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+            }
+        } else {
+            hasVolumeChanged = false;
+        }
+        MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
     }
 
     private void checkPermissions() {
