@@ -32,15 +32,21 @@ public final class CallConfirmUtils {
      * @param message
      */
     public static void setNotification(@NonNull final Class<?> cls, @NonNull final String message) {
-        final NotificationManager notificationManager = (NotificationManager) MyApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        final String appName = MyApplication.getContext().getResources().getString(R.string.app_name);
+
+        final NotificationManager notificationManager =
+                (NotificationManager) MyApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         final Intent intent = new Intent(MyApplication.getContext(), cls);
         final PendingIntent contentIntent = PendingIntent.getActivity(MyApplication.getContext(), 0, intent, 0);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(MyApplication.getContext())
                 .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle(MyApplication.getContext().getResources().getString(R.string.app_name))
+                .setContentTitle(appName)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setContentText(message)
+                .setTicker(appName)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setOngoing(true)

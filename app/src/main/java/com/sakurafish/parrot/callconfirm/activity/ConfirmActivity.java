@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,21 +21,14 @@ import android.view.animation.AnimationUtils;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.google.gson.Gson;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityConfirmBinding;
-import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 import com.sakurafish.parrot.callconfirm.utils.ContactUtils;
 import com.sakurafish.parrot.callconfirm.utils.SoundManager;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import java.io.IOException;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -97,8 +89,6 @@ public class ConfirmActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        checkPhoneNumber();
-
         // インコ音を再生する
         if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
             new Handler().postDelayed(() -> {
@@ -120,7 +110,11 @@ public class ConfirmActivity extends AppCompatActivity {
 
         mOriginalVolume = SoundManager.getOriginalVolume();
 
-        retrieveAppMessage();
+        int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
+        Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
+
+        checkPhoneNumber();
+        notifyAppMessage();
         checkPermissions();
     }
 
@@ -220,59 +214,22 @@ public class ConfirmActivity extends AppCompatActivity {
         }
     }
 
-    private void retrieveAppMessage() {
-        final String url = getString(R.string.URL_APP_MESSAGE);
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String result = null;
-                Request request = new Request.Builder().url(url).get().build();
-                OkHttpClient client = new OkHttpClient();
-                try {
-                    Response response = client.newCall(request).execute();
-                    result = response.body().string();
-                } catch (IOException e) {
-                    Utils.logError("retrieveAppMessage failed IOException");
-                    e.printStackTrace();
-                }
-                return result;
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (result == null) {
-                    Utils.logError("retrieveAppMessage failed response==null");
-                    return;
-                }
-                Utils.logDebug(result);
-                try {
-                    Gson gson = new Gson();
-                    AppMessage message = gson.fromJson(result, AppMessage.class);
-                    setNotification(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utils.logError("Json parse error");
-                }
-            }
-        }.execute();
-    }
-
-    private void setNotification(AppMessage message) {
+    private void notifyAppMessage() {
         final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
-        Utils.logDebug("last message no:" + lastNo);
+        int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
+        String messageText = getString(R.string.APP_MESSAGE_TEXT);
 
-        for (AppMessage.Data data : message.getData()) {
-            int messageNo = data.getMessage_no();
-            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo &&
-                    data.getVersion() == Utils.getVersionCode()) {
-                String msg = Utils.isJapan() ? data.getMessage_jp() : data.getMessage_en();
-                Utils.logDebug("no:" + data.getMessage_no() + " message:" + msg);
-                CallConfirmUtils.setNotification(MainActivity.class, msg);
-                messageNo++;
-                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
-                break;
-            }
+        if (messageNo <= lastNo) {
+            return;
         }
+
+        // インストール時点のメッセージは表示しない
+        if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
+            return;
+        }
+
+        CallConfirmUtils.setNotification(MainActivity.class, messageText);
+        Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
     }
 
     @Override

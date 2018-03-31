@@ -7,7 +7,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -15,19 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.google.gson.Gson;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
-import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import java.io.IOException;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -37,8 +29,6 @@ import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.ha
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.onNeverAskAgainSelected;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.shouldShowRational;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.showRationaleDialog;
-import static com.sakurafish.parrot.callconfirm.utils.Utils.isJapan;
-import static com.sakurafish.parrot.callconfirm.utils.Utils.logError;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -91,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
 
-        retrieveAppMessage();
+        showAppMessage();
         checkPermissions();
     }
 
@@ -144,72 +134,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void retrieveAppMessage() {
-
-        final String url = getString(R.string.URL_APP_MESSAGE);
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String result = null;
-                Request request = new Request.Builder().url(url).get().build();
-                OkHttpClient client = new OkHttpClient();
-                try {
-                    Response response = client.newCall(request).execute();
-                    result = response.body().string();
-                } catch (IOException e) {
-                    logError("retrieveAppMessage failed IOException");
-                    e.printStackTrace();
-                }
-                return result;
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (result == null) {
-                    logError("retrieveAppMessage failed response==null");
-                    return;
-                }
-//                logDebug(result);
-                try {
-                    Gson gson = new Gson();
-                    AppMessage message = gson.fromJson(result, AppMessage.class);
-                    showAppMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    logError("Json parse error");
-                }
-            }
-        }.execute();
-    }
-
-    private void showAppMessage(AppMessage message) {
+    private void showAppMessage() {
         final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
+        int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
+        String messageText = getString(R.string.APP_MESSAGE_TEXT);
 
-        for (AppMessage.Data data : message.getData()) {
-            int messageNo = data.getMessage_no();
-            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo &&
-                    data.getVersion() == Utils.getVersionCode()) {
-                String msg = isJapan() ? data.getMessage_jp() : data.getMessage_en();
-//                logDebug("no:" + data.getMessage_no() + " message:" + msg);
-
-                // インストール時点のメッセージは表示しない
-                if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
-                    Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
-                    return;
-                }
-
-                new MaterialDialog.Builder(this)
-                        .theme(Theme.LIGHT)
-                        .title("APP_MESSAGE")
-                        .content(msg)
-                        .positiveText(getString(android.R.string.ok))
-                        .show();
-
-                ++messageNo;
-                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
-                break;
-            }
+        if (messageNo <= lastNo) {
+            return;
         }
+
+        // インストール時点のメッセージは表示しない
+        if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
+            Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
+            return;
+        }
+        Utils.logDebug("no:" + messageNo + " message:" + messageText);
+
+        new MaterialDialog.Builder(this)
+                .theme(Theme.LIGHT)
+                .title(getString(R.string.information))
+                .content(messageText)
+                .positiveText(getString(android.R.string.ok))
+                .show();
+
+        Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
     }
 
     @Override
