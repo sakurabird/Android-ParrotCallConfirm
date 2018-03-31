@@ -16,9 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
-import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.dto.AppMessage;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
@@ -38,7 +38,6 @@ import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.on
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.shouldShowRational;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.showRationaleDialog;
 import static com.sakurafish.parrot.callconfirm.utils.Utils.isJapan;
-import static com.sakurafish.parrot.callconfirm.utils.Utils.logDebug;
 import static com.sakurafish.parrot.callconfirm.utils.Utils.logError;
 
 
@@ -88,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         mContext = this;
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
+        Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
 
         retrieveAppMessage();
         checkPermissions();
@@ -143,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void retrieveAppMessage() {
+
         final String url = getString(R.string.URL_APP_MESSAGE);
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -187,7 +190,14 @@ public class MainActivity extends AppCompatActivity {
             if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo &&
                     data.getVersion() == Utils.getVersionCode()) {
                 String msg = isJapan() ? data.getMessage_jp() : data.getMessage_en();
-                logDebug("no:" + data.getMessage_no() + " message:" + msg);
+//                logDebug("no:" + data.getMessage_no() + " message:" + msg);
+
+                // インストール時点のメッセージは表示しない
+                if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
+                    Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
+                    return;
+                }
+
                 new MaterialDialog.Builder(this)
                         .theme(Theme.LIGHT)
                         .title("APP_MESSAGE")
