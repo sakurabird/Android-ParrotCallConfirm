@@ -50,6 +50,11 @@ public final class CallConfirmUtils {
         notificationManager.notify(R.string.app_name, builder.build());
     }
 
+    public static void vibrate(@NonNull final Context context) {
+        String prefPattern = Pref.getPrefString(context, context.getString(R.string.PREF_VIBRATE_PATTERN), "0");
+        vibrate(context, Integer.parseInt(prefPattern));
+    }
+
     public static void vibrate(@NonNull final Context context, final int patternNo) {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         switch (patternNo) {

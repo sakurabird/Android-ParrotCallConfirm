@@ -12,7 +12,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -108,6 +107,12 @@ public class ConfirmActivity extends AppCompatActivity {
                 }
             }, 1500);
         }
+
+        // 端末をバイブレートさせる
+        if (Pref.getPrefBool(mContext, getString(R.string.PREF_VIBRATE), true)) {
+            CallConfirmUtils.vibrate(mContext);
+        }
+
     }
 
     private void init() {
@@ -132,13 +137,6 @@ public class ConfirmActivity extends AppCompatActivity {
     }
 
     private void initLayout() {
-        // TODO
-        if (Pref.getPrefBool(mContext, getString(R.string.PREF_VIBRATE), true)) {
-            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            if (vibrator != null) {
-                vibrator.vibrate(1000);
-            }
-        }
 
         binding.textViewTelno.setText(mPhoneNumber);
         ContactUtils.ContactInfo info = ContactUtils.getContactInfoByNumber(mPhoneNumber);
