@@ -11,10 +11,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,7 +24,6 @@ import android.view.animation.AnimationUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
-import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.config.Config;
@@ -40,6 +41,7 @@ import java.io.IOException;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.sakurafish.parrot.callconfirm.config.Config.PREF_STATE_INVALID_TELNO;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS_REQUESTS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
@@ -65,7 +67,10 @@ public class ConfirmActivity extends AppCompatActivity {
                                       @NonNull final Class clazz,
                                       @NonNull final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+
         Bundle bundle = new Bundle();
         bundle.putString(Config.INTENT_EXTRAS_PHONENUMBER, phoneNumber);
         intent.putExtras(bundle);
@@ -92,21 +97,42 @@ public class ConfirmActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        playSound();
+
+        checkPhoneNumber();
+
+        // インコ音を再生する
+        if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
+            new Handler().postDelayed(() -> {
+                if (!isFinishing() && !isDestroyed() && mContext != null) {
+                    hasVolumeChanged = CallConfirmUtils.playSound(mContext);
+                }
+            }, 1500);
+        }
     }
 
     private void init() {
         mContext = this;
-        mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
-        if (mPhoneNumber == null) {
-            throw new IllegalStateException();
-        }
+
+        mOriginalVolume = SoundManager.getOriginalVolume();
 
         retrieveAppMessage();
         checkPermissions();
     }
 
+    private void checkPhoneNumber() {
+        mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
+        if (TextUtils.isEmpty(mPhoneNumber)) {
+            // 発信確認が出来ない機種の可能性あり。機能を無効にする。
+            Pref.setPref(mContext, getString(R.string.PREF_CONFIRM), false);
+            Pref.setPref(mContext, PREF_STATE_INVALID_TELNO, true);
+            startActivity(MainActivity.createIntent(mContext, MainActivity.class));
+            Utils.showToast(getString(R.string.error_cannot_get_phonenumber));
+            ConfirmActivity.this.finish();
+        }
+    }
+
     private void initLayout() {
+        // TODO
         if (Pref.getPrefBool(mContext, getString(R.string.PREF_VIBRATE), true)) {
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             if (vibrator != null) {
@@ -137,6 +163,7 @@ public class ConfirmActivity extends AppCompatActivity {
         });
 
         binding.buttonNo.setOnClickListener(v -> {
+            Utils.showToast(getString(R.string.message_telephone_canceled));
             Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
             ConfirmActivity.this.finish();
         });
@@ -146,33 +173,6 @@ public class ConfirmActivity extends AppCompatActivity {
             startActivity(MainActivity.createIntent(mContext, MainActivity.class));
             ConfirmActivity.this.finish();
         });
-    }
-
-    private void playSound() {
-        // インコ音を再生する
-        if (!Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
-            return;
-        }
-        String s = Pref.getPrefString(mContext, getString(R.string.PREF_SOUND));
-        if (s == null) s = "0";
-        int idx = 0;
-        try {
-            idx = Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            Utils.logError(e.getLocalizedMessage());
-        }
-        if (Pref.isExistKey(mContext, getString(R.string.PREF_SOUND_VOLUME))) {
-            hasVolumeChanged = true;
-            mOriginalVolume = SoundManager.getOriginalVolume();
-            AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-            int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
-            if (am != null) {
-                am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-            }
-        } else {
-            hasVolumeChanged = false;
-        }
-        MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
     }
 
     private void checkPermissions() {

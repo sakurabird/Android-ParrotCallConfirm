@@ -4,11 +4,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.sakurafish.parrot.callconfirm.MyApplication;
+import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 
 import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_NOT_REPEAT;
@@ -69,6 +71,28 @@ public final class CallConfirmUtils {
             default:
                 vibrator.vibrate(VIBRATOR_PATTERN0, VIBRATOR_NOT_REPEAT);
         }
+    }
+
+    public static boolean playSound(@NonNull final Context context) {
+        boolean hasVolumeChanged = false;
+        String s = Pref.getPrefString(context, context.getString(R.string.PREF_SOUND), "0");
+        int idx = 0;
+        try {
+            idx = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            Utils.logError(e.getLocalizedMessage());
+        }
+        if (Pref.isExistKey(context, context.getString(R.string.PREF_SOUND_VOLUME))) {
+            hasVolumeChanged = true;
+
+            AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            int newVolume = Pref.getPrefInt(context, context.getString(R.string.PREF_SOUND_VOLUME));
+            if (am != null) {
+                am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+            }
+        }
+        MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
+        return hasVolumeChanged;
     }
 
     @Deprecated

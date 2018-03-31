@@ -28,6 +28,11 @@ public class Pref {
         return pref.getString(key, null);
     }
 
+    public static String getPrefString(final Context con, final String key, final String defValue) {
+        final SharedPreferences pref = getSharedPreferences(con);
+        return pref.getString(key, defValue);
+    }
+
     public static void setPref(final Context con, final String key, boolean value) {
         final SharedPreferences pref = getSharedPreferences(con);
         final SharedPreferences.Editor editor = pref.edit();
