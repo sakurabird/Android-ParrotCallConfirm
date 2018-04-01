@@ -1,8 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
     <style name="ActivityTheme" parent="AppTheme">
         <item name="colorPrimary">@color/primary</item>
@@ -21,6 +20,15 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowEnterAnimation">@anim/abc_popup_enter</item>
+    </style>
+
+    <!-- Main Activity Views -->
+    <style name="MainListTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">@dimen/margin_xxlarge</item>
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
 </resources>
