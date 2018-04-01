@@ -29,6 +29,7 @@ android {
         versionName VERSION_NAME
         applicationId PACKAGE_NAME
         manifestPlaceholders = [appName: "@string/app_name"]
+        vectorDrawables.useSupportLibrary = true
     }
 
     dataBinding {
@@ -89,7 +90,6 @@ android {
 ext {
     supportLibraryVersion = '25.4.0'
     firebaseVersion = '12.0.0'
-//    firebaseVersion = '12.0.0'
 }
 
 dependencies {
