@@ -31,7 +31,7 @@
     <string name="setting_sound2">Sound volume</string>
     <string name="message_info1">You are making a phone call...</string>
     <string name="message_info2">Confirm</string>
-    <string name="message_confirm1">Are you sure want to call?</string>
+    <string name="message_confirm1">Call Confirm</string>
     <string name="message_number">Number:</string>
     <string name="message_telephone_canceled">Telephone canceled</string>
     <string name="message_name_placeholder">Unknown</string>
