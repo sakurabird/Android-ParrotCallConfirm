@@ -42,4 +42,9 @@
     <string name="error">エラー</string>
     <string name="error_cannot_get_phonenumber">電話番号を取得できませんでした。インコ発信確認アプリはこの機種からは発信が出来ませんので、無効にいたします。ご迷惑おかけいたします。</string>
 
+    <string name="error_now_disabled">！現在発信確認画面は表示されません！</string>
+    <string name="error_not_activated">このアプリは有効になっていません。</string>
+    <string name="error_no_permission_call">「電話」権限が許可されていません。</string>
+    <string name="error_no_permission_contact">「連絡先」権限が許可されていません。</string>
+    <string name="error_alert_refresh">\nタッチしてステータスを更新</string>
 </resources>

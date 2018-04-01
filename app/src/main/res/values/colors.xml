@@ -14,6 +14,8 @@
     <color name="font_color1">#bb000000</color>
     <color name="font_color2">#77000000</color>
     <color name="selected_color">#E64440</color>
+    <color name="alert_color">#ef3644</color>
+    <color name="alert_color_light">#fde3e5</color>
     <color name="confirm_bg_color">#FAF7EF</color>
     <color name="list_boader_color">#afafaf</color>
     <color name="dark_green">#6B8A4E</color>
