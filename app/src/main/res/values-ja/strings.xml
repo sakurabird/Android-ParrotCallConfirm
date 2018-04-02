@@ -10,9 +10,8 @@
     <string name="no">いいえ</string>
     <string name="information">お知らせ</string>
     <string name="action_settings">設定</string>
-    <string name="welcome">welcome!</string>
     <string name="please_choose">選択してください</string>
-    <string name="about">インコ発信確認は電話をかける前に確認ダイアログを表示します。</string>
+    <string name="welcome_message">welcome!インコ発信確認は電話をかける前に確認ダイアログを表示します。</string>
     <string name="share">共有</string>
     <string name="share_text">http://play.google.com/store/apps/details?id=com.sakurafish.parrot.callconfirm</string>
 

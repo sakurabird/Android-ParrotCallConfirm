@@ -1,245 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey_100"
-        android:orientation="vertical">
+        android:background="@color/grey_100">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <!-- welcome message -->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@color/primary">
 
-                <!-- welcome message -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/welcomeText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/primary">
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:text="@string/welcome_message"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/welcomeText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:layout_marginTop="@dimen/margin_medium"
-                        android:text="@string/welcome"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/font_medium" />
+                <TextView
+                    android:id="@+id/appVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/welcomeText"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/font_small" />
 
-                    <TextView
-                        android:id="@+id/appVersion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/welcomeText"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="@dimen/margin_xlarge"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/font_small" />
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/welcomeDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/welcomeText"
-                        android:layout_marginBottom="@dimen/margin_medium"
-                        android:layout_marginLeft="@dimen/margin_xlarge"
-                        android:layout_marginRight="@dimen/margin_xlarge"
-                        android:text="@string/about"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/font_small" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_small"
+                android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                android:contentDescription="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_shadow" />
 
-                </RelativeLayout>
+            <!-- alert -->
+            <RelativeLayout
+                android:id="@+id/alertMessageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:background="@drawable/main_alert_bg"
+                android:padding="@dimen/margin_large"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/alertMessageText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/alert_color" />
+
+            </RelativeLayout>
+
+            <!-- menu item -->
+            <com.andexert.library.RippleView
+                android:id="@+id/menu_setting"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/main_list_icon_margin_left"
+                android:paddingStart="@dimen/main_list_icon_margin_left">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/margin_small"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:id="@+id/image_setting"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/bg_shadow" />
+                    android:src="@drawable/inco2" />
 
-                <!-- alert -->
-                <RelativeLayout
-                    android:id="@+id/alertMessageView"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/text_setting"
+                    style="@style/MainListTextStyle"
+                    android:layout_toEndOf="@+id/image_setting"
+                    android:text="@string/action_settings" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/main_alert_bg"
-                    android:padding="@dimen/margin_large"
-                    android:visibility="gone">
+                    android:layout_alignStart="@+id/text_setting"
+                    android:layout_below="@+id/text_setting"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:text="@string/text_setting_description"
+                    android:textSize="@dimen/font_small" />
+            </com.andexert.library.RippleView>
 
-                    <TextView
-                        android:id="@+id/alertMessageText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/alert_color" />
+            <com.andexert.library.RippleView
+                android:id="@+id/menu_share"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_height"
+                android:paddingEnd="@dimen/main_list_icon_margin_left"
+                android:paddingStart="@dimen/main_list_icon_margin_left">
 
-                </RelativeLayout>
+                <ImageView
+                    android:id="@+id/image_share"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/inco3" />
 
-                <!-- menu item -->
-                <com.andexert.library.RippleView
-                    android:id="@+id/menu_setting"
-                    rv_centered="true"
-                    rv_color="@color/primary_light"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingEnd="@dimen/main_list_icon_margin_left"
-                    android:paddingStart="@dimen/main_list_icon_margin_left">
+                <TextView
+                    android:id="@+id/text_share"
+                    style="@style/MainListTextStyle"
+                    android:layout_toEndOf="@+id/image_share"
+                    android:text="@string/share" />
+            </com.andexert.library.RippleView>
 
-                    <ImageView
-                        android:id="@+id/image_setting"
-                        android:layout_width="@dimen/main_list_icon_size"
-                        android:layout_height="@dimen/main_list_icon_size"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@null"
-                        android:src="@drawable/inco2" />
+            <com.andexert.library.RippleView
+                android:id="@+id/menu_googleplay"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_height"
+                android:paddingEnd="@dimen/main_list_icon_margin_left"
+                android:paddingStart="@dimen/main_list_icon_margin_left">
 
-                    <TextView
-                        android:id="@+id/text_setting"
-                        style="@style/MainListTextStyle"
-                        android:layout_toEndOf="@+id/image_setting"
-                        android:text="@string/action_settings" />
+                <ImageView
+                    android:id="@+id/image_googleplay"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/inco4" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignStart="@+id/text_setting"
-                        android:layout_below="@+id/text_setting"
-                        android:layout_marginTop="@dimen/margin_large"
-                        android:text="@string/text_setting_description"
-                        android:textSize="@dimen/font_small" />
-                </com.andexert.library.RippleView>
+                <TextView
+                    android:id="@+id/text_googleplay"
+                    style="@style/MainListTextStyle"
+                    android:layout_toEndOf="@+id/image_googleplay"
+                    android:text="@string/text_google_play" />
+            </com.andexert.library.RippleView>
 
-                <com.andexert.library.RippleView
-                    android:id="@+id/menu_share"
-                    rv_centered="true"
-                    rv_color="@color/primary_light"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_row_height"
-                    android:paddingEnd="@dimen/main_list_icon_margin_left"
-                    android:paddingStart="@dimen/main_list_icon_margin_left">
+            <com.andexert.library.RippleView
+                android:id="@+id/menu_credit"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_height"
+                android:paddingEnd="@dimen/main_list_icon_margin_left"
+                android:paddingStart="@dimen/main_list_icon_margin_left">
 
-                    <ImageView
-                        android:id="@+id/image_share"
-                        android:layout_width="@dimen/main_list_icon_size"
-                        android:layout_height="@dimen/main_list_icon_size"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@null"
-                        android:src="@drawable/inco3" />
+                <ImageView
+                    android:id="@+id/image_credit"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/inco5" />
 
-                    <TextView
-                        android:id="@+id/text_share"
-                        style="@style/MainListTextStyle"
-                        android:layout_toEndOf="@+id/image_share"
-                        android:text="@string/share" />
-                </com.andexert.library.RippleView>
+                <TextView
+                    android:id="@+id/text_credit"
+                    style="@style/MainListTextStyle"
+                    android:layout_toEndOf="@+id/image_credit"
+                    android:text="@string/text_credit" />
+            </com.andexert.library.RippleView>
 
-                <com.andexert.library.RippleView
-                    android:id="@+id/menu_googleplay"
-                    rv_centered="true"
-                    rv_color="@color/primary_light"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_row_height"
-                    android:paddingEnd="@dimen/main_list_icon_margin_left"
-                    android:paddingStart="@dimen/main_list_icon_margin_left">
+            <com.andexert.library.RippleView
+                android:id="@+id/menu_mail_to_dev"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_height"
+                android:paddingEnd="@dimen/main_list_icon_margin_left"
+                android:paddingStart="@dimen/main_list_icon_margin_left">
 
-                    <ImageView
-                        android:id="@+id/image_googleplay"
-                        android:layout_width="@dimen/main_list_icon_size"
-                        android:layout_height="@dimen/main_list_icon_size"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@null"
-                        android:src="@drawable/inco4" />
+                <ImageView
+                    android:id="@+id/image_mail_to_dev"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/inco6" />
 
-                    <TextView
-                        android:id="@+id/text_googleplay"
-                        style="@style/MainListTextStyle"
-                        android:layout_toEndOf="@+id/image_googleplay"
-                        android:text="@string/text_google_play" />
-                </com.andexert.library.RippleView>
+                <TextView
+                    android:id="@+id/text_mail_to_dev"
+                    style="@style/MainListTextStyle"
+                    android:layout_toEndOf="@+id/image_mail_to_dev"
+                    android:text="@string/text_mail_to_dev" />
+            </com.andexert.library.RippleView>
 
-                <com.andexert.library.RippleView
-                    android:id="@+id/menu_credit"
-                    rv_centered="true"
-                    rv_color="@color/primary_light"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_row_height"
-                    android:paddingEnd="@dimen/main_list_icon_margin_left"
-                    android:paddingStart="@dimen/main_list_icon_margin_left">
+            <com.andexert.library.RippleView
+                android:id="@+id/menu_privacy_policy"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_height"
+                android:paddingEnd="@dimen/main_list_icon_margin_left"
+                android:paddingStart="@dimen/main_list_icon_margin_left">
 
-                    <ImageView
-                        android:id="@+id/image_credit"
-                        android:layout_width="@dimen/main_list_icon_size"
-                        android:layout_height="@dimen/main_list_icon_size"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@null"
-                        android:src="@drawable/inco5" />
+                <ImageView
+                    android:id="@+id/image_privacy_policy"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/inco7" />
 
-                    <TextView
-                        android:id="@+id/text_credit"
-                        style="@style/MainListTextStyle"
-                        android:layout_toEndOf="@+id/image_credit"
-                        android:text="@string/text_credit" />
-                </com.andexert.library.RippleView>
+                <TextView
+                    android:id="@+id/text_privacy_policy"
+                    style="@style/MainListTextStyle"
+                    android:layout_toEndOf="@+id/image_privacy_policy"
+                    android:text="@string/text_privacy_policy" />
+            </com.andexert.library.RippleView>
+        </LinearLayout>
+    </ScrollView>
 
-                <com.andexert.library.RippleView
-                    android:id="@+id/menu_mail_to_dev"
-                    rv_centered="true"
-                    rv_color="@color/primary_light"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_row_height"
-                    android:paddingEnd="@dimen/main_list_icon_margin_left"
-                    android:paddingStart="@dimen/main_list_icon_margin_left">
-
-                    <ImageView
-                        android:id="@+id/image_mail_to_dev"
-                        android:layout_width="@dimen/main_list_icon_size"
-                        android:layout_height="@dimen/main_list_icon_size"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@null"
-                        android:src="@drawable/inco6" />
-
-                    <TextView
-                        android:id="@+id/text_mail_to_dev"
-                        style="@style/MainListTextStyle"
-                        android:layout_toEndOf="@+id/image_mail_to_dev"
-                        android:text="@string/text_mail_to_dev" />
-                </com.andexert.library.RippleView>
-
-                <com.andexert.library.RippleView
-                    android:id="@+id/menu_privacy_policy"
-                    rv_centered="true"
-                    rv_color="@color/primary_light"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_row_height"
-                    android:paddingEnd="@dimen/main_list_icon_margin_left"
-                    android:paddingStart="@dimen/main_list_icon_margin_left">
-
-                    <ImageView
-                        android:id="@+id/image_privacy_policy"
-                        android:layout_width="@dimen/main_list_icon_size"
-                        android:layout_height="@dimen/main_list_icon_size"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@null"
-                        android:src="@drawable/inco7" />
-
-                    <TextView
-                        android:id="@+id/text_privacy_policy"
-                        style="@style/MainListTextStyle"
-                        android:layout_toEndOf="@+id/image_privacy_policy"
-                        android:text="@string/text_privacy_policy" />
-                </com.andexert.library.RippleView>
-            </LinearLayout>
-        </ScrollView>
-
-    </LinearLayout>
 </layout>
