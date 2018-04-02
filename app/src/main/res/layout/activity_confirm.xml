@@ -63,44 +63,6 @@
 
                 </RelativeLayout>
 
-                <!--<LinearLayout-->
-                <!--android:id="@+id/layout_top"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:background="@drawable/top_rounded_corner"-->
-                <!--android:orientation="vertical">-->
-
-                <!--<android.support.v7.widget.AppCompatImageView-->
-                <!--android:id="@+id/imageView_setting"-->
-                <!--android:layout_width="@dimen/confirm_setting_icon_size"-->
-                <!--android:layout_height="@dimen/confirm_setting_icon_size"-->
-                <!--android:layout_gravity="end"-->
-                <!--android:layout_margin="@dimen/activity_horizontal_margin"-->
-                <!--android:contentDescription="@null"-->
-                <!--android:tint="@color/primary_light"-->
-                <!--app:srcCompat="@drawable/ic_settings_black_24dp" />-->
-
-                <!--<com.sakurafish.parrot.callconfirm.ui.CircleRippleImageView-->
-                <!--android:id="@+id/imageView_callto"-->
-                <!--android:layout_width="@dimen/confirm_icon_size"-->
-                <!--android:layout_height="@dimen/confirm_icon_size"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:gravity="center"-->
-                <!--android:src="@drawable/no_image" />-->
-
-                <!--<TextView-->
-                <!--android:id="@+id/textView_title"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:layout_margin="@dimen/activity_horizontal_margin"-->
-                <!--android:text="@string/message_confirm1"-->
-                <!--android:textColor="@android:color/white"-->
-                <!--android:textSize="32sp" />-->
-
-                <!--</LinearLayout>-->
-
                 <ImageView
                     android:id="@+id/imageView_inco"
                     android:layout_width="40dp"

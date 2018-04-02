@@ -3,6 +3,7 @@ package com.sakurafish.parrot.callconfirm.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -11,11 +12,14 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.sakurafish.parrot.callconfirm.config.Config;
+import com.google.android.gms.ads.AdRequest;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.Pref.SoundSeekBarPreference;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.config.Config;
+import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
+import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 
 /**
@@ -23,6 +27,8 @@ import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
  * Created by sakura on 2015/03/24.
  */
 public class SettingActivity extends AppCompatActivity {
+
+    private ActivityMainBinding binding;
 
     public static Intent createIntent(@NonNull final Context context, @NonNull final Class clazz) {
         Intent intent = new Intent(context, clazz);
@@ -35,8 +41,16 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         getFragmentManager().beginTransaction().replace(R.id.content, new MyPreferenceFragment()).commit();
+
+        initLayout();
+    }
+
+    private void initLayout() {
+        // show AD banner
+        AdRequest adRequest = new AdsHelper(this).getAdRequest();
+        binding.adView.loadAd(adRequest);
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment {

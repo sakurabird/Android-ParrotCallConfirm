@@ -14,11 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.android.gms.ads.AdRequest;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
+import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -86,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initLayout() {
+
+        // show AD banner
+        AdRequest adRequest = new AdsHelper(mContext).getAdRequest();
+        binding.adView.loadAd(adRequest);
     }
 
     private void checkPermissions() {

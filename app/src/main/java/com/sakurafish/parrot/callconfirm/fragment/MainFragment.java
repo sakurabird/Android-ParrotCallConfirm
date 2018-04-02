@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.activity.SettingActivity;
@@ -20,7 +19,6 @@ import com.sakurafish.parrot.callconfirm.activity.WebViewActivity;
 import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.config.WebConsts;
 import com.sakurafish.parrot.callconfirm.databinding.FragmentMainBinding;
-import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
 
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermission;
 
@@ -98,26 +96,6 @@ public class MainFragment extends Fragment {
                         WebViewActivity.class,
                         WebConsts.LOCAL_PRIVACY_POLICY,
                         getString(R.string.text_privacy_policy))));
-
-        // show AD banner
-        AdRequest adRequest = new AdsHelper(mContext).getAdRequest();
-        binding.adView.loadAd(adRequest);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (binding.adView != null) {
-            binding.adView.resume();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (binding.adView != null) {
-            binding.adView.pause();
-        }
     }
 
     @Override
