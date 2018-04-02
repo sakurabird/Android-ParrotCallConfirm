@@ -32,7 +32,7 @@
                         android:layout_marginTop="@dimen/margin_medium"
                         android:text="@string/welcome"
                         android:textColor="@android:color/white"
-                        android:textSize="20sp" />
+                        android:textSize="@dimen/font_medium" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -71,6 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/alert_color" />
+
                 </RelativeLayout>
 
                 <!-- menu item -->
@@ -79,7 +80,7 @@
                     rv_centered="true"
                     rv_color="@color/primary_light"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/list_row_height"
+                    android:layout_height="wrap_content"
                     android:paddingEnd="@dimen/main_list_icon_margin_left"
                     android:paddingStart="@dimen/main_list_icon_margin_left">
 
@@ -96,6 +97,15 @@
                         style="@style/MainListTextStyle"
                         android:layout_toEndOf="@+id/image_setting"
                         android:text="@string/action_settings" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@+id/text_setting"
+                        android:layout_below="@+id/text_setting"
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:text="@string/text_setting_description"
+                        android:textSize="@dimen/font_small" />
                 </com.andexert.library.RippleView>
 
                 <com.andexert.library.RippleView
