@@ -111,6 +111,11 @@ public class MainFragment extends Fragment {
     }
 
     private void checkStatus() {
+        if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
+            binding.alertMessageView.setVisibility(View.GONE);
+            return;
+        }
+
         boolean hasAlert = false;
         StringBuilder message = new StringBuilder();
         message.append(getString(R.string.error_now_disabled));

@@ -46,5 +46,5 @@
     <string name="error_not_activated">このアプリは有効になっていません。</string>
     <string name="error_no_permission_call">「電話」権限が許可されていません。</string>
     <string name="error_no_permission_contact">「連絡先」権限が許可されていません。</string>
-    <string name="error_alert_refresh">\nタッチしてステータスを更新</string>
+    <string name="error_alert_refresh">\nここをタッチしてステータスを更新</string>
 </resources>
