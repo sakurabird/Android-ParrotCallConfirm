@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,10 @@ public final class Utils {
      */
     public static void showToast(Activity activity, String text) {
         LayoutInflater inflater = activity.getLayoutInflater();
-        View view = inflater.inflate(R.layout.views_toast, null);
+
+        final ViewGroup nullParent = null;
+        View view = inflater.inflate(R.layout.views_toast, nullParent);
+
         ImageView imageView = (ImageView) view.findViewById(R.id.icon);
         int rand = (int) (Math.random() * 10);
         switch (rand) {
@@ -119,8 +123,6 @@ public final class Utils {
 
     /**
      * version codeを取得する
-     *
-     * @return
      */
     public static int getVersionCode() {
         Context context = MyApplication.getContext();
@@ -139,8 +141,6 @@ public final class Utils {
 
     /**
      * version nameを取得する
-     *
-     * @return
      */
     public static String getVersionName() {
         Context context = MyApplication.getContext();

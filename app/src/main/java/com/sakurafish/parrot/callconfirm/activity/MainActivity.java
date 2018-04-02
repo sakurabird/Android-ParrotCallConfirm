@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         Utils.logDebug("no:" + messageNo + " message:" + messageText);
-
         new MaterialDialog.Builder(this)
                 .theme(Theme.LIGHT)
                 .title(getString(R.string.information))
