@@ -136,4 +136,21 @@ public final class Utils {
         }
         return versionCode;
     }
-}
+
+    /**
+     * version nameを取得する
+     *
+     * @return
+     */
+    public static String getVersionName() {
+        Context context = MyApplication.getContext();
+        PackageManager manager = context.getPackageManager();
+        PackageInfo info;
+        try {
+            info = manager.getPackageInfo(context.getPackageName(), 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }}

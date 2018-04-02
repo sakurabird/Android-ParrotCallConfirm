@@ -24,7 +24,7 @@
                     android:background="@color/primary">
 
                     <TextView
-                        android:id="@+id/welcometext"
+                        android:id="@+id/welcomeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -35,9 +35,20 @@
                         android:textSize="@dimen/font_medium" />
 
                     <TextView
+                        android:id="@+id/appVersion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/welcomeText"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/margin_xlarge"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/font_small" />
+
+                    <TextView
+                        android:id="@+id/welcomeDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/welcometext"
+                        android:layout_below="@+id/welcomeText"
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:layout_marginLeft="@dimen/margin_xlarge"
                         android:layout_marginRight="@dimen/margin_xlarge"

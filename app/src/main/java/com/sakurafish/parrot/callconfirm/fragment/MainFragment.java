@@ -19,6 +19,7 @@ import com.sakurafish.parrot.callconfirm.activity.WebViewActivity;
 import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.config.WebConsts;
 import com.sakurafish.parrot.callconfirm.databinding.FragmentMainBinding;
+import com.sakurafish.parrot.callconfirm.utils.Utils;
 
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermission;
 
@@ -56,7 +57,8 @@ public class MainFragment extends Fragment {
     }
 
     private void initLayout() {
-
+        String version = Utils.getVersionName();
+        binding.appVersion.setText(String.format(getString(R.string.text_app_version), version));
         binding.alertMessageView.setOnClickListener(v -> checkStatus());
 
         binding.menuSetting.setOnRippleCompleteListener
