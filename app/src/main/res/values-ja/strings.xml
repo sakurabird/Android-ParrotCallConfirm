@@ -22,7 +22,7 @@
     <string name="text_privacy_policy">プライバシーポリシー</string>
 
     <string name="setting_mail_to_dev2">【インコ発信確認】ご意見・ご要望</string>
-    <string name="setting_mail_to_dev3">インコ発信確認へのご意見・ご要望をご記入ください。\nユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。\n返信が必要な場合、sakurafish1@gmail.comというメールアドレスよりお送りいたします。\n--------------------\n</string>
+    <string name="setting_mail_to_dev3">インコ発信確認へのご意見・ご要望をご記入ください。\nユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。\n返信が必要な場合、sakurafish1@gmail.comというメールアドレスよりお送りいたします。 SDK:%1$s Device:%2$s\n--------------------\n</string>
     <string name="setting_confirm">発信確認を有効にする</string>
     <string name="setting_vibrate_title">バイブレーション</string>
     <string name="setting_vibrate">バイブレーションさせる</string>

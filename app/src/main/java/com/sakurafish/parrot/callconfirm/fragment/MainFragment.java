@@ -83,14 +83,7 @@ public class MainFragment extends Fragment {
                         getString(R.string.text_credit))));
 
         binding.menuMailToDev.setOnRippleCompleteListener(rippleView -> {
-            Intent intent = new Intent(Intent.ACTION_SENDTO);
-            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"sakurafish1@gmail.com"});
-            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.setting_mail_to_dev2));
-            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.setting_mail_to_dev3));
-            if (intent.resolveActivity(mContext.getPackageManager()) != null) {
-                startActivity(intent);
-            }
+            sendMail();
         });
 
         binding.menuPrivacyPolicy.setOnRippleCompleteListener
@@ -156,5 +149,19 @@ public class MainFragment extends Fragment {
         binding.alertMessageView.setVisibility(View.VISIBLE);
         message.append(getString(R.string.error_alert_refresh));
         binding.alertMessageText.setText(message.toString());
+    }
+
+    private void sendMail() {
+        String mailBody = String.format(getString(R.string.setting_mail_to_dev3),
+                android.os.Build.VERSION.RELEASE, Utils.getDeviceName());
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"sakurafish1@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.setting_mail_to_dev2));
+        intent.putExtra(Intent.EXTRA_TEXT, mailBody);
+        if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
