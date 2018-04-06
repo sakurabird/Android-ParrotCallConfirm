@@ -103,6 +103,30 @@
             </com.andexert.library.RippleView>
 
             <com.andexert.library.RippleView
+                android:id="@+id/menu_help"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_height"
+                android:paddingEnd="@dimen/main_list_icon_margin_left"
+                android:paddingStart="@dimen/main_list_icon_margin_left">
+
+                <ImageView
+                    android:id="@+id/image_help"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/inco3" />
+
+                <TextView
+                    android:id="@+id/text_help"
+                    style="@style/MainListTextStyle"
+                    android:layout_toEndOf="@+id/image_help"
+                    android:text="@string/text_help" />
+            </com.andexert.library.RippleView>
+
+            <com.andexert.library.RippleView
                 android:id="@+id/menu_share"
                 rv_centered="true"
                 rv_color="@color/primary_light"
@@ -117,7 +141,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco3" />
+                    android:src="@drawable/inco4" />
 
                 <TextView
                     android:id="@+id/text_share"
@@ -141,7 +165,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco4" />
+                    android:src="@drawable/inco5" />
 
                 <TextView
                     android:id="@+id/text_googleplay"
@@ -165,7 +189,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco5" />
+                    android:src="@drawable/inco6" />
 
                 <TextView
                     android:id="@+id/text_credit"
@@ -189,7 +213,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco6" />
+                    android:src="@drawable/inco7" />
 
                 <TextView
                     android:id="@+id/text_mail_to_dev"
@@ -213,7 +237,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco7" />
+                    android:src="@drawable/inco8" />
 
                 <TextView
                     android:id="@+id/text_privacy_policy"

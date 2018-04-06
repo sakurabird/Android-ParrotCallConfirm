@@ -64,6 +64,12 @@ public class MainFragment extends Fragment {
         binding.menuSetting.setOnRippleCompleteListener
                 (rippleView -> startActivity(SettingActivity.createIntent(mContext, SettingActivity.class)));
 
+        binding.menuHelp.setOnRippleCompleteListener(
+                rippleView -> startActivity(WebViewActivity.createIntent(mContext,
+                        WebViewActivity.class,
+                        WebConsts.LOCAL_HELP,
+                        getString(R.string.text_help))));
+
         binding.menuShare.setOnRippleCompleteListener(rippleView -> {
             final Intent intent = new Intent();
             intent.setAction(Intent.ACTION_SEND);

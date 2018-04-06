@@ -16,6 +16,7 @@
     <string name="share_text">http://play.google.com/store/apps/details?id=com.sakurafish.parrot.callconfirm</string>
 
     <string name="text_setting_description">発信確認サウンドを変えられます！</string>
+    <string name="text_help">ヘルプ</string>
     <string name="text_google_play">Google Playに行く</string>
     <string name="text_credit">クレジット</string>
     <string name="text_mail_to_dev">開発者にメールを送る</string>
@@ -27,8 +28,8 @@
     <string name="setting_vibrate_title">バイブレーション</string>
     <string name="setting_vibrate">バイブレーションさせる</string>
     <string name="setting_vibrate_select">バイブレーションパターンを選択</string>
-    <string name="setting_sound_on_title">インコ音を鳴らす</string>
-    <string name="setting_sound1">インコ音を選択</string>
+    <string name="setting_sound_on_title">音を鳴らす</string>
+    <string name="setting_sound1">音を選択</string>
     <string name="setting_sound2">音量</string>
     <string name="message_info1">あなたは電話をかけようとしています…</string>
     <string name="message_info2">確認</string>
