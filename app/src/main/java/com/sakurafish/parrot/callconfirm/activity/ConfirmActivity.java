@@ -125,7 +125,7 @@ public class ConfirmActivity extends AppCompatActivity {
             Pref.setPref(mContext, getString(R.string.PREF_CONFIRM), false);
             Pref.setPref(mContext, PREF_STATE_INVALID_TELNO, true);
             startActivity(MainActivity.createIntent(mContext, MainActivity.class));
-            Utils.showToast(getString(R.string.error_cannot_get_phonenumber));
+            Utils.showToast(this, getString(R.string.error_cannot_get_phonenumber));
             ConfirmActivity.this.finish();
         }
     }
@@ -155,12 +155,13 @@ public class ConfirmActivity extends AppCompatActivity {
         });
 
         binding.buttonNo.setOnClickListener(v -> {
-            Utils.showToast(getString(R.string.message_telephone_canceled));
+            Utils.showToast(this, getString(R.string.message_telephone_canceled));
             Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
             ConfirmActivity.this.finish();
         });
 
         binding.imageViewSetting.setOnClickListener(v -> {
+            Utils.showToast(this, getString(R.string.message_telephone_canceled));
             Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
             startActivity(MainActivity.createIntent(mContext, MainActivity.class));
             ConfirmActivity.this.finish();

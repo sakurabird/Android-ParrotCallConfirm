@@ -45,11 +45,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/imageView_callto"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:text="@string/message_confirm1"
                         android:textColor="@android:color/white"
-                        android:textSize="32sp" />
+                        android:textSize="28sp" />
 
                     <android.support.v7.widget.AppCompatImageView
                         android:id="@+id/imageView_setting"
@@ -115,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="52dp"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:background="@color/primary_dark"
+                        android:background="@color/accent"
                         android:text="@string/call" />
                 </LinearLayout>
 
