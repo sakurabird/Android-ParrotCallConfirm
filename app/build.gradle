@@ -89,7 +89,7 @@ android {
 
 ext {
     supportLibraryVersion = '25.4.0'
-    firebaseVersion = '12.0.0'
+    firebaseVersion = '12.0.1'
 }
 
 dependencies {
