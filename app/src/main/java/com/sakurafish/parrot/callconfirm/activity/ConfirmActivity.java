@@ -1,8 +1,10 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -51,6 +53,9 @@ public class ConfirmActivity extends AppCompatActivity {
     private boolean hasVolumeChanged;
     private int mOriginalVolume;
 
+    private BroadcastReceiver mScreenOffReceiver;
+    private BroadcastReceiver mHomeKeyReceiver;
+
     private boolean shouldShowPermissionsDialog = true;
     private boolean shouldShowRationalDialog = true;
 
@@ -58,7 +63,10 @@ public class ConfirmActivity extends AppCompatActivity {
                                       @NonNull final Class clazz,
                                       @NonNull final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+
         Bundle bundle = new Bundle();
         bundle.putString(Config.INTENT_EXTRAS_PHONENUMBER, phoneNumber);
         intent.putExtras(bundle);
@@ -110,9 +118,28 @@ public class ConfirmActivity extends AppCompatActivity {
         int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
 
+        setupReceiver();
         checkPhoneNumber();
         notifyAppMessage();
         checkPermissions();
+    }
+
+    private void setupReceiver() {
+        mScreenOffReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                new Handler().post(() -> finishActivity());
+            }
+        };
+        registerReceiver(mScreenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+
+        mHomeKeyReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                new Handler().post(() -> finishActivity());
+            }
+        };
+        registerReceiver(mHomeKeyReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
     }
 
     private void checkPhoneNumber() {
@@ -234,6 +261,7 @@ public class ConfirmActivity extends AppCompatActivity {
         ConfirmActivity.this.finish();
         overridePendingTransition(0, 0);
     }
+
     @Override
     public void onBackPressed() {
         Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
@@ -250,8 +278,16 @@ public class ConfirmActivity extends AppCompatActivity {
                 am.setStreamVolume(AudioManager.STREAM_MUSIC, mOriginalVolume, 0);
             }
         }
-        mContext = null;
-        mPhoneNumber = null;
-    }
 
+        try {
+            unregisterReceiver(mHomeKeyReceiver);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        try {
+            unregisterReceiver(mScreenOffReceiver);
+        } catch (Exception exception1) {
+            exception1.printStackTrace();
+        }
+    }
 }
