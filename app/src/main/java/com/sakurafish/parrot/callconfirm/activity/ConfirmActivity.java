@@ -58,10 +58,7 @@ public class ConfirmActivity extends AppCompatActivity {
                                       @NonNull final Class clazz,
                                       @NonNull final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
         bundle.putString(Config.INTENT_EXTRAS_PHONENUMBER, phoneNumber);
         intent.putExtras(bundle);
@@ -126,7 +123,7 @@ public class ConfirmActivity extends AppCompatActivity {
             Pref.setPref(mContext, PREF_STATE_INVALID_TELNO, true);
             startActivity(MainActivity.createIntent(mContext, MainActivity.class));
             Utils.showToast(this, getString(R.string.error_cannot_get_phonenumber));
-            ConfirmActivity.this.finish();
+            finishActivity();
         }
     }
 
@@ -151,20 +148,20 @@ public class ConfirmActivity extends AppCompatActivity {
             Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
             String number = "tel:" + mPhoneNumber.trim();
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
-            ConfirmActivity.this.finish();
+            finishActivity();
         });
 
         binding.buttonNo.setOnClickListener(v -> {
             Utils.showToast(this, getString(R.string.message_telephone_canceled));
             Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-            ConfirmActivity.this.finish();
+            finishActivity();
         });
 
         binding.imageViewSetting.setOnClickListener(v -> {
             Utils.showToast(this, getString(R.string.message_telephone_canceled));
             Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
             startActivity(MainActivity.createIntent(mContext, MainActivity.class));
-            ConfirmActivity.this.finish();
+            finishActivity();
         });
     }
 
@@ -233,6 +230,10 @@ public class ConfirmActivity extends AppCompatActivity {
         Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
     }
 
+    private void finishActivity() {
+        ConfirmActivity.this.finish();
+        overridePendingTransition(0, 0);
+    }
     @Override
     public void onBackPressed() {
         Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
