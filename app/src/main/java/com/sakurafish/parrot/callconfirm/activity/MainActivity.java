@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -78,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         mContext = this;
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);

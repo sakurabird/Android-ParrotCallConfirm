@@ -4,14 +4,17 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.support.annotation.NonNull;
+import android.util.SparseIntArray;
 
 import com.sakurafish.parrot.callconfirm.MyApplication;
+import com.sakurafish.parrot.callconfirm.config.Config;
 
 public class SoundManager {
 
-    private static SoundManager sSoundManager = null;
-    private static Context sContext;
-    public static SoundPool sSoundPool;
+    private static SoundManager soundManager = null;
+    private SoundPool soundPool;
+    private SparseIntArray soundPoolMap = new SparseIntArray();
+
     private static float rate = 1.0f;
     private static float masterVolume = 1.0f;
     private static float leftVolume = 1.0f;
@@ -19,28 +22,33 @@ public class SoundManager {
     private static float balance = 0.5f;
 
     private SoundManager(@NonNull final Context context) {
-        sSoundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-        sContext = context;
+        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        // Initialize Sounds
+        for (int soundId : Config.SOUND_IDS) {
+            soundPoolMap.put(soundId, soundPool.load(context, soundId, 1));
+        }
     }
 
     @NonNull
     public static SoundManager getInstance(@NonNull final Context context) {
-        if (sSoundManager == null) {
-            sSoundManager = new SoundManager(context);
+        if (soundManager == null) {
+            soundManager = new SoundManager(context);
         }
-        return sSoundManager;
+        return soundManager;
     }
 
-    public int load(final int sound_id) {
-        return sSoundPool.load(sContext, sound_id, 1);
+    public int play(final int soundID) {
+        boolean hasSound = soundPoolMap.indexOfKey(soundID) >= 0;
+        if (!hasSound) {
+            return 0;
+        }
+
+        final int id = soundPool.play(soundPoolMap.get(soundID), leftVolume, rightVolume, 1, 0, rate);
+        return id;
     }
 
-    public void play(final int sound_id) {
-        sSoundPool.play(sound_id, leftVolume, rightVolume, 1, 0, rate);
-    }
-
-    public void stop(final int sound_id) {
-        sSoundPool.stop(sound_id);
+    public void stop(final int soundID) {
+        soundPool.stop(soundID);
     }
 
     public void setVolume(final float vol) {
@@ -70,12 +78,12 @@ public class SoundManager {
         setVolume(masterVolume);
     }
 
-    public static int getOriginalVolume() {
+    public static int getStreamVolume() {
         AudioManager am = (AudioManager) MyApplication.getContext().getSystemService(Context.AUDIO_SERVICE);
         return am.getStreamVolume(AudioManager.STREAM_MUSIC);
     }
 
     public void unloadAll() {
-        sSoundPool.release();
+        soundPool.release();
     }
 }

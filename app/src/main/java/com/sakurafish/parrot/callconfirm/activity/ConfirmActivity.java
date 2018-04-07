@@ -55,6 +55,8 @@ public class ConfirmActivity extends AppCompatActivity {
     private boolean shouldShowPermissionsDialog = true;
     private boolean shouldShowRationalDialog = true;
 
+    private int soundID;
+
     public static Intent createIntent(@NonNull final Context context,
                                       @NonNull final Class clazz,
                                       @NonNull final String phoneNumber) {
@@ -94,7 +96,7 @@ public class ConfirmActivity extends AppCompatActivity {
         if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
             new Handler().postDelayed(() -> {
                 if (!isFinishing() && !isDestroyed() && mContext != null) {
-                    CallConfirmUtils.playSound(mContext);
+                    soundID = CallConfirmUtils.playSound(mContext);
                 }
             }, 1000);
         }
@@ -259,12 +261,14 @@ public class ConfirmActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-        ConfirmActivity.this.finish();
+        finishActivity();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        CallConfirmUtils.stopSound(soundID);
 
         try {
             unregisterReceiver(mHomeKeyReceiver);

@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.config.Config;
 
 import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_NOT_REPEAT;
 import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN0;
@@ -83,7 +84,7 @@ public final class CallConfirmUtils {
         }
     }
 
-    public static void playSound(@NonNull final Context context) {
+    public static int playSound(@NonNull final Context context) {
         String s = Pref.getPrefString(context, context.getString(R.string.PREF_SOUND), "0");
         int idx = 0;
         try {
@@ -91,7 +92,11 @@ public final class CallConfirmUtils {
         } catch (NumberFormatException e) {
             Utils.logError(e.getLocalizedMessage());
         }
-        MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
+        return MyApplication.getInstance().getSoundManager().play(Config.SOUND_IDS[idx]);
+    }
+
+    public static void stopSound(int soundID) {
+        MyApplication.getInstance().getSoundManager().stop(soundID);
     }
 
     @Deprecated

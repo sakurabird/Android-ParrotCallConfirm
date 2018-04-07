@@ -1,5 +1,7 @@
 package com.sakurafish.parrot.callconfirm.config;
 
+import com.sakurafish.parrot.callconfirm.R;
+
 public class Config {
 
     // preference
@@ -29,6 +31,16 @@ public class Config {
     public static final long[] VIBRATOR_PATTERN3 = {0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
     public static final long[] VIBRATOR_PATTERN4 = {0, 1000, 100, 1000, 100, 1000};
     public static final int VIBRATOR_NOT_REPEAT = -1;
+
+    // Sounds
+    public static final int SOUND_INCO1 = R.raw.inco1;
+    public static final int SOUND_INCO2 = R.raw.inco2;
+    public static final int SOUND_INCO3 = R.raw.inco3;
+    public static final int SOUND_INCO4 = R.raw.inco4;
+    public static final int SOUND_INCO5 = R.raw.inco5;
+    public static final int[] SOUND_IDS = {
+            SOUND_INCO1, SOUND_INCO2, SOUND_INCO3, SOUND_INCO4, SOUND_INCO5
+    };
 
     private Config() {
     }

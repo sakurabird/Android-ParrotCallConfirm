@@ -92,7 +92,7 @@ public class SettingActivity extends AppCompatActivity {
                 int index = list.findIndexOfValue(newValue.toString());
                 if (index != -1) {
                     //音を鳴らす
-                    MyApplication.getSoundManager().play(MyApplication.getSoundIds()[index]);
+                    MyApplication.getInstance().getSoundManager().play(Config.SOUND_IDS[index]);
                     String[] array = getResources().getStringArray(R.array.setting_sound);
                     list.setSummary(array[index]);
                 }
