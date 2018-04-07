@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityConfirmBinding;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 import com.sakurafish.parrot.callconfirm.utils.ContactUtils;
-import com.sakurafish.parrot.callconfirm.utils.SoundManager;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -50,8 +48,6 @@ public class ConfirmActivity extends AppCompatActivity {
     private ActivityConfirmBinding binding;
     private Context mContext;
     private String mPhoneNumber;
-    private boolean hasVolumeChanged;
-    private int mOriginalVolume;
 
     private BroadcastReceiver mScreenOffReceiver;
     private BroadcastReceiver mHomeKeyReceiver;
@@ -98,9 +94,9 @@ public class ConfirmActivity extends AppCompatActivity {
         if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
             new Handler().postDelayed(() -> {
                 if (!isFinishing() && !isDestroyed() && mContext != null) {
-                    hasVolumeChanged = CallConfirmUtils.playSound(mContext);
+                    CallConfirmUtils.playSound(mContext);
                 }
-            }, 1500);
+            }, 1000);
         }
 
         // 端末をバイブレートさせる
@@ -112,8 +108,6 @@ public class ConfirmActivity extends AppCompatActivity {
 
     private void init() {
         mContext = this;
-
-        mOriginalVolume = SoundManager.getOriginalVolume();
 
         int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
@@ -271,13 +265,6 @@ public class ConfirmActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        if (hasVolumeChanged) {
-            AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-            if (am != null) {
-                am.setStreamVolume(AudioManager.STREAM_MUSIC, mOriginalVolume, 0);
-            }
-        }
 
         try {
             unregisterReceiver(mHomeKeyReceiver);

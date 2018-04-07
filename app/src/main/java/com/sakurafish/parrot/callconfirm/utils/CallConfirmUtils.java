@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
@@ -84,8 +83,7 @@ public final class CallConfirmUtils {
         }
     }
 
-    public static boolean playSound(@NonNull final Context context) {
-        boolean hasVolumeChanged = false;
+    public static void playSound(@NonNull final Context context) {
         String s = Pref.getPrefString(context, context.getString(R.string.PREF_SOUND), "0");
         int idx = 0;
         try {
@@ -93,17 +91,7 @@ public final class CallConfirmUtils {
         } catch (NumberFormatException e) {
             Utils.logError(e.getLocalizedMessage());
         }
-        if (Pref.isExistKey(context, context.getString(R.string.PREF_SOUND_VOLUME))) {
-            hasVolumeChanged = true;
-
-            AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            int newVolume = Pref.getPrefInt(context, context.getString(R.string.PREF_SOUND_VOLUME));
-            if (am != null) {
-                am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-            }
-        }
         MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
-        return hasVolumeChanged;
     }
 
     @Deprecated

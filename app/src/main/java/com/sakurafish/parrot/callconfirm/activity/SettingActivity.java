@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
@@ -15,7 +14,6 @@ import android.text.TextUtils;
 import com.google.android.gms.ads.AdRequest;
 import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
-import com.sakurafish.parrot.callconfirm.Pref.SoundSeekBarPreference;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
@@ -99,22 +97,6 @@ public class SettingActivity extends AppCompatActivity {
                     list.setSummary(array[index]);
                 }
                 return true;
-            });
-
-            final SoundSeekBarPreference volume = (SoundSeekBarPreference) findPreference(getString(R.string.PREF_SOUND_VOLUME));
-            volume.setOnVolumeChangedListerner(() -> {
-                int index = Integer.parseInt(Pref.getPrefString(mContext, mContext.getString(R.string.PREF_SOUND)));
-                int voiceIdx = MyApplication.getSoundIds()[index];
-
-                MyApplication.getSoundManager().stop(voiceIdx);
-
-                AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-                int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
-                if (am != null) {
-                    am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-                }
-
-                MyApplication.getSoundManager().play(voiceIdx);
             });
         }
     }
