@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- setting -->
+    <string-array name="setting_sound">
+        <item>インコの声1</item>
+        <item>インコの声2</item>
+        <item>インコの声3</item>
+        <item>インコの声4</item>
+        <item>インコの声5</item>
+    </string-array>
+    <string-array name="setting_sound_desc">
+        <item>キリリとしたインコ音</item>
+        <item>ヒナのインコ音</item>
+        <item>喋っているインコ音</item>
+        <item>ワイワイしているインコ音</item>
+        <item>気持ちよくさえずるインコ音</item>
+    </string-array>
+</resources>

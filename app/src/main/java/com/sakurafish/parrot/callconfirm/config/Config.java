@@ -11,6 +11,7 @@ public class Config {
     public static final String PREF_VIBRATE_PATTERN = "PREF_VIBRATE_PATTERN";
     public static final String PREF_SOUND_ON = "PREF_SOUND_ON";
     public static final String PREF_SOUND = "PREF_SOUND";
+    public static final String PREF_SOUND_PLAY_SWITCH= "PREF_SOUND_PLAY_SWITCH";
     public static final String PREF_CREDIT = "PREF_CREDIT";
     public static final String PREF_MAIL_TO_DEV = "PREF_MAIL_TO_DEV";
     public static final String PREF_AFTER_CONFIRM = "PREF_AFTER_CONFIRM";

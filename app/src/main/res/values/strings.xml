@@ -8,6 +8,8 @@
     <string name="cancel">CANCEL</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
     <string name="information">Information</string>
     <string name="action_settings">Settings</string>
     <string name="please_choose">Please Select</string>
@@ -33,6 +35,8 @@
     <string name="setting_sound_on_title">Sound On</string>
     <string name="setting_sound1">Select Sound</string>
     <string name="setting_sound2">Sound volume</string>
+    <string name="setting_sound_play_switch">
+When you Click these line, you can hear the sound. If you turn this switch off, it will not play.</string>
     <string name="message_info1">You are making a phone call…</string>
     <string name="message_info2">Confirm</string>
     <string name="message_confirm1">Call Confirm</string>

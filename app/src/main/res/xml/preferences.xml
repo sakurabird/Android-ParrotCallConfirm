@@ -31,15 +31,8 @@
             android:defaultValue="true"
             android:key="@string/PREF_SOUND_ON"
             android:title="@string/setting_sound_on_title" />
-        <ListPreference
-            android:defaultValue="0"
-            android:dependency="@string/PREF_SOUND_ON"
-            android:dialogIcon="@mipmap/ic_launcher"
-            android:dialogTitle="@string/please_choose"
-            android:entries="@array/setting_sound"
-            android:entryValues="@array/setting_sound_value"
+        <com.sakurafish.parrot.callconfirm.Pref.PrefSounds
             android:key="@string/PREF_SOUND"
-            android:summary="%s"
-            android:title="@string/setting_sound1" />
+            android:layout="@layout/row_preference" />
     </PreferenceCategory>
 </PreferenceScreen>

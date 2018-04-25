@@ -17,11 +17,18 @@
         <item>4</item>
     </string-array>
     <string-array name="setting_sound">
-        <item>bird voice1</item>
-        <item>bird voice2</item>
-        <item>bird voice3</item>
-        <item>bird voice4</item>
-        <item>bird voice5</item>
+        <item>parakeet sound1</item>
+        <item>parakeet sound2</item>
+        <item>parakeet sound3</item>
+        <item>parakeet sound4</item>
+        <item>parakeet sound5</item>
+    </string-array>
+    <string-array name="setting_sound_desc">
+        <item>Crisp barks</item>
+        <item>Cry of chicks</item>
+        <item>Chirping sound</item>
+        <item>Buzz sound</item>
+        <item>Pleasant chirping</item>
     </string-array>
     <string-array name="setting_sound_value">
         <item>0</item>
