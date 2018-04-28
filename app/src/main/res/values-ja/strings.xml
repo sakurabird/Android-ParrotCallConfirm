@@ -16,6 +16,7 @@
     <string name="share_text">http://play.google.com/store/apps/details?id=com.sakurafish.parrot.callconfirm</string>
 
     <string name="text_setting_description">発信確認サウンドを変えられます！</string>
+    <string name="text_information">お知らせ・更新情報</string>
     <string name="text_help">ヘルプ</string>
     <string name="text_google_play">Google Playに行く</string>
     <string name="text_credit">クレジット</string>

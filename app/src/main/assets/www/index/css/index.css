@@ -32,3 +32,7 @@ p.right {
 	text-align: right;
 	margin-bottom: 10px;
 }
+.date {
+    color:#999999;
+    font-size:0.9em;
+}

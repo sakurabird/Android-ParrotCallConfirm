@@ -22,8 +22,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginStart="@dimen/activity_horizontal_margin"
                     android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:text="@string/welcome_message"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
@@ -44,7 +45,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/activity_horizontal_margin"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/bg_shadow" />
@@ -56,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:background="@drawable/main_alert_bg"
                 android:padding="@dimen/margin_large"
                 android:visibility="gone">
@@ -68,7 +69,8 @@
 
             </RelativeLayout>
 
-            <!-- menu item -->
+            <!-- menu items -->
+            <!-- Settings -->
             <com.andexert.library.RippleView
                 android:id="@+id/menu_setting"
                 rv_centered="true"
@@ -88,20 +90,51 @@
 
                 <TextView
                     android:id="@+id/text_setting"
-                    style="@style/MainListTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_xxlarge"
+                    android:layout_marginTop="@dimen/margin_medium"
                     android:layout_toEndOf="@+id/image_setting"
-                    android:text="@string/action_settings" />
+                    android:text="@string/action_settings"
+                    android:textSize="@dimen/font_large" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/text_setting"
                     android:layout_below="@+id/text_setting"
-                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:layout_marginTop="@dimen/margin_small"
                     android:text="@string/text_setting_description"
                     android:textSize="@dimen/font_small" />
             </com.andexert.library.RippleView>
 
+            <!-- Information -->
+            <com.andexert.library.RippleView
+                android:id="@+id/menu_information"
+                rv_centered="true"
+                rv_color="@color/primary_light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_height"
+                android:paddingEnd="@dimen/main_list_icon_margin_left"
+                android:paddingStart="@dimen/main_list_icon_margin_left">
+
+                <ImageView
+                    android:id="@+id/image_information"
+                    android:layout_width="@dimen/main_list_icon_size"
+                    android:layout_height="@dimen/main_list_icon_size"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@null"
+                    android:src="@drawable/inco3" />
+
+                <TextView
+                    android:id="@+id/text_information"
+                    style="@style/MainListTextStyle"
+                    android:layout_toEndOf="@+id/image_information"
+                    android:text="@string/text_information" />
+            </com.andexert.library.RippleView>
+
+            <!-- Help -->
             <com.andexert.library.RippleView
                 android:id="@+id/menu_help"
                 rv_centered="true"
@@ -117,7 +150,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco3" />
+                    android:src="@drawable/inco4" />
 
                 <TextView
                     android:id="@+id/text_help"
@@ -126,6 +159,7 @@
                     android:text="@string/text_help" />
             </com.andexert.library.RippleView>
 
+            <!-- Share -->
             <com.andexert.library.RippleView
                 android:id="@+id/menu_share"
                 rv_centered="true"
@@ -141,7 +175,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco4" />
+                    android:src="@drawable/inco5" />
 
                 <TextView
                     android:id="@+id/text_share"
@@ -150,6 +184,7 @@
                     android:text="@string/share" />
             </com.andexert.library.RippleView>
 
+            <!-- Google Play -->
             <com.andexert.library.RippleView
                 android:id="@+id/menu_googleplay"
                 rv_centered="true"
@@ -165,7 +200,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco5" />
+                    android:src="@drawable/inco6" />
 
                 <TextView
                     android:id="@+id/text_googleplay"
@@ -174,6 +209,7 @@
                     android:text="@string/text_google_play" />
             </com.andexert.library.RippleView>
 
+            <!-- Credit -->
             <com.andexert.library.RippleView
                 android:id="@+id/menu_credit"
                 rv_centered="true"
@@ -189,7 +225,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco6" />
+                    android:src="@drawable/inco7" />
 
                 <TextView
                     android:id="@+id/text_credit"
@@ -198,6 +234,7 @@
                     android:text="@string/text_credit" />
             </com.andexert.library.RippleView>
 
+            <!-- Mail to developer -->
             <com.andexert.library.RippleView
                 android:id="@+id/menu_mail_to_dev"
                 rv_centered="true"
@@ -213,7 +250,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco7" />
+                    android:src="@drawable/inco8" />
 
                 <TextView
                     android:id="@+id/text_mail_to_dev"
@@ -222,6 +259,7 @@
                     android:text="@string/text_mail_to_dev" />
             </com.andexert.library.RippleView>
 
+            <!-- Privacy policy -->
             <com.andexert.library.RippleView
                 android:id="@+id/menu_privacy_policy"
                 rv_centered="true"
@@ -237,7 +275,7 @@
                     android:layout_height="@dimen/main_list_icon_size"
                     android:layout_centerVertical="true"
                     android:contentDescription="@null"
-                    android:src="@drawable/inco8" />
+                    android:src="@drawable/inco9" />
 
                 <TextView
                     android:id="@+id/text_privacy_policy"

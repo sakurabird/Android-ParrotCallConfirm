@@ -18,6 +18,7 @@
     <string name="share_text">http://play.google.com/store/apps/details?id=com.sakurafish.parrot.callconfirm</string>
 
     <string name="text_setting_description">You can change confirm sound!</string>
+    <string name="text_information">Information</string>
     <string name="text_help">Help</string>
     <string name="text_google_play">Go to Google Play</string>
     <string name="text_credit">Credit</string>
