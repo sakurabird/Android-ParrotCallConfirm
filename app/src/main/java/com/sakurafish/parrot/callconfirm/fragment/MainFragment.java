@@ -117,7 +117,7 @@ public class MainFragment extends Fragment {
         mContext = null;
     }
 
-    private void checkStatus() {
+    public void checkStatus() {
         if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
             binding.alertMessageView.setVisibility(View.GONE);
             return;

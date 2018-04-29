@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
@@ -127,7 +128,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], int[] grantResults) {
+        if (mContent instanceof MainFragment) {
+            MainFragment mainFragment = (MainFragment) mContent;
+            mainFragment.checkStatus();
+        }
         for (int i = 0; i < permissions.length; i++) {
             if (grantResults.length <= i || grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 if (!shouldShowRational(MainActivity.this, permissions[i])) {
