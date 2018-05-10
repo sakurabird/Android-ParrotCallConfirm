@@ -22,6 +22,19 @@
         <item>parakeet sound3</item>
         <item>parakeet sound4</item>
         <item>parakeet sound5</item>
+        <item>parakeet sound6</item>
+        <item>parakeet sound7</item>
+        <item>parakeet sound8</item>
+        <item>parakeet sound9</item>
+        <item>parakeet sound10</item>
+        <item>ring sound1</item>
+        <item>ring sound2</item>
+        <item>other birds sound1</item>
+        <item>other birds sound2</item>
+        <item>other birds sound3</item>
+        <item>other birds sound4</item>
+        <item>animal sound1</item>
+        <item>animal sound2</item>
     </string-array>
     <string-array name="setting_sound_desc">
         <item>Crisp barks</item>
@@ -29,6 +42,19 @@
         <item>Chirping sound</item>
         <item>Buzz sound</item>
         <item>Pleasant chirping</item>
+        <item>Something talking</item>
+        <item>Pretty chirping</item>
+        <item>Pleasant twitter</item>
+        <item>Java sparrow chirping</item>
+        <item>Java sparrow chirping2</item>
+        <item>Electronic sound1</item>
+        <item>Electronic sound2</item>
+        <item>Japanese Bush Warbler</item>
+        <item>Cuckoo</item>
+        <item>Chicken1</item>
+        <item>Chicken2</item>
+        <item>Cat</item>
+        <item>Dog</item>
     </string-array>
     <string-array name="setting_sound_value">
         <item>0</item>
@@ -36,5 +62,10 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
     </string-array>
 </resources>
