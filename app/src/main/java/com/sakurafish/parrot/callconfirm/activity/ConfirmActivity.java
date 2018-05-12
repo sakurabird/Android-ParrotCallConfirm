@@ -212,7 +212,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
 
     private void retrieveAppMessage() {
-        final String url = getString(R.string.URL_APP_MESSAGE);
+        final String url = "http://sakuraapp.web.fc2.com/sakurafish_message.json";
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
