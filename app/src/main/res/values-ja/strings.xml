@@ -33,4 +33,9 @@
     <string name="message_request_permissions2">このアプリは電話発信をキャッチし連絡先を表示し発信を行うためにパーミッションの許可が必須となります。許可していただくようお願いいたします。</string>
     <string name="message_request_permissions3">このアプリはパーミッションが許可されていないと正しく動作いたしません。アプリ設定画面の「権限」から許可していただくようお願いいたします。</string>
 
+    <!-- Last message of this SDK version -->
+    <string name="message_last">このAndroidバージョンのサポートを終了することにいたしました。
+        引き続きご利用いただけますが、新しい機能を使うには端末をアップデートする必要がございます。
+        ご不便おかけしますがご了承下さいませ。</string>
+
 </resources>

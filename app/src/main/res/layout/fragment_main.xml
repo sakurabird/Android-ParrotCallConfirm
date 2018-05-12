@@ -30,16 +30,16 @@
                     android:layout_marginTop="5dp"
                     android:text="@string/welcome"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/font_small" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/text"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginLeft="@dimen/margin_xlarge"
                     android:layout_marginRight="@dimen/margin_xlarge"
-                    android:text="@string/about"
+                    android:paddingBottom="@dimen/margin_small"
+                    android:text="@string/message_last"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/font_small" />
 

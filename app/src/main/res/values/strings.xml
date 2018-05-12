@@ -36,4 +36,9 @@ This application needs permissions to catch phone calls, display contacts and ma
     <string name="message_request_permissions3">
 This application is not working correctly without permissions. Please make switch on from the apps Settings.</string>
 
+    <!-- Last message of this SDK version -->
+    <string name="message_last">We decided to end support of this Android version.
+    You can continue using app, but you need to update your device to use the new features.
+        Sorry for inconvenience.</string>
+
 </resources>
