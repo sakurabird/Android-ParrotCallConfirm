@@ -1,5 +1,7 @@
 package com.sakurafish.parrot.callconfirm;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,8 @@ import android.text.TextUtils;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.activity.ConfirmActivity;
 import com.sakurafish.parrot.callconfirm.config.Config;
+
+import java.util.List;
 
 import static com.sakurafish.parrot.callconfirm.config.Config.PREF_STATE_INVALID_TELNO;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
@@ -27,10 +31,40 @@ public class CallReceiver extends BroadcastReceiver {
 
         // 発信を取り消す
         setResultData(null);
+        startNextActivity(context, intent);
+    }
 
+    private void startNextActivity(Context context, Intent intent) {
         //発信確認ダイアログを表示する
         String phoneNumber = intent.getExtras().getString(Intent.EXTRA_PHONE_NUMBER);
-        context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
+
+        if (!Pref.getPrefBool(context, context.getString(R.string.PREF_DRIVE_MODE), false)) {
+            context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
+            return;
+        }
+
+        // ドライブモードがonの場合、Bluetooth通信中は処理を行わない
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
+            context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
+            return;
+        }
+
+        BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
+            public void onServiceConnected(int profile, BluetoothProfile bluetoothprofile) {
+                if (profile == BluetoothProfile.HEADSET) {
+                    List list = bluetoothprofile.getConnectedDevices();
+                    if (list.isEmpty()) {
+                        context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
+                    }
+                }
+                bluetoothAdapter.closeProfileProxy(BluetoothProfile.HEADSET, bluetoothprofile);
+            }
+
+            public void onServiceDisconnected(int profile) {
+            }
+        };
+        bluetoothAdapter.getProfileProxy(context, profileListener, BluetoothProfile.HEADSET);
     }
 
     private boolean canProceedConfirm(final Context context, final Intent intent) {
@@ -67,4 +101,5 @@ public class CallReceiver extends BroadcastReceiver {
 
         return true;
     }
+
 }

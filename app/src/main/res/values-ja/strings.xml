@@ -33,6 +33,10 @@
     <string name="setting_sound1">音を選択</string>
     <string name="setting_sound2">音量</string>
     <string name="setting_sound_play_switch">各行をクリックすると音声を再生します。音を出したくない場合このスイッチをオフにして下さい。</string>
+    <string name="setting_alpha_test">実験機能・α版</string>
+    <string name="setting_drive_mode">ドライブモード</string>
+    <string name="setting_drive_mode_summary">カーナビ使用中は発信確認を行わないようにします。なおこの機能は現在テスト中のため動作がうまくいかない可能性があります。あらかじめご了承下さい。</string>
+
     <string name="message_info1">あなたは電話をかけようとしています…</string>
     <string name="message_info2">確認</string>
     <string name="message_confirm1">電話をかけますか？</string>
