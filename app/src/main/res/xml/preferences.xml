@@ -36,12 +36,12 @@
             android:layout="@layout/row_preference" />
     </PreferenceCategory>
 
-    <!-- Alpha test (カーナビ接続中は発信確認を行わない) -->
+    <!-- Alpha test (Bluetooth ヘッドホン接続中は発信確認を行わない) -->
     <PreferenceCategory android:title="@string/setting_alpha_test">
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="@string/PREF_DRIVE_MODE"
-            android:title="@string/setting_drive_mode"
-            android:summary="@string/setting_drive_mode_summary"/>
+            android:key="@string/PREF_HEADSET_MODE"
+            android:title="@string/setting_headset_mode"
+            android:summary="@string/setting_headset_mode_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>

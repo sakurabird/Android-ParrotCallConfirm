@@ -39,8 +39,8 @@
     <string name="setting_sound_play_switch">
 When you Click these line, you can hear the sound. If you turn this switch off, it will not play.</string>
     <string name="setting_alpha_test">Alpha Test</string>
-    <string name="setting_drive_mode">Drive Mode</string>
-    <string name="setting_drive_mode_summary">We will not operate the application while using the car navigation system.
+    <string name="setting_headset_mode">Bluetooth Headset Mode</string>
+    <string name="setting_headset_mode_summary">Disable for Bluetooth headset.
 Since the operation is being verified, there is a possibility of trouble.</string>
 
     <string name="message_info1">You are making a phone call…</string>

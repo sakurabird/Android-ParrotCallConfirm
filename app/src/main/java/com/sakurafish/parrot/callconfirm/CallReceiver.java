@@ -38,7 +38,7 @@ public class CallReceiver extends BroadcastReceiver {
         //発信確認ダイアログを表示する
         String phoneNumber = intent.getExtras().getString(Intent.EXTRA_PHONE_NUMBER);
 
-        if (!Pref.getPrefBool(context, context.getString(R.string.PREF_DRIVE_MODE), false)) {
+        if (!Pref.getPrefBool(context, context.getString(R.string.PREF_HEADSET_MODE), false)) {
             context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
             return;
         }
