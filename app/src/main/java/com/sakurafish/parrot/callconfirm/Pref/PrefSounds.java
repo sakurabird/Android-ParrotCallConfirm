@@ -44,6 +44,8 @@ public class PrefSounds extends Preference implements SharedPreferences.OnShared
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (!key.equals(context.getString(R.string.PREF_SOUND))) return;
         String prefSoundNumber = Pref.getPrefString(context, context.getString(R.string.PREF_SOUND));
+        String summaryString = getSummaryString(prefSoundNumber);
+        if (this.summary == null || summaryString.isEmpty()) return;
         this.summary.setText(getSummaryString(prefSoundNumber));
     }
 

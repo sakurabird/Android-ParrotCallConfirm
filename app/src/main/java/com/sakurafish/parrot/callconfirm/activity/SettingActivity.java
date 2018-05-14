@@ -55,7 +55,9 @@ public class SettingActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(final Bundle outState) {
-        getFragmentManager().putFragment(outState, "mContent", mContent);
+        if (getFragmentManager().findFragmentByTag("mContent") != null) {
+            getFragmentManager().putFragment(outState, "mContent", mContent);
+        }
         super.onSaveInstanceState(outState);
     }
 
