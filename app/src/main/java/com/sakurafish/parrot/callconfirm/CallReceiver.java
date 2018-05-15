@@ -29,42 +29,7 @@ public class CallReceiver extends BroadcastReceiver {
 
         if (!canProceedConfirm(context, intent)) return;
 
-        // 発信を取り消す
-        setResultData(null);
         startNextActivity(context, intent);
-    }
-
-    private void startNextActivity(Context context, Intent intent) {
-        //発信確認ダイアログを表示する
-        String phoneNumber = intent.getExtras().getString(Intent.EXTRA_PHONE_NUMBER);
-
-        if (!Pref.getPrefBool(context, context.getString(R.string.PREF_HEADSET_MODE), false)) {
-            context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
-            return;
-        }
-
-        // ドライブモードがonの場合、Bluetooth通信中は処理を行わない
-        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
-            context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
-            return;
-        }
-
-        BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
-            public void onServiceConnected(int profile, BluetoothProfile bluetoothprofile) {
-                if (profile == BluetoothProfile.HEADSET) {
-                    List list = bluetoothprofile.getConnectedDevices();
-                    if (list.isEmpty()) {
-                        context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
-                    }
-                }
-                bluetoothAdapter.closeProfileProxy(BluetoothProfile.HEADSET, bluetoothprofile);
-            }
-
-            public void onServiceDisconnected(int profile) {
-            }
-        };
-        bluetoothAdapter.getProfileProxy(context, profileListener, BluetoothProfile.HEADSET);
     }
 
     private boolean canProceedConfirm(final Context context, final Intent intent) {
@@ -102,4 +67,43 @@ public class CallReceiver extends BroadcastReceiver {
         return true;
     }
 
+    private void startNextActivity(Context context, Intent intent) {
+        //発信確認ダイアログを表示する
+        String phoneNumber = intent.getExtras().getString(Intent.EXTRA_PHONE_NUMBER);
+
+        if (!Pref.getPrefBool(context, context.getString(R.string.PREF_HEADSET_MODE), false)) {
+            callConfirmActivity(context, phoneNumber);
+
+            return;
+        }
+
+        // ドライブモードがonの場合、Bluetooth通信中は処理を行わない
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
+            callConfirmActivity(context, phoneNumber);
+            return;
+        }
+
+        BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
+            public void onServiceConnected(int profile, BluetoothProfile bluetoothprofile) {
+                if (profile == BluetoothProfile.HEADSET) {
+                    List list = bluetoothprofile.getConnectedDevices();
+                    if (list.isEmpty()) {
+                        callConfirmActivity(context, phoneNumber);
+                    }
+                }
+                bluetoothAdapter.closeProfileProxy(BluetoothProfile.HEADSET, bluetoothprofile);
+            }
+
+            public void onServiceDisconnected(int profile) {
+            }
+        };
+        bluetoothAdapter.getProfileProxy(context, profileListener, BluetoothProfile.HEADSET);
+    }
+
+    private void callConfirmActivity(Context context, String phoneNumber) {
+        // 発信を取り消す
+        setResultData(null);
+        context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
+    }
 }
