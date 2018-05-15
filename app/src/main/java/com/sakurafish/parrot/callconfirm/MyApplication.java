@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
-import com.sakurafish.parrot.callconfirm.Pref.Pref;
+import com.google.android.gms.ads.MobileAds;
 import com.sakurafish.parrot.callconfirm.utils.SoundManager;
 
 import io.fabric.sdk.android.Fabric;
@@ -13,8 +13,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class MyApplication extends Application {
 
     private static MyApplication application;
-    private static SoundManager sSoundManager;
-    private static int[] sSoundIds = new int[5];
+    private SoundManager soundManager;
 
     public MyApplication() {
         super();
@@ -29,36 +28,26 @@ public class MyApplication extends Application {
         return application.getApplicationContext();
     }
 
-    public static SoundManager getSoundManager() {
-        return sSoundManager;
-    }
-
-    public static int[] getSoundIds() {
-        return sSoundIds;
+    public SoundManager getSoundManager() {
+        return soundManager;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         Fabric.with(this, new Crashlytics());
 
-        int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
-        Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
-
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/GenShinGothic-Regular.ttf")
-                        .setFontAttrId(R.attr.fontPath)
-                        .build()
+                .setDefaultFontPath("fonts/GenShinGothic-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
         );
-        setupSounds();
-    }
 
-    private void setupSounds() {
-        sSoundManager = SoundManager.getInstance(getContext());
-        sSoundIds[0] = sSoundManager.load(R.raw.inco1);
-        sSoundIds[1] = sSoundManager.load(R.raw.inco2);
-        sSoundIds[2] = sSoundManager.load(R.raw.inco3);
-        sSoundIds[3] = sSoundManager.load(R.raw.inco4);
-        sSoundIds[4] = sSoundManager.load(R.raw.inco5);
+        // setup Sounds
+        soundManager = SoundManager.getInstance(getContext());
+
+        // adMob
+        MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
     }
 }

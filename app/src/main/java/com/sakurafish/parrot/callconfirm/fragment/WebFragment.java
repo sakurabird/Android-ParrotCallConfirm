@@ -1,5 +1,5 @@
 
-package com.sakurafish.parrot.callconfirm.web;
+package com.sakurafish.parrot.callconfirm.fragment;
 
 import android.os.Bundle;
 

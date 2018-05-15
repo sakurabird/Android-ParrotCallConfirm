@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +62,10 @@ public final class Utils {
      */
     public static void showToast(Activity activity, String text) {
         LayoutInflater inflater = activity.getLayoutInflater();
-        View view = inflater.inflate(R.layout.views_toast, null);
+
+        final ViewGroup nullParent = null;
+        View view = inflater.inflate(R.layout.views_toast, nullParent);
+
         ImageView imageView = (ImageView) view.findViewById(R.id.icon);
         int rand = (int) (Math.random() * 10);
         switch (rand) {
@@ -119,8 +124,6 @@ public final class Utils {
 
     /**
      * version codeを取得する
-     *
-     * @return
      */
     public static int getVersionCode() {
         Context context = MyApplication.getContext();
@@ -135,5 +138,47 @@ public final class Utils {
             return -1;
         }
         return versionCode;
+    }
+
+    /**
+     * version nameを取得する
+     */
+    public static String getVersionName() {
+        Context context = MyApplication.getContext();
+        PackageManager manager = context.getPackageManager();
+        PackageInfo info;
+        try {
+            info = manager.getPackageInfo(context.getPackageName(), 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * デバイスの名前を取得する
+     */
+    public static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return capitalize(model);
+        } else {
+            return capitalize(manufacturer) + " " + model;
+        }
+    }
+
+
+    private static String capitalize(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        char first = s.charAt(0);
+        if (Character.isUpperCase(first)) {
+            return s;
+        } else {
+            return Character.toUpperCase(first) + s.substring(1);
+        }
     }
 }

@@ -1,47 +1,38 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.media.AudioManager;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Vibrator;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.google.gson.Gson;
-import com.sakurafish.parrot.callconfirm.Config;
-import com.sakurafish.parrot.callconfirm.MyApplication;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
-import com.sakurafish.parrot.callconfirm.dto.AppMessage;
+import com.sakurafish.parrot.callconfirm.config.Config;
+import com.sakurafish.parrot.callconfirm.databinding.ActivityConfirmBinding;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 import com.sakurafish.parrot.callconfirm.utils.ContactUtils;
-import com.sakurafish.parrot.callconfirm.utils.SoundManager;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
-import java.io.IOException;
-
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.sakurafish.parrot.callconfirm.config.Config.PREF_STATE_INVALID_TELNO;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS_REQUESTS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
@@ -54,17 +45,26 @@ import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.sh
  * Created by sakura on 2015/01/23.
  */
 public class ConfirmActivity extends AppCompatActivity {
+    private ActivityConfirmBinding binding;
     private Context mContext;
     private String mPhoneNumber;
-    private boolean hasVolumeChanged;
-    private int mOriginalVolume;
+
+    private BroadcastReceiver mScreenOffReceiver;
+    private BroadcastReceiver mHomeKeyReceiver;
 
     private boolean shouldShowPermissionsDialog = true;
     private boolean shouldShowRationalDialog = true;
 
-    public static Intent createIntent(@NonNull final Context context, @NonNull final Class clazz, @NonNull final String phoneNumber) {
+    private int soundID;
+
+    public static Intent createIntent(@NonNull final Context context,
+                                      @NonNull final Class clazz,
+                                      @NonNull final String phoneNumber) {
         Intent intent = new Intent(context, clazz);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+
         Bundle bundle = new Bundle();
         bundle.putString(Config.INTENT_EXTRAS_PHONENUMBER, phoneNumber);
         intent.putExtras(bundle);
@@ -80,60 +80,112 @@ public class ConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_confirm);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_confirm);
+
         init();
         initLayout();
     }
 
-    private void init() {
-        ButterKnife.bind(this);
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        mContext = this;
-        mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
-        if (mPhoneNumber == null) {
-            throw new IllegalStateException();
+        // インコ音を再生する
+        if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
+            new Handler().postDelayed(() -> {
+                if (!isFinishing() && !isDestroyed() && mContext != null) {
+                    soundID = CallConfirmUtils.playSound(mContext);
+                }
+            }, 1000);
         }
 
-        retrieveAppMessage();
+        // 端末をバイブレートさせる
+        if (Pref.getPrefBool(mContext, getString(R.string.PREF_VIBRATE), true)) {
+            CallConfirmUtils.vibrate(mContext);
+        }
+
+    }
+
+    private void init() {
+        mContext = this;
+
+        int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
+        Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
+
+        setupReceiver();
+        checkPhoneNumber();
+        notifyAppMessage();
         checkPermissions();
     }
 
-    private void initLayout() {
-        if (Pref.getPrefBool(mContext, getString(R.string.PREF_VIBRATE), true)) {
-            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(1000);
-        }
-        if (Pref.getPrefBool(mContext, getString(R.string.PREF_SOUND_ON), true)) {
-            String s = Pref.getPrefString(mContext, getString(R.string.PREF_SOUND));
-            if (s == null) s = "0";
-            int idx = 0;
-            try {
-                idx = Integer.parseInt(s);
-            } catch (NumberFormatException e) {
+    private void setupReceiver() {
+        mScreenOffReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                new Handler().post(() -> finishActivity());
             }
-            if (Pref.isExistKey(mContext, getString(R.string.PREF_SOUND_VOLUME))) {
-                hasVolumeChanged = true;
-                mOriginalVolume = SoundManager.getOriginalVolume();
-                AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-                int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
-                am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-            } else {
-                hasVolumeChanged = false;
-            }
-            MyApplication.getSoundManager().play(MyApplication.getSoundIds()[idx]);
-        }
+        };
+        registerReceiver(mScreenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 
-        ((TextView) findViewById(R.id.textView_telno)).setText(mPhoneNumber);
+        mHomeKeyReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                new Handler().post(() -> finishActivity());
+            }
+        };
+        registerReceiver(mHomeKeyReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+    }
+
+    private void checkPhoneNumber() {
+        mPhoneNumber = getIntent().getStringExtra(Config.INTENT_EXTRAS_PHONENUMBER);
+        if (TextUtils.isEmpty(mPhoneNumber)) {
+            // 発信確認が出来ない機種の可能性あり。機能を無効にする。
+            Pref.setPref(mContext, getString(R.string.PREF_CONFIRM), false);
+            Pref.setPref(mContext, PREF_STATE_INVALID_TELNO, true);
+            startActivity(MainActivity.createIntent(mContext, MainActivity.class));
+            Utils.showToast(this, getString(R.string.error_cannot_get_phonenumber));
+            finishActivity();
+        }
+    }
+
+    private void initLayout() {
+
+        binding.textViewTelno.setText(mPhoneNumber);
         ContactUtils.ContactInfo info = ContactUtils.getContactInfoByNumber(mPhoneNumber);
         if (info != null) {
-            ((TextView) findViewById(R.id.textView_name)).setText(info.getName());
+            binding.textViewName.setText(info.getName());
             if (info.getPhotoBitmap() != null)
-                ((ImageView) findViewById(R.id.imageView_callto)).setImageBitmap(info.getPhotoBitmap());
+                binding.imageViewCallto.setImageBitmap(info.getPhotoBitmap());
         }
 
-        ImageView inco = (ImageView) findViewById(R.id.imageView_inco);
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.inco_jump);
-        inco.startAnimation(animation);
+        binding.imageViewInco.startAnimation(animation);
+
+
+        binding.buttonOk.setOnClickListener(v -> {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
+            String number = "tel:" + mPhoneNumber.trim();
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
+            finishActivity();
+        });
+
+        binding.buttonNo.setOnClickListener(v -> {
+            Utils.showToast(this, getString(R.string.message_telephone_canceled));
+            Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+            finishActivity();
+        });
+
+        binding.imageViewSetting.setOnClickListener(v -> {
+            Utils.showToast(this, getString(R.string.message_telephone_canceled));
+            Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
+            startActivity(MainActivity.createIntent(mContext, MainActivity.class));
+            finishActivity();
+        });
     }
 
     private void checkPermissions() {
@@ -150,13 +202,10 @@ public class ConfirmActivity extends AppCompatActivity {
                         .title(getString(R.string.message_request_permissions1))
                         .content(getString(R.string.message_request_permissions2))
                         .positiveText(getString(android.R.string.ok))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                shouldShowPermissionsDialog = false;
-                                shouldShowRationalDialog = false;
-                                requestPermissionDialog();
-                            }
+                        .onPositive((dialog, which) -> {
+                            shouldShowPermissionsDialog = false;
+                            shouldShowRationalDialog = false;
+                            requestPermissionDialog();
                         })
                         .show();
             } else {
@@ -175,7 +224,7 @@ public class ConfirmActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         for (int i = 0; i < permissions.length; i++) {
             if (grantResults.length <= i || grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 if (!shouldShowRational(ConfirmActivity.this, permissions[i])) {
@@ -186,101 +235,50 @@ public class ConfirmActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.button_ok)
-    void call() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+    private void notifyAppMessage() {
+        final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
+        int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
+        String messageText = getString(R.string.APP_MESSAGE_TEXT);
+
+        if (messageNo <= lastNo) {
             return;
         }
-        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, true);
-        String number = "tel:" + mPhoneNumber.trim();
-        startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
-        ConfirmActivity.this.finish();
-    }
 
-    @OnClick(R.id.button_no)
-    void cancel() {
-        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-        ConfirmActivity.this.finish();
-    }
-
-    @OnClick(R.id.imageView_setting)
-    void setting() {
-        Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-        startActivity(MainActivity.createIntent(mContext, MainActivity.class));
-        ConfirmActivity.this.finish();
-    }
-
-
-    private void retrieveAppMessage() {
-        final String url = getString(R.string.URL_APP_MESSAGE);
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String result = null;
-                Request request = new Request.Builder().url(url).get().build();
-                OkHttpClient client = new OkHttpClient();
-                try {
-                    Response response = client.newCall(request).execute();
-                    result = response.body().string();
-                } catch (IOException e) {
-                    Utils.logError("retrieveAppMessage failed IOException");
-                    e.printStackTrace();
-                }
-                return result;
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (result == null) {
-                    Utils.logError("retrieveAppMessage failed response==null");
-                    return;
-                }
-                Utils.logDebug(result);
-                try {
-                    Gson gson = new Gson();
-                    AppMessage message = gson.fromJson(result, AppMessage.class);
-                    setNotification(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utils.logError("Json parse error");
-                }
-            }
-        }.execute();
-    }
-
-    private void setNotification(AppMessage message) {
-        final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
-        Utils.logDebug("last message no:" + lastNo);
-
-        for (AppMessage.Data data : message.getData()) {
-            int messageNo = data.getMessage_no();
-            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo &&
-                    data.getVersion() == Utils.getVersionCode()) {
-                String msg = Utils.isJapan() ? data.getMessage_jp() : data.getMessage_en();
-                Utils.logDebug("no:" + data.getMessage_no() + " message:" + msg);
-                CallConfirmUtils.setNotification(MainActivity.class, msg);
-                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
-                break;
-            }
+        // インストール時点のメッセージは表示しない
+        if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
+            return;
         }
+
+        CallConfirmUtils.setNotification(MainActivity.class, messageText);
+        Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
+    }
+
+    private void finishActivity() {
+        ConfirmActivity.this.finish();
+        overridePendingTransition(0, 0);
     }
 
     @Override
     public void onBackPressed() {
         Pref.setPref(mContext, Config.PREF_AFTER_CONFIRM, false);
-        ConfirmActivity.this.finish();
+        finishActivity();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        if (hasVolumeChanged) {
-            AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-            am.setStreamVolume(AudioManager.STREAM_MUSIC, mOriginalVolume, 0);
-        }
-        mContext = null;
-        mPhoneNumber = null;
-    }
+        CallConfirmUtils.stopSound(soundID);
 
+        try {
+            unregisterReceiver(mHomeKeyReceiver);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        try {
+            unregisterReceiver(mScreenOffReceiver);
+        } catch (Exception exception1) {
+            exception1.printStackTrace();
+        }
+    }
 }

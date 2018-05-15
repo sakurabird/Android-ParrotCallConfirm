@@ -4,33 +4,56 @@
     <string name="app_name">インコ発信確認</string>
     <string name="app_name_staging">開発版インコ発信確認</string>
 
+    <string name="call">かける</string>
+    <string name="cancel">キャンセル</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
+    <string name="information">お知らせ</string>
     <string name="action_settings">設定</string>
-    <string name="welcome">welcome!</string>
     <string name="please_choose">選択してください</string>
-    <string name="about">インコ発信確認は電話をかける前に確認ダイアログを表示します。</string>
+    <string name="welcome_message">welcome!インコ発信確認は電話をかける前に確認ダイアログを表示します。</string>
     <string name="share">共有</string>
     <string name="share_text">http://play.google.com/store/apps/details?id=com.sakurafish.parrot.callconfirm</string>
+
+    <string name="text_setting_description">発信確認サウンドを変えられます！</string>
+    <string name="text_information">お知らせ・更新情報</string>
+    <string name="text_help">ヘルプ</string>
     <string name="text_google_play">Google Playに行く</string>
     <string name="text_credit">クレジット</string>
     <string name="text_mail_to_dev">開発者にメールを送る</string>
     <string name="text_privacy_policy">プライバシーポリシー</string>
+
     <string name="setting_mail_to_dev2">【インコ発信確認】ご意見・ご要望</string>
-    <string name="setting_mail_to_dev3">ユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。</string>
+    <string name="setting_mail_to_dev3">インコ発信確認へのご意見・ご要望をご記入ください。\nユーザー様のメールアドレスはこの連絡以外に使用することは一切ありません。\n返信が必要な場合、sakurafish1@gmail.comというメールアドレスよりお送りいたします。 SDK:%1$s Device:%2$s\n--------------------\n</string>
     <string name="setting_confirm">発信確認を有効にする</string>
     <string name="setting_vibrate_title">バイブレーション</string>
     <string name="setting_vibrate">バイブレーションさせる</string>
     <string name="setting_vibrate_select">バイブレーションパターンを選択</string>
-    <string name="setting_sound_on_title">インコ音を鳴らす</string>
-    <string name="setting_sound1">インコ音を選択</string>
+    <string name="setting_sound_on_title">音を鳴らす</string>
+    <string name="setting_sound1">音を選択</string>
     <string name="setting_sound2">音量</string>
-    <string name="message_info1">あなたは電話をかけようとしています...</string>
+    <string name="setting_sound_play_switch">各行をクリックすると音声を再生します。音を出したくない場合このスイッチをオフにして下さい。</string>
+    <string name="setting_alpha_test">実験機能・α版</string>
+    <string name="setting_headset_mode">Bluetooth ヘッドホンモード</string>
+    <string name="setting_headset_mode_summary">Bluetooth ヘッドホン使用中は発信確認を行わないようにします。なおこの機能は現在テスト中のため動作がうまくいかない可能性があります。あらかじめご了承下さい。</string>
+
+    <string name="message_info1">あなたは電話をかけようとしています…</string>
     <string name="message_info2">確認</string>
     <string name="message_confirm1">電話をかけますか？</string>
     <string name="message_number">番号:</string>
+    <string name="message_telephone_canceled">電話はキャンセルされました</string>
+    <string name="message_name_placeholder">不明</string>
     <string name="message_request_permissions1">パーミッション</string>
     <string name="message_request_permissions2">このアプリは電話発信をキャッチし連絡先を表示し発信を行うためにパーミッションの許可が必須となります。許可していただくようお願いいたします。</string>
     <string name="message_request_permissions3">このアプリはパーミッションが許可されていないと正しく動作いたしません。アプリ設定画面の「権限」から許可していただくようお願いいたします。</string>
 
+    <!-- error -->
+    <string name="error">エラー</string>
+    <string name="error_cannot_get_phonenumber">電話番号を取得できませんでした。インコ発信確認アプリはこの機種からは発信が出来ませんので、無効にいたします。ご迷惑おかけいたします。</string>
+
+    <string name="error_now_disabled">！現在発信確認画面は表示されません！</string>
+    <string name="error_not_activated">このアプリは有効になっていません。</string>
+    <string name="error_no_permission_call">「電話」権限が許可されていません。</string>
+    <string name="error_no_permission_contact">「連絡先」権限が許可されていません。</string>
+    <string name="error_alert_refresh">\nここをタッチしてステータスを更新</string>
 </resources>

@@ -42,6 +42,7 @@ import static android.os.Build.VERSION.SDK_INT;
  * Thanks to MrBIMC's "MaterialSeekBarPreference" <br>
  * https://github.com/MrBIMC/MaterialSeekBarPreference
  */
+@Deprecated
 public class SoundSeekBarPreference extends Preference implements SeekBar.OnSeekBarChangeListener {
 
     public interface OnVolumeChangedListerner {

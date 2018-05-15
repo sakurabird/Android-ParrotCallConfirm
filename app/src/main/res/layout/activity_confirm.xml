@@ -1,118 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#77000000"
-    android:gravity="center"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
+    <LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        card_view:cardCornerRadius="5dp"
-        card_view:cardElevation="4dp"
-        card_view:cardPreventCornerOverlap="false">
+        android:layout_height="match_parent"
+        android:background="#44000000"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="@color/confirm_bg_color"
+            card_view:cardCornerRadius="5dp"
+            card_view:cardElevation="4dp"
+            card_view:cardPreventCornerOverlap="false">
 
-            <LinearLayout
-                android:id="@+id/layout_top"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/top_rounded_corner"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/imageView_setting"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="right"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha" />
-
-                <com.sakurafish.parrot.callconfirm.ui.CircleRippleImageView
-                    android:id="@+id/imageView_callto"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:src="@drawable/no_image" />
-
-                <TextView
-                    android:id="@+id/textView_title"
+                <RelativeLayout
+                    android:id="@+id/layout_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="16dp"
-                    android:text="@string/message_confirm1"
-                    android:textColor="@android:color/white"
-                    android:textSize="32sp" />
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/top_rounded_corner"
+                    android:padding="@dimen/activity_horizontal_margin">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView_appName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/app_name"
+                        android:textColor="@color/primary_light"
+                        android:textSize="@dimen/font_small" />
 
-            <ImageView
-                android:id="@+id/imageView_inco"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_below="@+id/layout_top"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/inco_blue" />
+                    <com.sakurafish.parrot.callconfirm.ui.CircleRippleImageView
+                        android:id="@+id/imageView_callto"
+                        android:layout_width="@dimen/confirm_icon_size"
+                        android:layout_height="@dimen/confirm_icon_size"
+                        android:layout_below="@+id/textView_appName"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/no_image" />
 
-            <TextView
-                android:id="@+id/textView_telno"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/layout_top"
-                android:layout_marginTop="6dp"
-                android:layout_toRightOf="@+id/imageView_inco"
-                android:text="xxxxxxxxxx"
-                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textView_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imageView_callto"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:text="@string/message_confirm1"
+                        android:textColor="@android:color/white"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/textView_telno"
-                android:layout_below="@+id/textView_telno"
-                android:layout_marginTop="4dp"
-                android:text="xxxxxxxxxxx"
-                android:textStyle="bold" />
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/imageView_setting"
+                        android:layout_width="@dimen/confirm_setting_icon_size"
+                        android:layout_height="@dimen/confirm_setting_icon_size"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@null"
+                        android:tint="@color/primary_light"
+                        app:srcCompat="@drawable/ic_settings_black_24dp" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/textView_name"
-                android:orientation="horizontal">
+                </RelativeLayout>
 
-                <com.gc.materialdesign.views.ButtonFlat
-                    android:id="@+id/button_no"
-                    android:layout_width="90dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@color/primary_dark"
-                    android:text="CANCEL" />
+                <ImageView
+                    android:id="@+id/imageView_inco"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/layout_top"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:contentDescription="@null"
+                    android:src="@drawable/inco_blue" />
 
-                <com.gc.materialdesign.views.ButtonRectangle
-                    android:id="@+id/button_ok"
-                    android:layout_width="90dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@color/primary_dark"
-                    android:text="CALL" />
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/textView_telno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_top"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_toEndOf="@+id/imageView_inco"
+                    android:text="@string/message_name_placeholder"
+                    android:textStyle="bold" />
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/textView_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView_telno"
+                    android:layout_below="@+id/textView_telno"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/message_name_placeholder"
+                    android:textStyle="bold" />
 
-</LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/textView_name"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:orientation="horizontal">
+
+                    <com.gc.materialdesign.views.ButtonRectangle
+                        android:id="@+id/button_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="52dp"
+                        android:layout_marginRight="@dimen/margin_large"
+                        android:alpha="0.7"
+                        android:background="@color/primary_dark"
+                        android:text="@string/cancel" />
+
+                    <com.gc.materialdesign.views.ButtonRectangle
+                        android:id="@+id/button_ok"
+                        android:layout_width="wrap_content"
+                        android:layout_height="52dp"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:background="@color/accent"
+                        android:text="@string/call" />
+                </LinearLayout>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+</layout>

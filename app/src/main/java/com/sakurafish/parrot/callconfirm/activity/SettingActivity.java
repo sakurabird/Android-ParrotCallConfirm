@@ -1,8 +1,10 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
+import android.content.pm.ActivityInfo;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -11,11 +13,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.sakurafish.parrot.callconfirm.Config;
-import com.sakurafish.parrot.callconfirm.MyApplication;
+import com.google.android.gms.ads.AdRequest;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
-import com.sakurafish.parrot.callconfirm.Pref.SoundSeekBarPreference;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.config.Config;
+import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
+import com.sakurafish.parrot.callconfirm.fragment.SelectSoundFragment;
+import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 
 /**
@@ -23,6 +27,9 @@ import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
  * Created by sakura on 2015/03/24.
  */
 public class SettingActivity extends AppCompatActivity {
+
+    private ActivityMainBinding binding;
+    private Fragment mContent;
 
     public static Intent createIntent(@NonNull final Context context, @NonNull final Class clazz) {
         Intent intent = new Intent(context, clazz);
@@ -33,8 +40,48 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getFragmentManager().beginTransaction().replace(R.id.content, new MyPreferenceFragment()).commit();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        if (savedInstanceState == null) {
+            switchContent(new MyPreferenceFragment());
+        } else {
+            switchContent(getFragmentManager().getFragment(savedInstanceState, "mContent"));
+        }
+
+        initLayout();
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        if (getFragmentManager().findFragmentByTag("mContent") != null) {
+            getFragmentManager().putFragment(outState, "mContent", mContent);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() <= 1) {
+            SettingActivity.this.finish();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private void initLayout() {
+        // show AD banner
+        AdRequest adRequest = new AdsHelper(this).getAdRequest();
+        binding.adView.loadAd(adRequest);
+    }
+
+    public void switchContent(Fragment fragment) {
+        mContent = fragment;
+        getFragmentManager().beginTransaction()
+                .setCustomAnimations(R.animator.slide_in, R.animator.slide_out)
+                .replace(R.id.content, mContent)
+                .addToBackStack(null).commit();
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment {
@@ -60,50 +107,27 @@ public class SettingActivity extends AppCompatActivity {
 
         private void initLayout() {
             final ListPreference vibrationlist = (ListPreference) findPreference(Config.PREF_VIBRATE_PATTERN);
-            vibrationlist.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+            vibrationlist.setOnPreferenceChangeListener((preference, newValue) -> {
 
-                    int index = vibrationlist.findIndexOfValue(newValue.toString());
-                    if (index != -1) {
-                        //バイブレート
-                        CallConfirmUtils.vibrate(mContext, index);
-                        String[] array = getResources().getStringArray(R.array.setting_vibrate);
-                        vibrationlist.setSummary(array[index]);
-                    }
-                    return true;
+                int index = vibrationlist.findIndexOfValue(newValue.toString());
+                if (index != -1) {
+                    //バイブレート
+                    CallConfirmUtils.vibrate(mContext, index);
+                    String[] array = getResources().getStringArray(R.array.setting_vibrate);
+                    vibrationlist.setSummary(array[index]);
                 }
+                return true;
             });
 
-            final ListPreference list = (ListPreference) findPreference(Config.PREF_SOUND);
-            list.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-
-                    int index = list.findIndexOfValue(newValue.toString());
-                    if (index != -1) {
-                        //音を鳴らす
-                        MyApplication.getSoundManager().play(MyApplication.getSoundIds()[index]);
-                        String[] array = getResources().getStringArray(R.array.setting_sound);
-                        list.setSummary(array[index]);
-                    }
-                    return true;
+            // 音声の選択は別画面で行う
+            Preference sound = findPreference(getString(R.string.PREF_SOUND));
+            sound.setOnPreferenceClickListener(preference -> {
+                if (!(getActivity() instanceof SettingActivity)) {
+                    return false;
                 }
-            });
-
-            final SoundSeekBarPreference volume = (SoundSeekBarPreference) findPreference(getString(R.string.PREF_SOUND_VOLUME));
-            volume.setOnVolumeChangedListerner(new SoundSeekBarPreference.OnVolumeChangedListerner() {
-                @Override
-                public void onChanged() {
-                    int index = Integer.parseInt(Pref.getPrefString(mContext, mContext.getString(R.string.PREF_SOUND)));
-                    int voiceIdx = MyApplication.getSoundIds()[index];
-
-                    MyApplication.getSoundManager().stop(voiceIdx);
-
-                    AudioManager am = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-                    int newVolume = Pref.getPrefInt(mContext, mContext.getString(R.string.PREF_SOUND_VOLUME));
-                    am.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-
-                    MyApplication.getSoundManager().play(voiceIdx);
-                }
+                SettingActivity activity = (SettingActivity) getActivity();
+                activity.switchContent(SelectSoundFragment.newInstance());
+                return false;
             });
         }
     }

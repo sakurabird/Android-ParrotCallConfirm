@@ -1,23 +1,33 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+
+    <style name="ActivityTheme" parent="AppTheme">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="android:textColorSecondary">@color/secondary_text</item>
     </style>
 
-    <style name="ActivityTheme" parent="AppTheme">
+    <style name="ConfirmActivityTheme" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowEnterAnimation">@anim/abc_popup_enter</item>
-        <item name="android:windowHideAnimation">@anim/dialog_root_hide_amin</item>
-        <item name="android:windowExitAnimation">@anim/abc_popup_exit</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+    <!-- Main Activity Views -->
+    <style name="MainListTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">@dimen/margin_xxlarge</item>
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
 </resources>

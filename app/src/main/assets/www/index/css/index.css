@@ -8,6 +8,7 @@ others
 	background:#ffffff;
 	margin: 20px 20px 20px 20px;
 	padding: 0 0 0 0;
+	font-size: small;
 }
 .disc h3{
 	text-decoration: underline;
@@ -30,4 +31,8 @@ others
 p.right {
 	text-align: right;
 	margin-bottom: 10px;
+}
+.date {
+    color:#999999;
+    font-size:0.9em;
 }

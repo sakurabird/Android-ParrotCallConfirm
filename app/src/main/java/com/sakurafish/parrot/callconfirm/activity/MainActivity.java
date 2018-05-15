@@ -3,30 +3,25 @@ package com.sakurafish.parrot.callconfirm.activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.media.AudioManager;
-import android.os.AsyncTask;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.google.gson.Gson;
-import com.sakurafish.parrot.callconfirm.Config;
+import com.google.android.gms.ads.AdRequest;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
-import com.sakurafish.parrot.callconfirm.dto.AppMessage;
+import com.sakurafish.parrot.callconfirm.config.Config;
+import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
+import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import java.io.IOException;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -36,13 +31,11 @@ import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.ha
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.onNeverAskAgainSelected;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.shouldShowRational;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.showRationaleDialog;
-import static com.sakurafish.parrot.callconfirm.utils.Utils.isJapan;
-import static com.sakurafish.parrot.callconfirm.utils.Utils.logDebug;
-import static com.sakurafish.parrot.callconfirm.utils.Utils.logError;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityMainBinding binding;
     private Fragment mContent;
     private Context mContext;
     private boolean shouldShowPermissionsDialog = true;
@@ -62,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         init();
 
@@ -83,13 +78,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         mContext = this;
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        retrieveAppMessage();
+        int launchCount = Pref.getPrefInt(getApplicationContext(), Config.PREF_LAUNCH_COUNT);
+        Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
+
+        showAppMessage();
         checkPermissions();
     }
 
     private void initLayout() {
+
+        // show AD banner
+        AdRequest adRequest = new AdsHelper(mContext).getAdRequest();
+        binding.adView.loadAd(adRequest);
     }
 
     private void checkPermissions() {
@@ -105,13 +106,10 @@ public class MainActivity extends AppCompatActivity {
                         .title(getString(R.string.message_request_permissions1))
                         .content(getString(R.string.message_request_permissions2))
                         .positiveText(getString(android.R.string.ok))
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                shouldShowPermissionsDialog = false;
-                                shouldShowRationalDialog = false;
-                                requestPermissionDialog();
-                            }
+                        .onPositive((dialog, which) -> {
+                            shouldShowPermissionsDialog = false;
+                            shouldShowRationalDialog = false;
+                            requestPermissionDialog();
                         })
                         .show();
             } else {
@@ -130,7 +128,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], int[] grantResults) {
+        if (mContent instanceof MainFragment) {
+            MainFragment mainFragment = (MainFragment) mContent;
+            mainFragment.checkStatus();
+        }
         for (int i = 0; i < permissions.length; i++) {
             if (grantResults.length <= i || grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                 if (!shouldShowRational(MainActivity.this, permissions[i])) {
@@ -141,63 +143,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void retrieveAppMessage() {
-        final String url = getString(R.string.URL_APP_MESSAGE);
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String result = null;
-                Request request = new Request.Builder().url(url).get().build();
-                OkHttpClient client = new OkHttpClient();
-                try {
-                    Response response = client.newCall(request).execute();
-                    result = response.body().string();
-                } catch (IOException e) {
-                    logError("retrieveAppMessage failed IOException");
-                    e.printStackTrace();
-                }
-                return result;
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (result == null) {
-                    logError("retrieveAppMessage failed response==null");
-                    return;
-                }
-//                logDebug(result);
-                try {
-                    Gson gson = new Gson();
-                    AppMessage message = gson.fromJson(result, AppMessage.class);
-                    showAppMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    logError("Json parse error");
-                }
-            }
-        }.execute();
-    }
-
-    private void showAppMessage(AppMessage message) {
+    private void showAppMessage() {
         final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
+        int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
+        String messageText = getString(R.string.APP_MESSAGE_TEXT);
 
-        for (AppMessage.Data data : message.getData()) {
-            int messageNo = data.getMessage_no();
-            if (data.getApp().equals("ParrotCallConfirm") && messageNo > lastNo &&
-                    data.getVersion() == Utils.getVersionCode()) {
-                String msg = isJapan() ? data.getMessage_jp() : data.getMessage_en();
-                logDebug("no:" + data.getMessage_no() + " message:" + msg);
-                new MaterialDialog.Builder(this)
-                        .theme(Theme.LIGHT)
-                        .title("APP_MESSAGE")
-                        .content(msg)
-                        .positiveText(getString(android.R.string.ok))
-                        .show();
-
-                Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo++);
-                break;
-            }
+        if (messageNo <= lastNo) {
+            return;
         }
+
+        // インストール時点のメッセージは表示しない
+        if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
+            Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
+            return;
+        }
+        Utils.logDebug("no:" + messageNo + " message:" + messageText);
+        new MaterialDialog.Builder(this)
+                .theme(Theme.LIGHT)
+                .title(getString(R.string.information))
+                .content(messageText)
+                .positiveText(getString(android.R.string.ok))
+                .show();
+
+        Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
     }
 
     @Override

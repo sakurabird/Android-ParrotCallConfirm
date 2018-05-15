@@ -24,20 +24,20 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /**
  * CircleImageView with ripple effect
  */
-public class CircleRippleImageView extends ImageView {
-    private static final float rippleSpeed = 1.5f;
-    private static final int circleMargin = 50;
+public class CircleRippleImageView extends AppCompatImageView {
+    private static final float rippleSpeed = 1.2f;
+    private static final int circleMargin = 0;
     private int canvasSize;
     private int circleCenterX, circleCenterY;
     private Bitmap image;
     private Paint paint;
-    private Integer rippleColor = Color.parseColor("#77FFFFFF");
+    private Integer rippleColor = Color.parseColor("#44FFFFFF");
 
     public CircleRippleImageView(Context context) {
         super(context, null);

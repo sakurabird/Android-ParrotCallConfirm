@@ -9,14 +9,16 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.sakurafish.parrot.callconfirm.MyApplication;
+import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
+import com.sakurafish.parrot.callconfirm.config.Config;
 
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_NOT_REPEAT;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN0;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN1;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN2;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN3;
-import static com.sakurafish.parrot.callconfirm.Config.VIBRATOR_PATTERN4;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_NOT_REPEAT;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN0;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN1;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN2;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN3;
+import static com.sakurafish.parrot.callconfirm.config.Config.VIBRATOR_PATTERN4;
 
 /**
  * Created by sakura on 9/16/15.
@@ -30,15 +32,21 @@ public final class CallConfirmUtils {
      * @param message
      */
     public static void setNotification(@NonNull final Class<?> cls, @NonNull final String message) {
-        final NotificationManager notificationManager = (NotificationManager) MyApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        final String appName = MyApplication.getContext().getResources().getString(R.string.app_name);
+
+        final NotificationManager notificationManager =
+                (NotificationManager) MyApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         final Intent intent = new Intent(MyApplication.getContext(), cls);
         final PendingIntent contentIntent = PendingIntent.getActivity(MyApplication.getContext(), 0, intent, 0);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(MyApplication.getContext())
                 .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle(MyApplication.getContext().getResources().getString(R.string.app_name))
+                .setContentTitle(appName)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setContentText(message)
+                .setTicker(appName)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setOngoing(true)
@@ -46,6 +54,11 @@ public final class CallConfirmUtils {
 
         notificationManager.cancel(R.string.app_name);
         notificationManager.notify(R.string.app_name, builder.build());
+    }
+
+    public static void vibrate(@NonNull final Context context) {
+        String prefPattern = Pref.getPrefString(context, context.getString(R.string.PREF_VIBRATE_PATTERN), "0");
+        vibrate(context, Integer.parseInt(prefPattern));
     }
 
     public static void vibrate(@NonNull final Context context, final int patternNo) {
@@ -69,6 +82,21 @@ public final class CallConfirmUtils {
             default:
                 vibrator.vibrate(VIBRATOR_PATTERN0, VIBRATOR_NOT_REPEAT);
         }
+    }
+
+    public static int playSound(@NonNull final Context context) {
+        String s = Pref.getPrefString(context, context.getString(R.string.PREF_SOUND), "0");
+        int idx = 0;
+        try {
+            idx = Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            Utils.logError(e.getLocalizedMessage());
+        }
+        return MyApplication.getInstance().getSoundManager().play(Config.SOUND_IDS[idx]);
+    }
+
+    public static void stopSound(int soundID) {
+        MyApplication.getInstance().getSoundManager().stop(soundID);
     }
 
     @Deprecated
