@@ -254,8 +254,12 @@ public class ConfirmActivity extends AppCompatActivity {
     }
 
     private void finishActivity() {
-        ConfirmActivity.this.finish();
-        overridePendingTransition(0, 0);
+        try {
+            ConfirmActivity.this.finish();
+            overridePendingTransition(0, 0);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
