@@ -1,5 +1,6 @@
 package com.sakurafish.parrot.callconfirm;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
@@ -15,8 +16,7 @@ import com.sakurafish.parrot.callconfirm.config.Config;
 import java.util.List;
 
 import static com.sakurafish.parrot.callconfirm.config.Config.PREF_STATE_INVALID_TELNO;
-import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
-import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermission;
 
 /**
  * 発信を捉える
@@ -43,7 +43,7 @@ public class CallReceiver extends BroadcastReceiver {
         }
 
         // 必要なパーミッションが許可されていない場合処理を行わない
-        if (Build.VERSION.SDK_INT >= 23 && !hasPermissions(context, PERMISSIONS)) {
+        if (Build.VERSION.SDK_INT >= 23 && !hasPermission(context, Manifest.permission.CALL_PHONE)) {
             return false;
         }
 

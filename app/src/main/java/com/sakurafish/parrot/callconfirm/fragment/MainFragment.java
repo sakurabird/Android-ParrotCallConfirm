@@ -140,11 +140,6 @@ public class MainFragment extends Fragment {
             message.append("\n");
             message.append(getString(R.string.error_no_permission_call));
         }
-        if (Build.VERSION.SDK_INT >= 23 && !hasPermission(mContext, Manifest.permission.READ_CONTACTS)) {
-            hasAlert = true;
-            message.append("\n");
-            message.append(getString(R.string.error_no_permission_contact));
-        }
 
         // 電話番号が取得できない。機種の問題の可能性があるので機能を無効にしている。
         if (!Pref.getPrefBool(mContext, getString(R.string.PREF_CONFIRM), true)

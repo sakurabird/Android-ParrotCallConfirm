@@ -1,5 +1,6 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +28,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS_REQUESTS;
-import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermission;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.onNeverAskAgainSelected;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.shouldShowRational;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.showRationaleDialog;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
 
         showAppMessage();
-        checkPermissions();
+        checkPermission();
     }
 
     private void initLayout() {
@@ -93,28 +94,26 @@ public class MainActivity extends AppCompatActivity {
         binding.adView.loadAd(adRequest);
     }
 
-    private void checkPermissions() {
-        if (Build.VERSION.SDK_INT < 23) {
+    private void checkPermission() {
+        if ((Build.VERSION.SDK_INT < 23) || hasPermission(mContext, Manifest.permission.CALL_PHONE)) {
             return;
         }
 
-        if (!hasPermissions(mContext, PERMISSIONS)) {
-            if (shouldShowPermissionsDialog) {
-                new MaterialDialog.Builder(this)
-                        .cancelable(false)
-                        .theme(Theme.LIGHT)
-                        .title(getString(R.string.message_request_permissions1))
-                        .content(getString(R.string.message_request_permissions2))
-                        .positiveText(getString(android.R.string.ok))
-                        .onPositive((dialog, which) -> {
-                            shouldShowPermissionsDialog = false;
-                            shouldShowRationalDialog = false;
-                            requestPermissionDialog();
-                        })
-                        .show();
-            } else {
-                requestPermissionDialog();
-            }
+        if (shouldShowPermissionsDialog) {
+            new MaterialDialog.Builder(this)
+                    .cancelable(false)
+                    .theme(Theme.LIGHT)
+                    .title(getString(R.string.message_request_permissions1))
+                    .content(getString(R.string.message_request_permissions2))
+                    .positiveText(getString(android.R.string.ok))
+                    .onPositive((dialog, which) -> {
+                        shouldShowPermissionsDialog = false;
+                        shouldShowRationalDialog = false;
+                        requestPermissionDialog();
+                    })
+                    .show();
+        } else {
+            requestPermissionDialog();
         }
     }
 
@@ -133,13 +132,15 @@ public class MainActivity extends AppCompatActivity {
             MainFragment mainFragment = (MainFragment) mContent;
             mainFragment.checkStatus();
         }
-        for (int i = 0; i < permissions.length; i++) {
-            if (grantResults.length <= i || grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                if (!shouldShowRational(MainActivity.this, permissions[i])) {
-                    // Never ask again
-                    onNeverAskAgainSelected(mContext);
-                }
-            }
+
+        if (permissions.length == 0 || grantResults.length == 0) {
+            return;
+        }
+        // CALL_PHONEの権限を許可されず二度と表示しないを選択された場合
+        if (grantResults[0] != PackageManager.PERMISSION_GRANTED
+                && !shouldShowRational(MainActivity.this, permissions[0])) {
+            // Never ask again
+            onNeverAskAgainSelected(mContext);
         }
     }
 

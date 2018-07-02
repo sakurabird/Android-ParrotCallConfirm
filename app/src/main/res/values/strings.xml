@@ -62,6 +62,5 @@ This application is not working correctly without permissions. Please make switc
     <string name="error_now_disabled">! Call Confirm dialog is not working now !</string>
     <string name="error_not_activated">This app is not activated.</string>
     <string name="error_no_permission_call">Phone permission is not permitted.</string>
-    <string name="error_no_permission_contact">Contacts permission is not permitted.</string>
     <string name="error_alert_refresh">\nTouch here and refresh status</string>
 </resources>
