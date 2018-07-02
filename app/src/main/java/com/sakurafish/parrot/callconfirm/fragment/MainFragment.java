@@ -165,7 +165,7 @@ public class MainFragment extends Fragment {
 
     private void sendMail() {
         String mailBody = String.format(getString(R.string.setting_mail_to_dev3),
-                android.os.Build.VERSION.RELEASE, Utils.getDeviceName());
+                android.os.Build.VERSION.RELEASE, Utils.getDeviceName(), Utils.getVersionName());
 
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this

@@ -27,7 +27,7 @@
     <string name="text_app_version" translatable="false">ver%1$s</string>
 
     <string name="setting_mail_to_dev2">[ParrotCallConfirm] Suggestions and Opinions</string>
-    <string name="setting_mail_to_dev3">We do not sell or share your information with anyone else.\n SDK:%1$s Device:%2$s\n----------------------ß</string>
+    <string name="setting_mail_to_dev3">We do not sell or share your information with anyone else.\n SDK:%1$s Device:%2$s AppVer:%3$s\n----------------------\n</string>
     <string name="setting_confirm">Enable Call Confirm</string>
     <string name="setting_vibrate_title">Vibration</string>
     <string name="setting_vibrate">Enable Vibrate</string>
