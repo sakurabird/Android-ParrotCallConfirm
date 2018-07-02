@@ -77,6 +77,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void switchContent(Fragment fragment) {
+        if (fragment == null) return;
         mContent = fragment;
         getFragmentManager().beginTransaction()
                 .setCustomAnimations(R.animator.slide_in, R.animator.slide_out)
