@@ -277,13 +277,9 @@ public class ConfirmActivity extends AppCompatActivity {
 
         try {
             unregisterReceiver(mHomeKeyReceiver);
+            unregisterReceiver(mScreenOffReceiver);
         } catch (Exception exception) {
             exception.printStackTrace();
-        }
-        try {
-            unregisterReceiver(mScreenOffReceiver);
-        } catch (Exception exception1) {
-            exception1.printStackTrace();
         }
     }
 }

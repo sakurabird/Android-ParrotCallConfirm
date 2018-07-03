@@ -175,13 +175,9 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private void finalizeLayout() {
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        finalizeLayout();
         mContent = null;
     }
 }
