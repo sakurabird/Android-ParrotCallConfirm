@@ -35,7 +35,10 @@
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.WebViewActivity" />
 
-        <receiver android:name=".CallReceiver">
+        <receiver
+            android:name=".receiver.CallReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
                 <category android:name="android.intent.category.DEFAULT" />
