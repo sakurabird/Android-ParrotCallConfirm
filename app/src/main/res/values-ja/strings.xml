@@ -54,5 +54,6 @@
     <string name="error_now_disabled">！現在発信確認画面は表示されません！</string>
     <string name="error_not_activated">このアプリは有効になっていません。</string>
     <string name="error_no_permission_call">「電話」権限が許可されていません。</string>
+    <string name="error_no_permission_call_log">「通話履歴」権限が許可されていません。</string>
     <string name="error_alert_refresh">\nここをタッチしてステータスを更新</string>
 </resources>

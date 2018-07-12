@@ -18,9 +18,19 @@ import com.sakurafish.parrot.callconfirm.R;
 
 public final class RuntimePermissionsUtils {
 
+    // この中でREAD_CONTACTSは必須ではない(単にかける相手を不明と表示する)
     public static final String[] PERMISSIONS = {
             Manifest.permission.CALL_PHONE,
-            Manifest.permission.READ_CONTACTS};
+            Manifest.permission.PROCESS_OUTGOING_CALLS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_CONTACTS
+    };
+
+    public static final String[] PERMISSIONS_MUST = {
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.PROCESS_OUTGOING_CALLS
+    };
+
     public static final int PERMISSIONS_REQUESTS = 10;
 
     /**
