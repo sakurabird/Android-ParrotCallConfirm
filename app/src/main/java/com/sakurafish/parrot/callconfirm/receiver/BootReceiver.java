@@ -13,9 +13,12 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-        if (null != intent && "android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
-            Pref.setPref(context, Config.PREF_AFTER_CONFIRM, false);
-            Pref.setPref(context, PREF_STATE_INVALID_TELNO, false);
+
+        if ((intent == null) || !intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+            return;
         }
+
+        Pref.setPref(context, Config.PREF_AFTER_CONFIRM, false);
+        Pref.setPref(context, PREF_STATE_INVALID_TELNO, false);
     }
 }
