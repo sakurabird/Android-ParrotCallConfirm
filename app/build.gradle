@@ -20,12 +20,12 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode VERSION_CODE
         versionName VERSION_NAME
         applicationId PACKAGE_NAME
@@ -88,7 +88,7 @@ android {
 }
 
 ext {
-    supportLibraryVersion = '25.4.0'
+    supportLibraryVersion = '26.1.0'
 }
 
 dependencies {
