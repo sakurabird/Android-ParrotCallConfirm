@@ -136,6 +136,12 @@ public class MainFragment extends Fragment {
             message.append(getString(R.string.error_no_permission_call));
         }
 
+        if (Build.VERSION.SDK_INT >= 26 && !hasPermission(mContext, Manifest.permission.PROCESS_OUTGOING_CALLS)) {
+            hasAlert = true;
+            message.append("\n");
+            message.append(getString(R.string.error_no_permission_call_log));
+        }
+
         // 電話番号が取得できない。機種の問題の可能性があるので機能を無効にしている。
         if (!Pref.getPrefBool(mContext, getString(R.string.PREF_CONFIRM), true)
                 && Pref.getPrefBool(mContext, Config.PREF_STATE_INVALID_TELNO, false)) {

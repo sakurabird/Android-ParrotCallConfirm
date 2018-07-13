@@ -22,13 +22,14 @@ import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
 import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
+import com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS_REQUESTS;
-import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermission;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.onNeverAskAgainSelected;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.shouldShowRational;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.showRationaleDialog;
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkPermission() {
-        if ((Build.VERSION.SDK_INT < 23) || hasPermission(mContext, Manifest.permission.CALL_PHONE)) {
+        if ((Build.VERSION.SDK_INT < 23) || hasPermissions(mContext, RuntimePermissionsUtils.PERMISSIONS_MUST)) {
             return;
         }
 

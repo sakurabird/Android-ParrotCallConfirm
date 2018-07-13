@@ -1,6 +1,5 @@
 package com.sakurafish.parrot.callconfirm.receiver;
 
-import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
@@ -13,11 +12,12 @@ import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.activity.ConfirmActivity;
 import com.sakurafish.parrot.callconfirm.config.Config;
+import com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils;
 
 import java.util.List;
 
 import static com.sakurafish.parrot.callconfirm.config.Config.PREF_STATE_INVALID_TELNO;
-import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermission;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
 
 /**
  * 発信を捉える
@@ -25,8 +25,7 @@ import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.ha
  */
 public class CallReceiver extends BroadcastReceiver {
 
-    @Override
-    public void onReceive(final Context context, final Intent intent) {
+    public void onReceive(Context context, Intent intent) {
 
         if (!canProceedConfirm(context, intent)) return;
 
@@ -44,7 +43,7 @@ public class CallReceiver extends BroadcastReceiver {
         }
 
         // 必要なパーミッションが許可されていない場合処理を行わない
-        if (Build.VERSION.SDK_INT >= 23 && !hasPermission(context, Manifest.permission.CALL_PHONE)) {
+        if (Build.VERSION.SDK_INT >= 23 && !hasPermissions(context, RuntimePermissionsUtils.PERMISSIONS_MUST)) {
             return false;
         }
 
@@ -105,6 +104,7 @@ public class CallReceiver extends BroadcastReceiver {
     private void callConfirmActivity(Context context, String phoneNumber) {
         // 発信を取り消す
         setResultData(null);
+        abortBroadcast();
         context.startActivity(ConfirmActivity.createIntent(context, ConfirmActivity.class, phoneNumber));
     }
 }
