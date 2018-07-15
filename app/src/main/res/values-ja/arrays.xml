@@ -13,14 +13,20 @@
         <item>インコの声8</item>
         <item>インコの声9</item>
         <item>インコの声10</item>
+        <item>インコの声11</item>
+        <item>インコの声12</item>
         <item>電子音1</item>
         <item>電子音2</item>
         <item>その他の鳥の声1</item>
         <item>その他の鳥の声2</item>
         <item>その他の鳥の声3</item>
         <item>その他の鳥の声4</item>
+        <item>その他の鳥の声5</item>
+        <item>その他の鳥の声6</item>
         <item>動物の声1</item>
         <item>動物の声2</item>
+        <item>動物の声3</item>
+        <item>動物の声4</item>
     </string-array>
     <string-array name="setting_sound_desc">
         <item>キリリとしたインコ音</item>
@@ -33,13 +39,19 @@
         <item>呼び鳴きインコ音</item>
         <item>口の達者な文鳥音</item>
         <item>宇宙人めいた文鳥音</item>
+        <item>シンプルなインコ音</item>
+        <item>南のインコの森音</item>
         <item>普通の電子音1</item>
         <item>普通の電子音2</item>
         <item>うぐいす音</item>
         <item>ホトトギス音</item>
         <item>にわとりコケコッコー</item>
         <item>めんどりのコケーッコッコッ…</item>
+        <item>カナリア</item>
+        <item>オオルリ</item>
         <item>ねこ音</item>
         <item>いぬ音</item>
+        <item>馬音</item>
+        <item>象音</item>
     </string-array>
 </resources>
