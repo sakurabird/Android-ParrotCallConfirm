@@ -118,7 +118,6 @@ public class ConfirmActivity extends AppCompatActivity {
 
         setupReceiver();
         checkPhoneNumber();
-        notifyAppMessage();
         checkPermission();
     }
 
@@ -236,24 +235,6 @@ public class ConfirmActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    private void notifyAppMessage() {
-        final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
-        int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
-        String messageText = getString(R.string.APP_MESSAGE_TEXT);
-
-        if (messageNo <= lastNo) {
-            return;
-        }
-
-        // インストール時点のメッセージは表示しない
-        if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
-            return;
-        }
-
-        CallConfirmUtils.setNotification(MainActivity.class, messageText);
-        Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
     }
 
     private void finishActivity() {
