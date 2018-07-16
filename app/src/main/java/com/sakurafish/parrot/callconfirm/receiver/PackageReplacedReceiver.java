@@ -9,19 +9,15 @@ import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.utils.AlarmUtils;
 
-import static com.sakurafish.parrot.callconfirm.config.Config.PREF_STATE_INVALID_TELNO;
+public class PackageReplacedReceiver extends BroadcastReceiver {
 
-public class BootReceiver extends BroadcastReceiver {
+    public void onReceive(Context context, Intent intent) {
 
-    @Override
-    public void onReceive(final Context context, final Intent intent) {
-
-        if ((intent == null) || !intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+        if ((intent == null) || !intent.getAction().equals(Intent.ACTION_MY_PACKAGE_REPLACED)) {
             return;
         }
 
         Pref.setPref(context, Config.PREF_AFTER_CONFIRM, false);
-        Pref.setPref(context, PREF_STATE_INVALID_TELNO, false);
 
         if (Pref.getPrefBool(context, context.getString(R.string.PREF_NOTIFICATION), true)) {
             AlarmUtils.unregisterAlarm(context);

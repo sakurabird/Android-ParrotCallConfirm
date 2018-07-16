@@ -29,6 +29,7 @@
     <string name="setting_mail_to_dev2">[ParrotCallConfirm] Suggestions and Opinions</string>
     <string name="setting_mail_to_dev3">We do not sell or share your information with anyone else.\n SDK:%1$s Device:%2$s AppVer:%3$s\n----------------------\n</string>
     <string name="setting_confirm">Enable Call Confirm</string>
+    <string name="setting_notification">Enable Notification</string>
     <string name="setting_vibrate_title">Vibration</string>
     <string name="setting_vibrate">Enable Vibrate</string>
     <string name="setting_vibrate_select">Select Vibration Pattern</string>
@@ -54,6 +55,11 @@ Since the operation is being verified, there is a possibility of trouble.</strin
 This application needs permissions to catch phone calls, display contacts and make outgoing calls. Please allow all permissions.</string>
     <string name="message_request_permissions3">
 This application is not working correctly without permissions. Please make switch on from the apps Settings.</string>
+
+    <!-- Notification -->
+    <string name="notification_title">Information</string>
+    <string name="notification_channel_name">ParrotCallConfirm Normal Notification</string>
+    <string name="notification_channel_description">Show information from app.</string>
 
     <!-- error -->
     <string name="error">error</string>

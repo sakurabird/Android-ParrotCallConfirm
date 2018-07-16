@@ -1,6 +1,5 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
-import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
 import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
+import com.sakurafish.parrot.callconfirm.utils.AlarmUtils;
 import com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
 
@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAppMessage() {
+        scheduleNotification();
         final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
         int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
         String messageText = getString(R.string.APP_MESSAGE_TEXT);
@@ -168,6 +169,11 @@ public class MainActivity extends AppCompatActivity {
                 .show();
 
         Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
+    }
+
+    private void scheduleNotification() {
+        AlarmUtils.unregisterAlarm(this);
+        AlarmUtils.registerAlarm(this);
     }
 
     @Override

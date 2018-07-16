@@ -3,12 +3,14 @@ package com.sakurafish.parrot.callconfirm.activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -20,13 +22,15 @@ import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.fragment.SelectSoundFragment;
 import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
+import com.sakurafish.parrot.callconfirm.utils.AlarmUtils;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
+import com.sakurafish.parrot.callconfirm.utils.Utils;
 
 /**
  * 設定画面
  * Created by sakura on 2015/03/24.
  */
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private ActivityMainBinding binding;
     private Fragment mContent;
@@ -51,6 +55,18 @@ public class SettingActivity extends AppCompatActivity {
         }
 
         initLayout();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -83,6 +99,17 @@ public class SettingActivity extends AppCompatActivity {
                 .setCustomAnimations(R.animator.slide_in, R.animator.slide_out)
                 .replace(R.id.content, mContent)
                 .addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(getString(R.string.PREF_NOTIFICATION))) {
+            Utils.logDebug("notification setting changed:" + Pref.getPrefBool(this, getString(R.string.PREF_NOTIFICATION), true));
+            AlarmUtils.unregisterAlarm(this);
+            if (Pref.getPrefBool(this, getString(R.string.PREF_NOTIFICATION), true)) {
+                AlarmUtils.registerAlarm(this);
+            }
+        }
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment {
