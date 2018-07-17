@@ -7,8 +7,14 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="true" />
 
     <application
         android:name=".MyApplication"
@@ -33,12 +39,37 @@
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.WebViewActivity" />
 
-        <receiver android:name=".CallReceiver">
+        <receiver
+            android:name=".receiver.CallReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".receiver.BootReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!--For HTC devices-->
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.PackageReplacedReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.NotificationReceiver"
+            android:enabled="true" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

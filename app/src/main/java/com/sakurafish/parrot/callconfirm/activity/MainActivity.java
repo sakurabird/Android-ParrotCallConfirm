@@ -21,6 +21,8 @@ import com.sakurafish.parrot.callconfirm.config.Config;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.fragment.MainFragment;
 import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
+import com.sakurafish.parrot.callconfirm.utils.AlarmUtils;
+import com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         Pref.setPref(getApplicationContext(), Config.PREF_LAUNCH_COUNT, ++launchCount);
 
         showAppMessage();
-        checkPermissions();
+        checkPermission();
     }
 
     private void initLayout() {
@@ -93,28 +95,26 @@ public class MainActivity extends AppCompatActivity {
         binding.adView.loadAd(adRequest);
     }
 
-    private void checkPermissions() {
-        if (Build.VERSION.SDK_INT < 23) {
+    private void checkPermission() {
+        if ((Build.VERSION.SDK_INT < 23) || hasPermissions(mContext, RuntimePermissionsUtils.PERMISSIONS_MUST)) {
             return;
         }
 
-        if (!hasPermissions(mContext, PERMISSIONS)) {
-            if (shouldShowPermissionsDialog) {
-                new MaterialDialog.Builder(this)
-                        .cancelable(false)
-                        .theme(Theme.LIGHT)
-                        .title(getString(R.string.message_request_permissions1))
-                        .content(getString(R.string.message_request_permissions2))
-                        .positiveText(getString(android.R.string.ok))
-                        .onPositive((dialog, which) -> {
-                            shouldShowPermissionsDialog = false;
-                            shouldShowRationalDialog = false;
-                            requestPermissionDialog();
-                        })
-                        .show();
-            } else {
-                requestPermissionDialog();
-            }
+        if (shouldShowPermissionsDialog) {
+            new MaterialDialog.Builder(this)
+                    .cancelable(false)
+                    .theme(Theme.LIGHT)
+                    .title(getString(R.string.message_request_permissions1))
+                    .content(getString(R.string.message_request_permissions2))
+                    .positiveText(getString(android.R.string.ok))
+                    .onPositive((dialog, which) -> {
+                        shouldShowPermissionsDialog = false;
+                        shouldShowRationalDialog = false;
+                        requestPermissionDialog();
+                    })
+                    .show();
+        } else {
+            requestPermissionDialog();
         }
     }
 
@@ -133,17 +133,20 @@ public class MainActivity extends AppCompatActivity {
             MainFragment mainFragment = (MainFragment) mContent;
             mainFragment.checkStatus();
         }
-        for (int i = 0; i < permissions.length; i++) {
-            if (grantResults.length <= i || grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                if (!shouldShowRational(MainActivity.this, permissions[i])) {
-                    // Never ask again
-                    onNeverAskAgainSelected(mContext);
-                }
-            }
+
+        if (permissions.length == 0 || grantResults.length == 0) {
+            return;
+        }
+        // CALL_PHONEの権限を許可されず二度と表示しないを選択された場合
+        if (grantResults[0] != PackageManager.PERMISSION_GRANTED
+                && !shouldShowRational(MainActivity.this, permissions[0])) {
+            // Never ask again
+            onNeverAskAgainSelected(mContext);
         }
     }
 
     private void showAppMessage() {
+        scheduleNotification();
         final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
         int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
         String messageText = getString(R.string.APP_MESSAGE_TEXT);
@@ -168,19 +171,20 @@ public class MainActivity extends AppCompatActivity {
         Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
     }
 
+    private void scheduleNotification() {
+        AlarmUtils.unregisterAlarm(this);
+        AlarmUtils.registerAlarm(this);
+    }
+
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         getFragmentManager().putFragment(outState, "mContent", mContent);
         super.onSaveInstanceState(outState);
     }
 
-    private void finalizeLayout() {
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        finalizeLayout();
         mContent = null;
     }
 }

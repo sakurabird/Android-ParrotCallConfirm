@@ -27,8 +27,9 @@
     <string name="text_app_version" translatable="false">ver%1$s</string>
 
     <string name="setting_mail_to_dev2">[ParrotCallConfirm] Suggestions and Opinions</string>
-    <string name="setting_mail_to_dev3">We do not sell or share your information with anyone else.\n SDK:%1$s Device:%2$s\n----------------------ß</string>
+    <string name="setting_mail_to_dev3">We do not sell or share your information with anyone else.\n SDK:%1$s Device:%2$s AppVer:%3$s\n----------------------\n</string>
     <string name="setting_confirm">Enable Call Confirm</string>
+    <string name="setting_notification">Enable Notification</string>
     <string name="setting_vibrate_title">Vibration</string>
     <string name="setting_vibrate">Enable Vibrate</string>
     <string name="setting_vibrate_select">Select Vibration Pattern</string>
@@ -55,6 +56,11 @@ This application needs permissions to catch phone calls, display contacts and ma
     <string name="message_request_permissions3">
 This application is not working correctly without permissions. Please make switch on from the apps Settings.</string>
 
+    <!-- Notification -->
+    <string name="notification_title">Information</string>
+    <string name="notification_channel_name">ParrotCallConfirm Normal Notification</string>
+    <string name="notification_channel_description">Show information from app.</string>
+
     <!-- error -->
     <string name="error">error</string>
     <string name="error_cannot_get_phonenumber">Could not retrieve the phone number. Since Parrot Call Confirm App can not make a call from this model, we will disable the application. Sorry for the inconvenience.</string>
@@ -62,6 +68,6 @@ This application is not working correctly without permissions. Please make switc
     <string name="error_now_disabled">! Call Confirm dialog is not working now !</string>
     <string name="error_not_activated">This app is not activated.</string>
     <string name="error_no_permission_call">Phone permission is not permitted.</string>
-    <string name="error_no_permission_contact">Contacts permission is not permitted.</string>
+    <string name="error_no_permission_call_log">Call log permission is not permitted.</string>
     <string name="error_alert_refresh">\nTouch here and refresh status</string>
 </resources>

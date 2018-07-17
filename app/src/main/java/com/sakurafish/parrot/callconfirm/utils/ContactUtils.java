@@ -1,5 +1,6 @@
 package com.sakurafish.parrot.callconfirm.utils;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.database.Cursor;
@@ -13,10 +14,16 @@ import com.sakurafish.parrot.callconfirm.MyApplication;
 
 import java.io.ByteArrayInputStream;
 
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermission;
+
 public final class ContactUtils {
 
 
     public static ContactInfo getContactInfoByNumber(String number) {
+        if (!hasPermission(MyApplication.getContext(), Manifest.permission.READ_CONTACTS)) {
+            return null;
+        }
+
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
 
         String projection[] = new String[]{BaseColumns._ID,

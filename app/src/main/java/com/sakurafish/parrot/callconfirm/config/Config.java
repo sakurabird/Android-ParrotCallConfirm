@@ -44,21 +44,29 @@ public class Config {
     public static final int SOUND_INCO8 = R.raw.inco8;
     public static final int SOUND_INCO9 = R.raw.inco9;
     public static final int SOUND_INCO10 = R.raw.inco10;
+    public static final int SOUND_INCO11 = R.raw.inco11;
+    public static final int SOUND_INCO12 = R.raw.inco12;
     public static final int SOUND_RING1 = R.raw.ring1;
     public static final int SOUND_RING2 = R.raw.ring2;
     public static final int SOUND_WARBLER = R.raw.warbler;
     public static final int SOUND_CUCKOO = R.raw.cuckoo;
     public static final int SOUND_CHICKEN1 = R.raw.chicken1;
     public static final int SOUND_CHICKEN2 = R.raw.chicken2;
+    public static final int SOUND_CANARY = R.raw.canary;
+    public static final int SOUND_BLUE_AND_WHITE_FLYCATCHER = R.raw.blue_and_white_flycatcher;
     public static final int SOUND_CAT = R.raw.cat1;
     public static final int SOUND_DOG = R.raw.dog1;
+    public static final int SOUND_HORSE = R.raw.horse1;
+    public static final int SOUND_ELEPHANT = R.raw.elephant;
 
     public static final int[] SOUND_IDS = {
             SOUND_INCO1, SOUND_INCO2, SOUND_INCO3, SOUND_INCO4, SOUND_INCO5,
             SOUND_INCO6, SOUND_INCO7, SOUND_INCO8, SOUND_INCO9, SOUND_INCO10,
+            SOUND_INCO11, SOUND_INCO12,
             SOUND_RING1, SOUND_RING2,
             SOUND_WARBLER, SOUND_CUCKOO, SOUND_CHICKEN1, SOUND_CHICKEN2,
-            SOUND_CAT, SOUND_DOG
+            SOUND_CANARY, SOUND_BLUE_AND_WHITE_FLYCATCHER,
+            SOUND_CAT, SOUND_DOG, SOUND_HORSE, SOUND_ELEPHANT
     };
 
     private Config() {

@@ -106,11 +106,6 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
 
@@ -140,10 +135,11 @@ public class MainFragment extends Fragment {
             message.append("\n");
             message.append(getString(R.string.error_no_permission_call));
         }
-        if (Build.VERSION.SDK_INT >= 23 && !hasPermission(mContext, Manifest.permission.READ_CONTACTS)) {
+
+        if (Build.VERSION.SDK_INT >= 26 && !hasPermission(mContext, Manifest.permission.PROCESS_OUTGOING_CALLS)) {
             hasAlert = true;
             message.append("\n");
-            message.append(getString(R.string.error_no_permission_contact));
+            message.append(getString(R.string.error_no_permission_call_log));
         }
 
         // 電話番号が取得できない。機種の問題の可能性があるので機能を無効にしている。
@@ -165,7 +161,7 @@ public class MainFragment extends Fragment {
 
     private void sendMail() {
         String mailBody = String.format(getString(R.string.setting_mail_to_dev3),
-                android.os.Build.VERSION.RELEASE, Utils.getDeviceName());
+                android.os.Build.VERSION.RELEASE, Utils.getDeviceName(), Utils.getVersionName());
 
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:")); // only email apps should handle this

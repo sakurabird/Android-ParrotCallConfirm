@@ -34,7 +34,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.sakurafish.parrot.callconfirm.config.Config.PREF_STATE_INVALID_TELNO;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS_MUST;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS_REQUESTS;
+import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermission;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.onNeverAskAgainSelected;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.shouldShowRational;
@@ -116,8 +118,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
         setupReceiver();
         checkPhoneNumber();
-        notifyAppMessage();
-        checkPermissions();
+        checkPermission();
     }
 
     private void setupReceiver() {
@@ -159,6 +160,9 @@ public class ConfirmActivity extends AppCompatActivity {
             if (info.getPhotoBitmap() != null)
                 binding.imageViewCallto.setImageBitmap(info.getPhotoBitmap());
         }
+        if (!hasPermission(mContext, Manifest.permission.READ_CONTACTS)) {
+            binding.textViewName.setText("");
+        }
 
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.inco_jump);
         binding.imageViewInco.startAnimation(animation);
@@ -188,29 +192,27 @@ public class ConfirmActivity extends AppCompatActivity {
         });
     }
 
-    private void checkPermissions() {
+    private void checkPermission() {
         // 基本的にMainActivityから許可してもらわないと発信をキャッチしないので、このActivityは許可済みの状態である。
-        if (Build.VERSION.SDK_INT < 23) {
+        if ((Build.VERSION.SDK_INT < 23) || hasPermissions(mContext, PERMISSIONS_MUST)) {
             return;
         }
 
-        if (!hasPermissions(mContext, PERMISSIONS)) {
-            if (shouldShowPermissionsDialog) {
-                new MaterialDialog.Builder(this)
-                        .cancelable(false)
-                        .theme(Theme.LIGHT)
-                        .title(getString(R.string.message_request_permissions1))
-                        .content(getString(R.string.message_request_permissions2))
-                        .positiveText(getString(android.R.string.ok))
-                        .onPositive((dialog, which) -> {
-                            shouldShowPermissionsDialog = false;
-                            shouldShowRationalDialog = false;
-                            requestPermissionDialog();
-                        })
-                        .show();
-            } else {
-                requestPermissionDialog();
-            }
+        if (shouldShowPermissionsDialog) {
+            new MaterialDialog.Builder(this)
+                    .cancelable(false)
+                    .theme(Theme.LIGHT)
+                    .title(getString(R.string.message_request_permissions1))
+                    .content(getString(R.string.message_request_permissions2))
+                    .positiveText(getString(android.R.string.ok))
+                    .onPositive((dialog, which) -> {
+                        shouldShowPermissionsDialog = false;
+                        shouldShowRationalDialog = false;
+                        requestPermissionDialog();
+                    })
+                    .show();
+        } else {
+            requestPermissionDialog();
         }
     }
 
@@ -235,27 +237,13 @@ public class ConfirmActivity extends AppCompatActivity {
         }
     }
 
-    private void notifyAppMessage() {
-        final int lastNo = Pref.getPrefInt(mContext, Config.PREF_APP_MESSAGE_NO);
-        int messageNo = getResources().getInteger(R.integer.APP_MESSAGE_NO);
-        String messageText = getString(R.string.APP_MESSAGE_TEXT);
-
-        if (messageNo <= lastNo) {
-            return;
-        }
-
-        // インストール時点のメッセージは表示しない
-        if (Pref.getPrefInt(mContext, Config.PREF_LAUNCH_COUNT) <= 1) {
-            return;
-        }
-
-        CallConfirmUtils.setNotification(MainActivity.class, messageText);
-        Pref.setPref(mContext, Config.PREF_APP_MESSAGE_NO, messageNo);
-    }
-
     private void finishActivity() {
-        ConfirmActivity.this.finish();
-        overridePendingTransition(0, 0);
+        try {
+            ConfirmActivity.this.finish();
+            overridePendingTransition(0, 0);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -272,13 +260,9 @@ public class ConfirmActivity extends AppCompatActivity {
 
         try {
             unregisterReceiver(mHomeKeyReceiver);
+            unregisterReceiver(mScreenOffReceiver);
         } catch (Exception exception) {
             exception.printStackTrace();
-        }
-        try {
-            unregisterReceiver(mScreenOffReceiver);
-        } catch (Exception exception1) {
-            exception1.printStackTrace();
         }
     }
 }

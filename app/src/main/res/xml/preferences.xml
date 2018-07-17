@@ -6,6 +6,10 @@
             android:defaultValue="true"
             android:key="@string/PREF_CONFIRM"
             android:title="@string/setting_confirm" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/PREF_NOTIFICATION"
+            android:title="@string/setting_notification" />
     </PreferenceCategory>
     <!-- Vibrate -->
     <PreferenceCategory android:title="@string/setting_vibrate_title">
@@ -41,7 +45,7 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="@string/PREF_HEADSET_MODE"
-            android:title="@string/setting_headset_mode"
-            android:summary="@string/setting_headset_mode_summary"/>
+            android:summary="@string/setting_headset_mode_summary"
+            android:title="@string/setting_headset_mode" />
     </PreferenceCategory>
 </PreferenceScreen>
