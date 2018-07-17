@@ -4,6 +4,11 @@
 others
 
 ----------------------------------------------- */
+ul li {
+  padding-top:4px;
+  padding-bottom:4px;
+}
+
 .disc{
 	background:#ffffff;
 	margin: 20px 20px 20px 20px;
