@@ -48,6 +48,6 @@ public class MyApplication extends Application {
         soundManager = SoundManager.getInstance(getContext());
 
         // adMob
-        MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
     }
 }
