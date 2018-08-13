@@ -58,6 +58,10 @@ public final class ContactUtils {
     }
 
     public static Bitmap openPhoto(long contactId) {
+        if (!hasPermission(MyApplication.getContext(), Manifest.permission.READ_CONTACTS)) {
+            return null;
+        }
+
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
         Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
         Cursor cursor = MyApplication.getContext().getContentResolver().query(photoUri,
