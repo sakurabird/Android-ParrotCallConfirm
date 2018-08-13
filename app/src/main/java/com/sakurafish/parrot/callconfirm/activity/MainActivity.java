@@ -1,5 +1,6 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -137,11 +138,16 @@ public class MainActivity extends AppCompatActivity {
         if (permissions.length == 0 || grantResults.length == 0) {
             return;
         }
-        // CALL_PHONEの権限を許可されず二度と表示しないを選択された場合
-        if (grantResults[0] != PackageManager.PERMISSION_GRANTED
-                && !shouldShowRational(MainActivity.this, permissions[0])) {
-            // Never ask again
-            onNeverAskAgainSelected(mContext);
+
+        for (int i = 0; i < permissions.length; i++) {
+            // CALL_PHONEまたはPROCESS_OUTGOING_CALLSの権限を許可されなかった場合端末の設定画面へ誘導する
+            if (permissions[i].equals(Manifest.permission.CALL_PHONE)
+                    || permissions[i].equals(Manifest.permission.PROCESS_OUTGOING_CALLS)) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    onNeverAskAgainSelected(mContext);
+                    break;
+                }
+            }
         }
     }
 

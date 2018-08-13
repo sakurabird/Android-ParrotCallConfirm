@@ -227,11 +227,14 @@ public class ConfirmActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+
         for (int i = 0; i < permissions.length; i++) {
-            if (grantResults.length <= i || grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                if (!shouldShowRational(ConfirmActivity.this, permissions[i])) {
-                    // Never ask again
+            if (permissions[i].equals(Manifest.permission.CALL_PHONE)
+                    || permissions[i].equals(Manifest.permission.PROCESS_OUTGOING_CALLS)) {
+                if ((grantResults[i] != PackageManager.PERMISSION_GRANTED)
+                        && (!shouldShowRational(ConfirmActivity.this, permissions[i]))) {
                     onNeverAskAgainSelected(mContext);
+                    break;
                 }
             }
         }
