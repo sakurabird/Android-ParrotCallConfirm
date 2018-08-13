@@ -32,8 +32,15 @@ public final class ContactUtils {
         };
 
         ContentResolver contentResolver = MyApplication.getContext().getContentResolver();
-        Cursor contactLookup = contentResolver.query(uri, projection, null, null, null);
-        if (contactLookup == null || contactLookup.getCount() <= 0) {
+        Cursor contactLookup;
+        try {
+            contactLookup = contentResolver.query(uri, projection, null, null, null);
+            if (contactLookup == null || contactLookup.getCount() <= 0) {
+                return null;
+            }
+        } catch (NullPointerException e) {
+            // SHARP AQUOSのAndroid5端末でNullPointerExceptionが発生する
+            e.printStackTrace();
             return null;
         }
 
