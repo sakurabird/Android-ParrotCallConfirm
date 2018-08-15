@@ -17,6 +17,7 @@ public class Config {
     public static final String PREF_AFTER_CONFIRM = "PREF_AFTER_CONFIRM";
     public static final String PREF_APP_MESSAGE_NO = "PREF_APP_MESSAGE_NO";
     public static final String PREF_STATE_INVALID_TELNO = "PREF_STATE_INVALID_TELNO";
+    public static final String PREF_LAST_AD_CLICK_TIME = "PREF_LAST_AD_CLICK_TIME";
 
     // Intent
     public static final String INTENT_DB_UPDTE_ACTION = "INTENT_DB_UPDTE_ACTION";

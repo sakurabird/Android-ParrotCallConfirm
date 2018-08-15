@@ -1,8 +1,10 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
@@ -12,10 +14,11 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdListener;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.config.Config;
@@ -26,6 +29,9 @@ import com.sakurafish.parrot.callconfirm.utils.AlarmUtils;
 import com.sakurafish.parrot.callconfirm.utils.CallConfirmUtils;
 import com.sakurafish.parrot.callconfirm.utils.Utils;
 
+import static com.sakurafish.parrot.callconfirm.utils.AdsHelper.ACTION_BANNER_CLICK;
+import static com.sakurafish.parrot.callconfirm.utils.AdsHelper.INTENT_EXTRAS_KEY_CLASS;
+
 /**
  * 設定画面
  * Created by sakura on 2015/03/24.
@@ -34,6 +40,9 @@ public class SettingActivity extends AppCompatActivity implements SharedPreferen
 
     private ActivityMainBinding binding;
     private Fragment mContent;
+    // AdMob
+    private AdsHelper adsHelper;
+    private BroadcastReceiver receiverADClick;
 
     public static Intent createIntent(@NonNull final Context context, @NonNull final Class clazz) {
         Intent intent = new Intent(context, clazz);
@@ -87,9 +96,7 @@ public class SettingActivity extends AppCompatActivity implements SharedPreferen
     }
 
     private void initLayout() {
-        // show AD banner
-        AdRequest adRequest = new AdsHelper(this).getAdRequest();
-        binding.adView.loadAd(adRequest);
+        setupAds();
     }
 
     public void switchContent(Fragment fragment) {
@@ -110,6 +117,50 @@ public class SettingActivity extends AppCompatActivity implements SharedPreferen
                 AlarmUtils.registerAlarm(this);
             }
         }
+    }
+
+    private void setupAds() {
+        adsHelper = new AdsHelper(this);
+        if (adsHelper.isIntervalOK()) {
+            adsHelper.startLoad(binding.adView);
+        } else {
+            adsHelper.startInterval(false, SettingActivity.class.getSimpleName(), binding.adView);
+        }
+
+        binding.adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                adsHelper.startInterval(true, SettingActivity.class.getSimpleName(), binding.adView);
+            }
+        });
+
+        receiverADClick = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction() == null
+                        || binding.adView == null
+                        || !intent.getAction().equals(ACTION_BANNER_CLICK)
+                        || intent.getStringExtra(INTENT_EXTRAS_KEY_CLASS).equals(SettingActivity.class.getSimpleName())) {
+                    return;
+                }
+                adsHelper.finishInterval();
+                adsHelper.startInterval(false, SettingActivity.class.getSimpleName(), binding.adView);
+            }
+        };
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_BANNER_CLICK);
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiverADClick, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (adsHelper != null) {
+            adsHelper.finishInterval();
+        }
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(receiverADClick);
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment {

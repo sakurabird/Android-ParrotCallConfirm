@@ -21,6 +21,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.MainActivity"
