@@ -2,8 +2,10 @@ package com.sakurafish.parrot.callconfirm.activity;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -11,11 +13,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdListener;
 import com.sakurafish.parrot.callconfirm.Pref.Pref;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.config.Config;
@@ -28,6 +31,8 @@ import com.sakurafish.parrot.callconfirm.utils.Utils;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.sakurafish.parrot.callconfirm.utils.AdsHelper.ACTION_BANNER_CLICK;
+import static com.sakurafish.parrot.callconfirm.utils.AdsHelper.INTENT_EXTRAS_KEY_CLASS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.PERMISSIONS_REQUESTS;
 import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.hasPermissions;
@@ -43,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext;
     private boolean shouldShowPermissionsDialog = true;
     private boolean shouldShowRationalDialog = true;
+    // AdMob
+    private AdsHelper adsHelper;
+    private BroadcastReceiver receiverADClick;
 
     public static Intent createIntent(Context context, Class clazz) {
         Intent intent = new Intent(context, clazz);
@@ -90,10 +98,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initLayout() {
-
-        // show AD banner
-        AdRequest adRequest = new AdsHelper(mContext).getAdRequest();
-        binding.adView.loadAd(adRequest);
+        setupAds();
     }
 
     private void checkPermission() {
@@ -182,6 +187,40 @@ public class MainActivity extends AppCompatActivity {
         AlarmUtils.registerAlarm(this);
     }
 
+    private void setupAds() {
+        adsHelper = new AdsHelper(this);
+        if (adsHelper.isIntervalOK()) {
+            adsHelper.startLoad(binding.adView);
+        } else {
+            adsHelper.startInterval(false, MainActivity.class.getSimpleName(), binding.adView);
+        }
+
+        binding.adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                adsHelper.startInterval(true, MainActivity.class.getSimpleName(), binding.adView);
+            }
+        });
+
+        receiverADClick = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction() == null
+                        || binding.adView == null
+                        || !intent.getAction().equals(ACTION_BANNER_CLICK)
+                        || intent.getStringExtra(INTENT_EXTRAS_KEY_CLASS).equals(MainActivity.class.getSimpleName())) {
+                    return;
+                }
+                adsHelper.finishInterval();
+                adsHelper.startInterval(false, MainActivity.class.getSimpleName(), binding.adView);
+            }
+        };
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_BANNER_CLICK);
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiverADClick, filter);
+    }
+
     @Override
     public void onSaveInstanceState(final Bundle outState) {
         getFragmentManager().putFragment(outState, "mContent", mContent);
@@ -191,6 +230,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        if (adsHelper != null) {
+            adsHelper.finishInterval();
+        }
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(receiverADClick);
         mContent = null;
     }
 }

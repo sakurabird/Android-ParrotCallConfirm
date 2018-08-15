@@ -1,18 +1,21 @@
 package com.sakurafish.parrot.callconfirm.activity;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdListener;
 import com.sakurafish.parrot.callconfirm.R;
 import com.sakurafish.parrot.callconfirm.databinding.ActivityMainBinding;
 import com.sakurafish.parrot.callconfirm.fragment.WebFragment;
@@ -20,6 +23,8 @@ import com.sakurafish.parrot.callconfirm.utils.AdsHelper;
 
 import static com.sakurafish.parrot.callconfirm.fragment.BaseWebFragment.EXTRA_TITLE;
 import static com.sakurafish.parrot.callconfirm.fragment.BaseWebFragment.EXTRA_URL;
+import static com.sakurafish.parrot.callconfirm.utils.AdsHelper.ACTION_BANNER_CLICK;
+import static com.sakurafish.parrot.callconfirm.utils.AdsHelper.INTENT_EXTRAS_KEY_CLASS;
 
 
 public class WebViewActivity extends AppCompatActivity {
@@ -29,6 +34,9 @@ public class WebViewActivity extends AppCompatActivity {
     private Fragment mContent;
     private String mUrl;
     private String mTitle;
+    // AdMob
+    private AdsHelper adsHelper;
+    private BroadcastReceiver receiverADClick;
 
     public static Intent createIntent(@NonNull final Context context,
                                       @NonNull final Class clazz,
@@ -75,9 +83,41 @@ public class WebViewActivity extends AppCompatActivity {
                     .addToBackStack("WebFragment").commit();
         }
 
-        // show AD banner
-        AdRequest adRequest = new AdsHelper(this).getAdRequest();
-        binding.adView.loadAd(adRequest);
+        setupAds();
+    }
+
+    private void setupAds() {
+        adsHelper = new AdsHelper(this);
+        if (adsHelper.isIntervalOK()) {
+            adsHelper.startLoad(binding.adView);
+        } else {
+            adsHelper.startInterval(false, WebViewActivity.class.getSimpleName(), binding.adView);
+        }
+
+        binding.adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdOpened() {
+                adsHelper.startInterval(true, WebViewActivity.class.getSimpleName(), binding.adView);
+            }
+        });
+
+        receiverADClick = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction() == null
+                        || binding.adView == null
+                        || !intent.getAction().equals(ACTION_BANNER_CLICK)
+                        || intent.getStringExtra(INTENT_EXTRAS_KEY_CLASS).equals(WebViewActivity.class.getSimpleName())) {
+                    return;
+                }
+                adsHelper.finishInterval();
+                adsHelper.startInterval(false, WebViewActivity.class.getSimpleName(), binding.adView);
+            }
+        };
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_BANNER_CLICK);
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(receiverADClick, filter);
     }
 
     @Override
@@ -89,6 +129,11 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        if (adsHelper != null) {
+            adsHelper.finishInterval();
+        }
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(receiverADClick);
         mContent = null;
     }
 }
