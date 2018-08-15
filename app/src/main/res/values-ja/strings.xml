@@ -6,8 +6,6 @@
 
     <string name="call">かける</string>
     <string name="cancel">キャンセル</string>
-    <string name="yes">はい</string>
-    <string name="no">いいえ</string>
     <string name="information">お知らせ</string>
     <string name="action_settings">設定</string>
     <string name="please_choose">選択してください</string>
@@ -38,10 +36,7 @@
     <string name="setting_headset_mode">Bluetooth ヘッドホンモード</string>
     <string name="setting_headset_mode_summary">Bluetooth ヘッドホン使用中は発信確認を行わないようにします。なおこの機能は現在テスト中のため動作がうまくいかない可能性があります。あらかじめご了承下さい。</string>
 
-    <string name="message_info1">あなたは電話をかけようとしています…</string>
-    <string name="message_info2">確認</string>
     <string name="message_confirm1">電話をかけますか？</string>
-    <string name="message_number">番号:</string>
     <string name="message_telephone_canceled">電話はキャンセルされました</string>
     <string name="message_name_placeholder">不明</string>
     <string name="message_request_permissions1">パーミッション</string>
@@ -54,7 +49,6 @@
     <string name="notification_channel_description">アプリからのお知らせを表示します</string>
 
     <!-- error -->
-    <string name="error">エラー</string>
     <string name="error_cannot_get_phonenumber">電話番号を取得できませんでした。インコ発信確認アプリはこの機種からは発信が出来ませんので、無効にいたします。ご迷惑おかけいたします。</string>
 
     <string name="error_now_disabled">！現在発信確認画面は表示されません！</string>
