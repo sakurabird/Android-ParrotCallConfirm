@@ -26,6 +26,8 @@ import static com.sakurafish.parrot.callconfirm.utils.RuntimePermissionsUtils.ha
 public class CallReceiver extends BroadcastReceiver {
 
     public void onReceive(Context context, Intent intent) {
+        if (intent.getAction() == null || !intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL))
+            return;
 
         if (!canProceedConfirm(context, intent)) return;
 
@@ -33,9 +35,6 @@ public class CallReceiver extends BroadcastReceiver {
     }
 
     private boolean canProceedConfirm(final Context context, final Intent intent) {
-        if (!intent.getAction().equalsIgnoreCase(Intent.ACTION_NEW_OUTGOING_CALL)) {
-            return false;
-        }
 
         // 発信確認が無効の場合処理を行わない
         if (!Pref.getPrefBool(context, context.getString(R.string.PREF_CONFIRM), true)) {
